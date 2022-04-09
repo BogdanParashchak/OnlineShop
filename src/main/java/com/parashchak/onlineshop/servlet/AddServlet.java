@@ -3,17 +3,16 @@ package com.parashchak.onlineshop.servlet;
 import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.presentation.PageGenerator;
 import com.parashchak.onlineshop.service.ProductService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class ViewAllServlet extends HttpServlet {
+import static com.parashchak.onlineshop.servlet.RequestProductMapper.mapProduct;
+
+
+public class AddServlet extends HttpServlet {
 
     private ProductService productService;
 
@@ -23,11 +22,17 @@ public class ViewAllServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Map<String, Object> pageData = new HashMap<>();
-        List<Product> allProducts = productService.getAll();
-        pageData.put("products", allProducts);
         PageGenerator pageGenerator = PageGenerator.instance();
-        String page = pageGenerator.getPage("viewAllPage.html", pageData);
+        String page = pageGenerator.getPage("addPage.html");
+        response.getWriter().write(page);
+    }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Product product = mapProduct(request);
+        productService.addProduct(product);
+        PageGenerator pageGenerator = PageGenerator.instance();
+        String page = pageGenerator.getPage("addPageSuccesful.html");
         response.getWriter().write(page);
     }
 }

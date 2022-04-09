@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.parashchak.onlineshop.dao.ProductMapper.mapProduct;
+import static com.parashchak.onlineshop.dao.ResultSetProductMapper.mapProduct;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
