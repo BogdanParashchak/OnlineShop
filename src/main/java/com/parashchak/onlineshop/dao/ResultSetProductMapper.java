@@ -2,8 +2,7 @@ package com.parashchak.onlineshop.dao;
 
 import com.parashchak.onlineshop.entity.Product;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ResultSetProductMapper {
     public static Product mapProduct(ResultSet resultSet) throws SQLException {

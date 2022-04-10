@@ -2,16 +2,14 @@ package com.parashchak.onlineshop.service;
 
 import com.parashchak.onlineshop.dao.ProductDao;
 import com.parashchak.onlineshop.entity.Product;
+import lombok.Setter;
 
 import java.util.List;
 
 public class ProductService {
 
+    @Setter
     private ProductDao productDao;
-
-    public void setProductDao(ProductDao productDao) {
-        this.productDao = productDao;
-    }
 
     public List<Product> getAll() {
         return productDao.getAllProducts();

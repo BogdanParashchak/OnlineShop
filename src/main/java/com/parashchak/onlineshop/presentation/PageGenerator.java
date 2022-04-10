@@ -1,19 +1,23 @@
 package com.parashchak.onlineshop.presentation;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
+import com.google.common.annotations.VisibleForTesting;
+import freemarker.template.*;
 
-import java.io.File;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.Map;
 
 
 public class PageGenerator {
-    private static final String HTML_TEMPLATES_PATH = "src/main/resources";
 
     private static PageGenerator pageGenerator;
+
+    private String htmlTemplatesPath = "src/main/resources";
     private final Configuration configuration;
+
+    @VisibleForTesting
+    void setHtmlTemplatesPath(String htmlTemplatesPath) {
+        this.htmlTemplatesPath = htmlTemplatesPath;
+    }
 
     private PageGenerator() {
         configuration = new Configuration(Configuration.VERSION_2_3_31);
@@ -28,7 +32,7 @@ public class PageGenerator {
 
     public String getPage(String templateName, Map<String, Object> pageData) {
         try (Writer writer = new StringWriter()) {
-            configuration.setDirectoryForTemplateLoading(new File(HTML_TEMPLATES_PATH));
+            configuration.setDirectoryForTemplateLoading(new File(htmlTemplatesPath));
             Template template = configuration.getTemplate(templateName);
             template.process(pageData, writer);
             return writer.toString();

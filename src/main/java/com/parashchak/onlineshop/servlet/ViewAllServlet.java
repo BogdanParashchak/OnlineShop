@@ -3,14 +3,10 @@ package com.parashchak.onlineshop.servlet;
 import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.presentation.PageGenerator;
 import com.parashchak.onlineshop.service.ProductService;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ViewAllServlet extends HttpServlet {
 

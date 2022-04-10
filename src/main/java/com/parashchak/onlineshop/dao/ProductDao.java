@@ -10,17 +10,11 @@ import static com.parashchak.onlineshop.dao.ResultSetProductMapper.mapProduct;
 
 public class ProductDao {
 
-    private static final String GET_ALL_QUERY = "SELECT * FROM products ORDER BY id";
-    private static final String ADD_PRODUCT_QUERY = "INSERT INTO products (name, price) VALUES (?, ?)";
-    private static final String DELETE_PRODUCT_QUERY = "DELETE FROM products WHERE id=?";
-    private static final String SELECT_PRODUCT_BY_ID_QUERY = "SELECT * FROM products WHERE id=?";
-    private static final String UPDATE_PRODUCT_QUERY = "UPDATE products SET name=?,price=? WHERE id=?";
-
     public List<Product> getAllProducts() {
         List<Product> allProductsList = new ArrayList<>();
         try (Connection connection = getConnection()) {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(GET_ALL_QUERY);
+            ResultSet resultSet = statement.executeQuery(Query.GET_ALL_PRODUCTS_QUERY.getDescription());
            while (resultSet.next()) {
                 Product product = mapProduct(resultSet);
                 allProductsList.add(product);
@@ -34,7 +28,7 @@ public class ProductDao {
     public int addProduct(Product product){
         int addedRows;
         try (Connection connection = getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(ADD_PRODUCT_QUERY);
+            PreparedStatement preparedStatement = connection.prepareStatement(Query.ADD_PRODUCT_QUERY.getDescription());
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             addedRows = preparedStatement.executeUpdate();
@@ -47,7 +41,7 @@ public class ProductDao {
     public int deleteProduct(int id) {
         int deletedRows;
         try (Connection connection = getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRODUCT_QUERY);
+            PreparedStatement preparedStatement = connection.prepareStatement(Query.DELETE_PRODUCT_QUERY.getDescription());
             preparedStatement.setInt(1, id);
             deletedRows = preparedStatement.executeUpdate();
         } catch (Exception e) {
@@ -59,7 +53,7 @@ public class ProductDao {
     public Product getProductById(int id) {
         Product product=null;
         try (Connection connection = getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_PRODUCT_BY_ID_QUERY);
+            PreparedStatement preparedStatement = connection.prepareStatement(Query.GET_PRODUCT_BY_ID_QUERY.getDescription());
             preparedStatement.setInt(1, id);
             preparedStatement.executeQuery();
 
@@ -77,7 +71,7 @@ public class ProductDao {
     public int updateProduct(Product product) {
         int updatedRows;
         try (Connection connection = getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PRODUCT_QUERY);
+            PreparedStatement preparedStatement = connection.prepareStatement(Query.UPDATE_PRODUCT_QUERY.getDescription());
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             preparedStatement.setInt(3, product.getId());
