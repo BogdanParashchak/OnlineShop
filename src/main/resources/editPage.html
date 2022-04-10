@@ -8,23 +8,24 @@
           rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
           crossorigin="anonymous">
-    <title>ADD PRODUCT</title>
+    <title>EDIT PRODUCT</title>
 </head>
 
 <body>
-
 <button type="button" class="btn btn-link">
     <a href='/products'>
         View all products
     </a>
 </button>
 
-<h1 class="text-center">ADD NEW PRODUCT</h1>
+<h1 class="text-center">Edit product #${product.id}</h1>
 
-<form action="/products/add" method="POST">
-    name: <input type="text" name="name"/>
-    price: <input type="number" step="0.01" name="price"/>
-    <input type="submit" value="Add new product"/>
+<form action="/products/edit" method="POST">
+    <input class="visually-hidden" value=${product.id} type="number" name="id"/>
+    name:<input type="text" value="${product.name}" name="name"/>
+    price: <input type="number" value="${product.price}" step="0.01" name="price"/>
+
+    <input type="submit" value="SAVE">
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

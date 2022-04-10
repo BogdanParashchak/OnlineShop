@@ -14,10 +14,22 @@ public class ProductService {
     }
 
     public List<Product> getAll() {
-        return productDao.getAll();
+        return productDao.getAllProducts();
     }
 
     public int addProduct(Product product) {
         return productDao.addProduct(product);
+    }
+
+    public int deleteProduct(int id) {
+        return productDao.deleteProduct(id);
+    }
+
+    public int updateProduct(Product product){
+        return productDao.updateProduct(product);
+    }
+
+    public Product getProductById(int id) {
+        return productDao.getProductById(id);
     }
 }

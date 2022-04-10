@@ -3,6 +3,7 @@ package com.parashchak.onlineshop.starter;
 import com.parashchak.onlineshop.dao.ProductDao;
 import com.parashchak.onlineshop.service.ProductService;
 import com.parashchak.onlineshop.servlet.AddServlet;
+import com.parashchak.onlineshop.servlet.EditServlet;
 import com.parashchak.onlineshop.servlet.ViewAllServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -22,10 +23,14 @@ public class Starter {
         AddServlet addServlet = new AddServlet();
         addServlet.setProductService(productService);
 
+        EditServlet editServlet = new EditServlet();
+        editServlet.setProductService(productService);
+
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        contextHandler.addServlet(new ServletHolder(viewAllServlet), "/products");
         contextHandler.addServlet(new ServletHolder(viewAllServlet), "/");
+        contextHandler.addServlet(new ServletHolder(viewAllServlet), "/products");
         contextHandler.addServlet(new ServletHolder(addServlet), "/products/add");
+        contextHandler.addServlet(new ServletHolder(editServlet), "/products/edit");
 
         Server server = new Server(3000);
         server.setHandler(contextHandler);
