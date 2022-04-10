@@ -14,20 +14,8 @@ public class Starter {
         ProductService productService = new ProductService();
         productService.setProductDao(productDao);
 
-        ViewAllServlet viewAllServlet = new ViewAllServlet();
-        viewAllServlet.setProductService(productService);
-
-        AddServlet addServlet = new AddServlet();
-        addServlet.setProductService(productService);
-
-        EditServlet editServlet = new EditServlet();
-        editServlet.setProductService(productService);
-
-        ServletContextHandler contextHandler = new ServletContextHandler();
-        contextHandler.addServlet(new ServletHolder(viewAllServlet), "/");
-        contextHandler.addServlet(new ServletHolder(viewAllServlet), "/products");
-        contextHandler.addServlet(new ServletHolder(addServlet), "/products/add");
-        contextHandler.addServlet(new ServletHolder(editServlet), "/products/edit");
+        ServletManager servletManager = new ServletManager();
+        ServletContextHandler contextHandler = servletManager.manage(productService);
 
         Server server = new Server(3000);
         server.setHandler(contextHandler);
