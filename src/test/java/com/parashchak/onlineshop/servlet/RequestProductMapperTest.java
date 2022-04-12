@@ -25,7 +25,7 @@ class RequestProductMapperTest {
         //prepare
         when(mockHttpServletRequest.getParameter("id")).thenReturn("100");
         //when
-        Product actualProduct = mapProduct(mockHttpServletRequest);
+        Product actualProduct = toProduct(mockHttpServletRequest);
         //then
         assertNotNull(actualProduct);
     }
@@ -36,7 +36,7 @@ class RequestProductMapperTest {
         //prepare
         when(mockHttpServletRequest.getParameter("id")).thenReturn("100");
         //when
-        Product actualProduct = mapProduct(mockHttpServletRequest);
+        Product actualProduct = toProduct(mockHttpServletRequest);
         //then
         assertEquals(100, actualProduct.getId());
         assertEquals("product", actualProduct.getName());
@@ -49,7 +49,7 @@ class RequestProductMapperTest {
         //prepare
         when(mockHttpServletRequest.getParameter("id")).thenReturn(null);
         //when
-        Product actualProduct = mapProduct(mockHttpServletRequest);
+        Product actualProduct = toProduct(mockHttpServletRequest);
         //then
         assertNotNull(actualProduct);
     }
@@ -60,7 +60,7 @@ class RequestProductMapperTest {
         //prepare
         when(mockHttpServletRequest.getParameter("id")).thenReturn(null);
         //when
-        Product actualProduct = mapProduct(mockHttpServletRequest);
+        Product actualProduct = toProduct(mockHttpServletRequest);
         //then
         assertEquals(0, actualProduct.getId());
     }
@@ -71,7 +71,7 @@ class RequestProductMapperTest {
         //prepare
         when(mockHttpServletRequest.getParameter("id")).thenReturn(null);
         //when
-        Product actualProduct = mapProduct(mockHttpServletRequest);
+        Product actualProduct = toProduct(mockHttpServletRequest);
         //then
         assertEquals("product", actualProduct.getName());
         assertEquals(50.00, actualProduct.getPrice());

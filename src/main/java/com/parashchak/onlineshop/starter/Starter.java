@@ -1,6 +1,6 @@
 package com.parashchak.onlineshop.starter;
 
-import com.parashchak.onlineshop.dao.ProductDao;
+import com.parashchak.onlineshop.dao.jdbc.ProductDao;
 import com.parashchak.onlineshop.service.ProductService;
 import com.parashchak.onlineshop.servlet.*;
 import org.eclipse.jetty.server.Server;
@@ -11,11 +11,17 @@ public class Starter {
 
         ProductDao productDao = new ProductDao();
 
-        ProductService productService = new ProductService();
-        productService.setProductDao(productDao);
+        ProductService productService = new ProductService(productDao);
 
-        ServletManager servletManager = new ServletManager();
-        ServletContextHandler contextHandler = servletManager.manage(productService);
+        ViewAllServlet viewAllServlet = new ViewAllServlet(productService);
+        AddServlet addServlet = new AddServlet(productService);
+        EditServlet editServlet = new EditServlet(productService);
+
+        ServletContextHandler contextHandler = new ServletContextHandler();
+        contextHandler.addServlet(new ServletHolder(viewAllServlet), "/");
+        contextHandler.addServlet(new ServletHolder(viewAllServlet), "/products");
+        contextHandler.addServlet(new ServletHolder(addServlet), "/products/add");
+        contextHandler.addServlet(new ServletHolder(editServlet), "/products/edit");
 
         Server server = new Server(3000);
         server.setHandler(contextHandler);

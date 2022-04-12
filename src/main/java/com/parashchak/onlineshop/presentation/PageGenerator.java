@@ -1,6 +1,5 @@
 package com.parashchak.onlineshop.presentation;
 
-import com.google.common.annotations.VisibleForTesting;
 import freemarker.template.*;
 
 import java.io.*;
@@ -14,7 +13,6 @@ public class PageGenerator {
     private String htmlTemplatesPath = "src/main/resources";
     private final Configuration configuration;
 
-    @VisibleForTesting
     void setHtmlTemplatesPath(String htmlTemplatesPath) {
         this.htmlTemplatesPath = htmlTemplatesPath;
     }

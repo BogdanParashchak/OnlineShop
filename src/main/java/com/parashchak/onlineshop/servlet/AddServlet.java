@@ -4,19 +4,16 @@ import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.presentation.PageGenerator;
 import com.parashchak.onlineshop.service.ProductService;
 import jakarta.servlet.http.*;
+import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 
-import static com.parashchak.onlineshop.servlet.RequestProductMapper.mapProduct;
+import static com.parashchak.onlineshop.servlet.RequestProductMapper.toProduct;
 
-
+@RequiredArgsConstructor
 public class AddServlet extends HttpServlet {
 
-    private ProductService productService;
-
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
-    }
+    private final ProductService productService;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -27,8 +24,8 @@ public class AddServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Product product = mapProduct(request);
-        productService.addProduct(product);
+        Product product = toProduct(request);
+        productService.add(product);
         PageGenerator pageGenerator = PageGenerator.instance();
         String page = pageGenerator.getPage("addPageSuccesful.html");
         response.getWriter().write(page);

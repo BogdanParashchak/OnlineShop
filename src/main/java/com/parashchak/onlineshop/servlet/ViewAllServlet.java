@@ -4,17 +4,15 @@ import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.presentation.PageGenerator;
 import com.parashchak.onlineshop.service.ProductService;
 import jakarta.servlet.http.*;
+import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.util.*;
 
+@RequiredArgsConstructor
 public class ViewAllServlet extends HttpServlet {
 
-    private ProductService productService;
-
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
-    }
+    private final ProductService productService;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -24,7 +22,7 @@ public class ViewAllServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        productService.deleteProduct(id);
+        productService.delete(id);
         showAllProducts(response);
     }
 

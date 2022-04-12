@@ -1,15 +1,20 @@
-package com.parashchak.onlineshop.dao;
+package com.parashchak.onlineshop.dao.jdbc.mapper;
 
+import com.parashchak.onlineshop.dao.jdbc.ProductRowMapper;
 import com.parashchak.onlineshop.entity.Product;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import static com.parashchak.onlineshop.dao.ResultSetProductMapper.mapProduct;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-class ResultSetProductMapperTest {
+class ProductRowMapperTest {
 
     ResultSet mockResultSet;
 
@@ -24,8 +29,10 @@ class ResultSetProductMapperTest {
     @Test
     @DisplayName("get not NULL Product instance from ResultSet row")
     void givenResultSet_whenProductMapperCalled_ThenProductNotNullReturned() throws SQLException {
+        //prepare
+        ProductRowMapper productRowMapper = new ProductRowMapper();
         //when
-        Product actualProduct = mapProduct(mockResultSet);
+        Product actualProduct = productRowMapper.mapRow(mockResultSet);
         //then
         assertNotNull(actualProduct);
     }
@@ -33,8 +40,10 @@ class ResultSetProductMapperTest {
     @Test
     @DisplayName("get Product instance with set fields from ResultSet row")
     void givenResultSet_whenProductMapperCalled_ThenProductWithSetFieldsReturned() throws SQLException {
+        //prepare
+        ProductRowMapper productRowMapper = new ProductRowMapper();
         //when
-        Product actualProduct = mapProduct(mockResultSet);
+        Product actualProduct = productRowMapper.mapRow(mockResultSet);
         //then
         assertEquals(1, actualProduct.getId());
         assertEquals("product", actualProduct.getName());

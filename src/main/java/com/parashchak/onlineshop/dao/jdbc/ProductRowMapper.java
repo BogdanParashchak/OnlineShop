@@ -1,11 +1,11 @@
-package com.parashchak.onlineshop.dao;
+package com.parashchak.onlineshop.dao.jdbc;
 
 import com.parashchak.onlineshop.entity.Product;
 
 import java.sql.*;
 
-public class ResultSetProductMapper {
-    public static Product mapProduct(ResultSet resultSet) throws SQLException {
+public class ProductRowMapper {
+    public Product mapRow(ResultSet resultSet) throws SQLException {
         Product product = new Product();
         product.setId(resultSet.getInt("id"));
         product.setName(resultSet.getString("name"));

@@ -1,59 +1,87 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-          crossorigin="anonymous">
-    <title>PRODUCTS</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="./style.css">
+  <title>Online shop</title>
 </head>
 
 <body>
 
-<button type="button" class="btn btn-link">
-    <a href='/products/add'>
-        Add new product
-    </a>
-</button>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">ONLINE SHOP</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/products/add">Add new product</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-<h1 class="text-center">PRODUCT LIST</h1>
+<section class="main">
+  <div class="container">
+    <div class="row m-md-5">
+      <div class="text-center">
+        <h1>PRODUCT LIST</h1>
+      </div>
+    </div>
+  </div>
+</section>
 
-<table class="table table-hover">
-    <tr>
-        <th>ID</th>
-        <th>NAME</th>
-        <th>PRICE</th>
-    </tr>
+<div class="container">
+  <div class="row row-cols-3 justify-content-evenly text-center ">
+
     <#list products as product>
-    <tr>
-        <td>${product.id}</td>
-        <td>${product.name}</td>
-        <td>${product.price}</td>
-        <td>
-            <form action="/products/edit" method="GET">
+
+    <div class="col">
+      <div class="card mb-4 rounded-5 shadow-sm">
+        <div class="card-header py-2">
+          <h4 class="my-0 fw-normal">${product.name}</h4>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title pricing-card-title">${product.price}<small class="text-muted fw-light">&nbsp USD</small>
+          </h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            <li>Product ID:</li>
+            <li>${product.id}</li>
+          </ul>
+          <div class="row justify-content-evenly">
+            <div class="col">
+              <form action="/products/edit" method="GET">
                 <input class="visually-hidden" value=${product.id} type="number" name="id"/>
                 <input class="visually-hidden" value=${product.name} type="text" name="name"/>
                 <input class="visually-hidden" value=${product.price} type="number" name="price"/>
-                <input type="submit" value="EDIT">
-            </form>
-        </td>
-        <td>
-            <form action="/products" method="POST">
+                <button type="submit" class="w-100 btn btn-lg btn-outline-primary">EDIT</button>
+              </form>
+            </div>
+            <div class="col">
+              <form action="/products" method="POST">
                 <input class="visually-hidden" value=${product.id} type="number" name="id"/>
-                <input type="submit" value="DELETE">
-            </form>
-        </td>
-    </tr>
-</#list>
-</table>
+                <button type="submit" class="w-100 btn btn-lg btn-outline-primary">DELETE</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </#list>
+
+</div>
+</div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous">
-</script>
+        crossorigin="anonymous"></script>
 
 </body>
 </html>
