@@ -17,7 +17,7 @@ import static com.parashchak.onlineshop.servlet.RequestProductMapper.toProduct;
 @RequiredArgsConstructor
 public class EditServlet extends HttpServlet {
 
-   private final ProductService productService;
+    private final ProductService productService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

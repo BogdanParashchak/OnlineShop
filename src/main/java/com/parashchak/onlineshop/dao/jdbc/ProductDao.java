@@ -83,9 +83,9 @@ public class ProductDao {
     }
 
     private Connection getConnection() throws SQLException {
-        String url = "jdbc:postgresql://ec2-52-18-116-67.eu-west-1.compute.amazonaws.com:5432/dbof445l39pg5n";
-        String username = "objazthzbvjclg";
-        String password = "4ba8555f608a6f93e5413d2c7c389fbf41d9331c60f2763b5aa0493d782aaeed";
+        String url = "jdbc:postgresql://ec2-52-48-159-67.eu-west-1.compute.amazonaws.com:5432/d8d3tbdaiifc56";
+        String username = "nognuhsvxkefys";
+        String password = "f04fc0643d922c583c964ae669bfff27e0a606e81a0ee62d96be512587f5faa3";
         return DriverManager.getConnection(url, username, password);
     }
 }

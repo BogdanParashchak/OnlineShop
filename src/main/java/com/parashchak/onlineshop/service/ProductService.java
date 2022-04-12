@@ -23,7 +23,7 @@ public class ProductService {
         productDao.delete(id);
     }
 
-    public void update(Product product){
+    public void update(Product product) {
         productDao.update(product);
     }
 

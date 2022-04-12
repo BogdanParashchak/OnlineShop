@@ -3,12 +3,15 @@ package com.parashchak.onlineshop.entity;
 import lombok.*;
 
 public class Product {
-    @Getter @Setter
+    @Getter
+    @Setter
     private int id;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String name;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private double price;
 }

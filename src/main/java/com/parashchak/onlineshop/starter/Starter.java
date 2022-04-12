@@ -23,7 +23,7 @@ public class Starter {
         contextHandler.addServlet(new ServletHolder(addServlet), "/products/add");
         contextHandler.addServlet(new ServletHolder(editServlet), "/products/edit");
 
-        Server server = new Server(3000);
+        Server server = new Server(Integer.parseInt(System.getProperty("server.port")));
         server.setHandler(contextHandler);
         server.start();
     }

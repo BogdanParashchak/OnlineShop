@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.parashchak.onlineshop.starter.Starter
+web: java $JAVA_OPTS -Dserver.port=$PORT -jar target/online-shop-1.0-SNAPSHOT-jar-with-dependencies.jar
