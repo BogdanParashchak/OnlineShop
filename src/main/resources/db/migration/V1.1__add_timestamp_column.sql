@@ -1,0 +1,1 @@
+ALTER TABLE products ADD COLUMN creation_date TIMESTAMP NOT NULL;
