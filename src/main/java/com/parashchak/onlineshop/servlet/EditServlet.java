@@ -6,13 +6,12 @@ import com.parashchak.onlineshop.service.ProductService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.parashchak.onlineshop.servlet.RequestProductMapper.toProduct;
+import static com.parashchak.onlineshop.servlet.mapper.ProductRequestMapper.toProduct;
 
 @RequiredArgsConstructor
 public class EditServlet extends HttpServlet {
@@ -35,7 +34,7 @@ public class EditServlet extends HttpServlet {
         Product product = toProduct(request);
         productService.update(product);
         PageGenerator pageGenerator = PageGenerator.instance();
-        String page = pageGenerator.getPage("editPageSuccesful.html");
+        String page = pageGenerator.getPage("editPageSuccessful.html");
         response.getWriter().write(page);
     }
 }

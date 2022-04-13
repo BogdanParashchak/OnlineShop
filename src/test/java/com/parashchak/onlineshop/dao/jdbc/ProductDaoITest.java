@@ -1,6 +1,5 @@
 package com.parashchak.onlineshop.dao.jdbc;
 
-import com.parashchak.onlineshop.dao.jdbc.ProductDao;
 import com.parashchak.onlineshop.entity.Product;
 import org.junit.jupiter.api.*;
 

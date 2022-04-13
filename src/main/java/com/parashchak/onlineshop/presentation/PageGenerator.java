@@ -1,8 +1,11 @@
 package com.parashchak.onlineshop.presentation;
 
-import freemarker.template.*;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 
-import java.io.*;
+import java.io.File;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Map;
 
 

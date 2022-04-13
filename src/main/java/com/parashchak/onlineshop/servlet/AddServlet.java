@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 
-import static com.parashchak.onlineshop.servlet.RequestProductMapper.toProduct;
+import static com.parashchak.onlineshop.servlet.mapper.ProductRequestMapper.toProduct;
 
 @RequiredArgsConstructor
 public class AddServlet extends HttpServlet {
@@ -27,7 +27,7 @@ public class AddServlet extends HttpServlet {
         Product product = toProduct(request);
         productService.add(product);
         PageGenerator pageGenerator = PageGenerator.instance();
-        String page = pageGenerator.getPage("addPageSuccesful.html");
+        String page = pageGenerator.getPage("addPageSuccessful.html");
         response.getWriter().write(page);
     }
 }

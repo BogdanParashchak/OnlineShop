@@ -2,16 +2,21 @@ package com.parashchak.onlineshop.entity;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class Product {
-    @Getter
-    @Setter
+
     private int id;
 
-    @Getter
-    @Setter
     private String name;
 
-    @Getter
-    @Setter
     private double price;
+
+    private LocalDateTime creationDate;
 }

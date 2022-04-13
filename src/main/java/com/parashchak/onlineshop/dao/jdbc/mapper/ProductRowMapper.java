@@ -1,4 +1,4 @@
-package com.parashchak.onlineshop.dao.jdbc;
+package com.parashchak.onlineshop.dao.jdbc.mapper;
 
 import com.parashchak.onlineshop.entity.Product;
 
@@ -10,6 +10,7 @@ public class ProductRowMapper {
         product.setId(resultSet.getInt("id"));
         product.setName(resultSet.getString("name"));
         product.setPrice(resultSet.getDouble("price"));
+        product.setCreationDate(resultSet.getTimestamp("creation_date").toLocalDateTime());
         return product;
     }
 }

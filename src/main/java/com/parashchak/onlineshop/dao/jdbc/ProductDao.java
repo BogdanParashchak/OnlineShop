@@ -1,5 +1,6 @@
 package com.parashchak.onlineshop.dao.jdbc;
 
+import com.parashchak.onlineshop.dao.jdbc.mapper.ProductRowMapper;
 import com.parashchak.onlineshop.entity.Product;
 
 import java.sql.*;
@@ -8,10 +9,10 @@ import java.util.List;
 
 public class ProductDao {
 
-    private static final String GET_ALL_PRODUCTS_QUERY = "SELECT id,name, price FROM products ORDER BY id";
-    private static final String ADD_PRODUCT_QUERY = "INSERT INTO products (name, price) VALUES (?, ?)";
+    private static final String GET_ALL_PRODUCTS_QUERY = "SELECT id,name, price, creation_date FROM products ORDER BY id";
+    private static final String ADD_PRODUCT_QUERY = "INSERT INTO products (name, price, creation_date) VALUES (?, ?, ?)";
     private static final String DELETE_PRODUCT_QUERY = "DELETE FROM products WHERE id=?";
-    private static final String GET_PRODUCT_BY_ID_QUERY = "SELECT id, name, price FROM products WHERE id=?";
+    private static final String GET_PRODUCT_BY_ID_QUERY = "SELECT id, name, price, creation_date FROM products WHERE id=?";
     private static final String UPDATE_PRODUCT_QUERY = "UPDATE products SET name=?,price=? WHERE id=?";
 
     public List<Product> getAll() {
@@ -35,6 +36,7 @@ public class ProductDao {
             PreparedStatement preparedStatement = connection.prepareStatement(ADD_PRODUCT_QUERY);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(product.getCreationDate()));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Unable to add product to DB", e);

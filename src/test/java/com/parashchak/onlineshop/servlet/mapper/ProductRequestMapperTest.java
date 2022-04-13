@@ -1,14 +1,14 @@
-package com.parashchak.onlineshop.servlet;
+package com.parashchak.onlineshop.servlet.mapper;
 
 import com.parashchak.onlineshop.entity.Product;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.*;
 
-import static com.parashchak.onlineshop.servlet.RequestProductMapper.*;
+import static com.parashchak.onlineshop.servlet.mapper.ProductRequestMapper.toProduct;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class RequestProductMapperTest {
+class ProductRequestMapperTest {
 
     HttpServletRequest mockHttpServletRequest;
 
@@ -41,6 +41,7 @@ class RequestProductMapperTest {
         assertEquals(100, actualProduct.getId());
         assertEquals("product", actualProduct.getName());
         assertEquals(50.00, actualProduct.getPrice());
+        assertNotNull(actualProduct.getCreationDate());
     }
 
     @Test
@@ -63,6 +64,7 @@ class RequestProductMapperTest {
         Product actualProduct = toProduct(mockHttpServletRequest);
         //then
         assertEquals(0, actualProduct.getId());
+        assertNotNull(actualProduct.getCreationDate());
     }
 
     @Test
@@ -75,5 +77,7 @@ class RequestProductMapperTest {
         //then
         assertEquals("product", actualProduct.getName());
         assertEquals(50.00, actualProduct.getPrice());
+        assertNotNull(actualProduct.getCreationDate());
+        System.out.println(actualProduct.getCreationDate().toLocalDate());
     }
 }
