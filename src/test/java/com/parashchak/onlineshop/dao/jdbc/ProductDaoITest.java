@@ -3,6 +3,7 @@ package com.parashchak.onlineshop.dao.jdbc;
 import com.parashchak.onlineshop.entity.Product;
 import org.junit.jupiter.api.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,6 +42,7 @@ class ProductDaoITest {
         Product product = new Product();
         product.setName("product");
         product.setPrice(50.00);
+        product.setCreationDate(LocalDateTime.now());
         List<Product> productList = productDao.getAll();
         //when
         productDao.add(product);
@@ -54,11 +56,9 @@ class ProductDaoITest {
     @DisplayName("when delete product from DB table then all product list size decreases by 1")
     void givenPreparedPersonTable_WhenDeleteProduct_ThenAllProductListSizeDecreasesByOne() {
         //prepare
-        List<Product> products = productDao.getAll();
-        assertFalse(products.isEmpty());
         List<Product> productList = productDao.getAll();
         //when
-        productDao.delete(4);
+        productDao.delete(1);
         List<Product> productListAfterProductDeleted = productDao.getAll();
         //then
         assertEquals(productList.size() - 1, productListAfterProductDeleted.size());
@@ -69,14 +69,14 @@ class ProductDaoITest {
     @DisplayName("getById gets Product instance from DB table")
     void givenPreparedPersonTable_WhenGetProductById_ThenProductInstanceReturned() {
         //when
-        Product actualProduct = productDao.getById(1);
+        Product actualProduct = productDao.getById(2);
         //then
         assertNotNull(actualProduct);
     }
 
     @Test
     @Order(6)
-    @DisplayName("when update product int DB table all product list size does not change")
+    @DisplayName("when update product in DB table all product list size does not change")
     void givenPreparedPersonTable_WhenUpdateProduct_ThenAllProductListSizeDoesNotChange() {
         //prepare
         Product product = new Product();
