@@ -2,12 +2,17 @@ package com.parashchak.onlineshop.dao.jdbc;
 
 import com.parashchak.onlineshop.dao.jdbc.mapper.ProductRowMapper;
 import com.parashchak.onlineshop.entity.Product;
+import lombok.RequiredArgsConstructor;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
+@RequiredArgsConstructor
 public class ProductDao {
+
+    private final Properties configProperties;
 
     private static final String GET_ALL_PRODUCTS_QUERY = "SELECT id,name, price, creation_date FROM products ORDER BY id";
     private static final String ADD_PRODUCT_QUERY = "INSERT INTO products (name, price, creation_date) VALUES (?, ?, ?)";
@@ -85,9 +90,9 @@ public class ProductDao {
     }
 
     private Connection getConnection() throws SQLException {
-        String url = "jdbc:postgresql://ec2-52-48-159-67.eu-west-1.compute.amazonaws.com:5432/d8d3tbdaiifc56";
-        String username = "nognuhsvxkefys";
-        String password = "f04fc0643d922c583c964ae669bfff27e0a606e81a0ee62d96be512587f5faa3";
+        String url = configProperties.getProperty("db.url");
+        String username = configProperties.getProperty("db.user");
+        String password = configProperties.getProperty("db.password");
         return DriverManager.getConnection(url, username, password);
     }
 }
