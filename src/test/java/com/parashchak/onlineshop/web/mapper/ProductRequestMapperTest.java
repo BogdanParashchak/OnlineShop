@@ -1,10 +1,10 @@
-package com.parashchak.onlineshop.servlet.mapper;
+package com.parashchak.onlineshop.web.mapper;
 
 import com.parashchak.onlineshop.entity.Product;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.*;
 
-import static com.parashchak.onlineshop.servlet.mapper.ProductRequestMapper.toProduct;
+import static com.parashchak.onlineshop.web.mapper.ProductRequestMapper.toProduct;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

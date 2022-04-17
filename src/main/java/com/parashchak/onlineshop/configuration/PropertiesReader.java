@@ -1,5 +1,7 @@
 package com.parashchak.onlineshop.configuration;
 
+import org.jetbrains.annotations.VisibleForTesting;
+
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Properties;
@@ -21,25 +23,34 @@ public class PropertiesReader {
         return configProperties;
     }
 
-    private static Properties mergeProperties(Properties appProperties, Properties environmentProperties) {
+
+
+    @VisibleForTesting
+    static Properties mergeProperties(Properties appProperties, Properties environmentProperties) {
         if (environmentProperties.isEmpty()) {
             return appProperties;
         }
         return environmentProperties;
     }
 
+    @VisibleForTesting
+    static Properties readAppPropertiesFile(String appPropertiesFilePath) {
+        return readAppPropertiesFile(PropertiesReader.class.getClassLoader().getResourceAsStream(appPropertiesFilePath));
+    }
 
-    private static Properties readAppPropertiesFile(String appPropertiesFilePath) {
+    @VisibleForTesting
+    static Properties readAppPropertiesFile(InputStream appPropertiesInputStream) {
         Properties appProperties = new Properties();
-        try (InputStream in = PropertiesReader.class.getClassLoader().getResourceAsStream(appPropertiesFilePath)) {
+        try (InputStream in = appPropertiesInputStream) {
             appProperties.load(in);
         } catch (Exception e) {
-            throw new RuntimeException("Cannot read application properties file {" + appPropertiesFilePath + " }", e);
+            throw new RuntimeException("Cannot read application properties file", e);
         }
         return appProperties;
     }
 
-    private static Properties readEnvironmentProperties() {
+    @VisibleForTesting
+    static Properties readEnvironmentProperties() {
         Properties environmentProperties = new Properties();
         try {
             String env = System.getenv("DATABASE_URL");
@@ -56,7 +67,7 @@ public class PropertiesReader {
             environmentProperties.setProperty("db.user", dBUser);
             environmentProperties.setProperty("db.password", dBPassword);
 
-            environmentProperties.setProperty("server.port", String.valueOf(serverPort));
+            environmentProperties.setProperty("server.port", serverPort);
 
         } catch (Exception e) {
             throw new RuntimeException("Cannot read environment properties", e);

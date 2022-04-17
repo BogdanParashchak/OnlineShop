@@ -16,7 +16,7 @@
 
     <dependencies>
 
-        <!-- freemarker -->
+        <!-- presentation -->
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
@@ -37,7 +37,7 @@
             <version>11.0.8</version>
         </dependency>
 
-        <!-- postgres -->
+        <!-- DB -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -52,7 +52,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- junit -->
+        <!-- tests -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -60,12 +60,27 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- mockito -->
+        <!-- tests -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>4.4.0</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- tests -->
+        <dependency>
+            <groupId>uk.org.webcompere</groupId>
+            <artifactId>system-stubs-jupiter</artifactId>
+            <version>2.0.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- tests -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>23.0.0</version>
         </dependency>
     </dependencies>
 

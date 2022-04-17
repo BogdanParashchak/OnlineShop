@@ -12,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ProductDaoITest {
 
-    private ProductDao productDao;
+    private JdbcProductDao jdbcProductDao;
+    JdbcConnectionFactory jdbcConnectionFactory;
 
     @BeforeEach
     void SetUp() {
@@ -21,8 +22,8 @@ class ProductDaoITest {
         appProperties.setProperty("db.user", "test");
         appProperties.setProperty("db.password", "test");
 
-        productDao = new ProductDao(appProperties);
-
+        jdbcConnectionFactory = new JdbcConnectionFactory(appProperties);
+        jdbcProductDao = new JdbcProductDao(jdbcConnectionFactory);
     }
 
     @Test
@@ -30,7 +31,7 @@ class ProductDaoITest {
     @DisplayName("getAll gets not Null object from DB table")
     void givenPreparedPersonTable_WhenGetAll_ThenNotNullObjectReturned() {
         //when
-        List<Product> actualProducts = productDao.getAll();
+        List<Product> actualProducts = jdbcProductDao.getAll();
         //then
         assertNotNull(actualProducts);
     }
@@ -40,7 +41,7 @@ class ProductDaoITest {
     @DisplayName("getAll gets not empty product list from DB table")
     void givenPreparedPersonTable_WhenGetAll_ThenNotEmptyProductListReturned() {
         //when
-        List<Product> actualProducts = productDao.getAll();
+        List<Product> actualProducts = jdbcProductDao.getAll();
         //then
         assertFalse(actualProducts.isEmpty());
     }
@@ -50,14 +51,16 @@ class ProductDaoITest {
     @DisplayName("when add product to DB table then all product list size increases by 1")
     void givenPreparedPersonTable_WhenAddProduct_ThenAllProductListSizeIncreasesByOne() {
         //prepare
-        Product product = new Product();
-        product.setName("product");
-        product.setPrice(50.00);
-        product.setCreationDate(LocalDateTime.now());
-        List<Product> productList = productDao.getAll();
+        Product product = Product.builder()
+                .name("product")
+                .price(50)
+                .creationDate(LocalDateTime.now())
+                .build();
+
+        List<Product> productList = jdbcProductDao.getAll();
         //when
-        productDao.add(product);
-        List<Product> productListAfterProductAdded = productDao.getAll();
+        jdbcProductDao.add(product);
+        List<Product> productListAfterProductAdded = jdbcProductDao.getAll();
         //then
         assertEquals(productList.size() + 1, productListAfterProductAdded.size());
     }
@@ -67,10 +70,10 @@ class ProductDaoITest {
     @DisplayName("when delete product from DB table then all product list size decreases by 1")
     void givenPreparedPersonTable_WhenDeleteProduct_ThenAllProductListSizeDecreasesByOne() {
         //prepare
-        List<Product> productList = productDao.getAll();
+        List<Product> productList = jdbcProductDao.getAll();
         //when
-        productDao.delete(1);
-        List<Product> productListAfterProductDeleted = productDao.getAll();
+        jdbcProductDao.delete(1);
+        List<Product> productListAfterProductDeleted = jdbcProductDao.getAll();
         //then
         assertEquals(productList.size() - 1, productListAfterProductDeleted.size());
     }
@@ -80,24 +83,26 @@ class ProductDaoITest {
     @DisplayName("getById gets Product instance from DB table")
     void givenPreparedPersonTable_WhenGetProductById_ThenProductInstanceReturned() {
         //when
-        Product actualProduct = productDao.getById(2);
+        Product actualProduct = jdbcProductDao.getById(2);
         //then
         assertNotNull(actualProduct);
     }
 
     @Test
     @Order(6)
-    @DisplayName("when update product in DB table all product list size does not change")
+    @DisplayName("when update product in DB table then all product list size does not change")
     void givenPreparedPersonTable_WhenUpdateProduct_ThenAllProductListSizeDoesNotChange() {
         //prepare
-        Product product = new Product();
-        product.setId(21);
-        product.setName("product");
-        product.setPrice(100.00);
-        List<Product> productList = productDao.getAll();
+        Product product = Product.builder()
+                .id(21)
+                .name("product")
+                .price(100)
+                .build();
+
+        List<Product> productList = jdbcProductDao.getAll();
         //when
-        productDao.update(product);
-        List<Product> productListAfterUpdated = productDao.getAll();
+        jdbcProductDao.update(product);
+        List<Product> productListAfterUpdated = jdbcProductDao.getAll();
         //then
         assertEquals(productList.size(), productListAfterUpdated.size());
     }

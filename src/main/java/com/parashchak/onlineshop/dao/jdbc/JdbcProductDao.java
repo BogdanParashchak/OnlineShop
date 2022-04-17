@@ -7,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 @RequiredArgsConstructor
-public class ProductDao {
+public class JdbcProductDao {
 
-    private final Properties configProperties;
+    private final static ProductRowMapper productRowMapper = new ProductRowMapper();
+    private final JdbcConnectionFactory jdbcConnectionFactory;
 
     private static final String GET_ALL_PRODUCTS_QUERY = "SELECT id,name, price, creation_date FROM products ORDER BY id";
     private static final String ADD_PRODUCT_QUERY = "INSERT INTO products (name, price, creation_date) VALUES (?, ?, ?)";
@@ -22,10 +22,9 @@ public class ProductDao {
 
     public List<Product> getAll() {
         List<Product> allProductsList = new ArrayList<>();
-        try (Connection connection = getConnection()) {
+        try (Connection connection = jdbcConnectionFactory.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(GET_ALL_PRODUCTS_QUERY);
-            ProductRowMapper productRowMapper = new ProductRowMapper();
             while (resultSet.next()) {
                 Product product = productRowMapper.mapRow(resultSet);
                 allProductsList.add(product);
@@ -37,7 +36,7 @@ public class ProductDao {
     }
 
     public void add(Product product) {
-        try (Connection connection = getConnection()) {
+        try (Connection connection = jdbcConnectionFactory.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(ADD_PRODUCT_QUERY);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
@@ -49,7 +48,7 @@ public class ProductDao {
     }
 
     public void delete(int id) {
-        try (Connection connection = getConnection()) {
+        try (Connection connection = jdbcConnectionFactory.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRODUCT_QUERY);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
@@ -60,13 +59,12 @@ public class ProductDao {
 
     public Product getById(int id) {
         Product product = null;
-        try (Connection connection = getConnection()) {
+        try (Connection connection = jdbcConnectionFactory.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_ID_QUERY);
             preparedStatement.setInt(1, id);
             preparedStatement.executeQuery();
 
             ResultSet resultSet = preparedStatement.getResultSet();
-            ProductRowMapper productRowMapper = new ProductRowMapper();
             if (resultSet.next()) {
                 product = productRowMapper.mapRow(resultSet);
             }
@@ -78,7 +76,7 @@ public class ProductDao {
     }
 
     public void update(Product product) {
-        try (Connection connection = getConnection()) {
+        try (Connection connection = jdbcConnectionFactory.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PRODUCT_QUERY);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
@@ -87,12 +85,5 @@ public class ProductDao {
         } catch (Exception e) {
             throw new RuntimeException("Unable to update product in DB", e);
         }
-    }
-
-    private Connection getConnection() throws SQLException {
-        String url = configProperties.getProperty("db.url");
-        String username = configProperties.getProperty("db.user");
-        String password = configProperties.getProperty("db.password");
-        return DriverManager.getConnection(url, username, password);
     }
 }

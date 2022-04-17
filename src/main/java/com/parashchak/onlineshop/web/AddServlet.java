@@ -1,14 +1,16 @@
-package com.parashchak.onlineshop.servlet;
+package com.parashchak.onlineshop.web;
 
 import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.presentation.PageGenerator;
 import com.parashchak.onlineshop.service.ProductService;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 
-import static com.parashchak.onlineshop.servlet.mapper.ProductRequestMapper.toProduct;
+import static com.parashchak.onlineshop.web.mapper.ProductRequestMapper.toProduct;
 
 @RequiredArgsConstructor
 public class AddServlet extends HttpServlet {

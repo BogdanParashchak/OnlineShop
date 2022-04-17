@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PageGeneratorITest {
 
+    private File templatesFolder;
     private File templateWithProductDataFile;
     private File templateWithoutProductDataFile;
     private final static String TEMPLATE_WITH_PRODUCT_DATA =
@@ -38,10 +39,13 @@ class PageGeneratorITest {
 
     @BeforeEach
     void setUp() throws IOException {
-        templateWithProductDataFile = new File("src/templateWithProductData.html");
-        templateWithProductDataFile.createNewFile();
+        templatesFolder = new File("test");
+        templatesFolder.mkdir();
 
-        templateWithoutProductDataFile = new File("src/templateWithoutProductData.html");
+        templateWithProductDataFile = new File("test/templateWithProductData.html");
+        templateWithoutProductDataFile = new File("test/templateWithoutProductData.html");
+
+        templateWithProductDataFile.createNewFile();
         templateWithoutProductDataFile.createNewFile();
 
         char[] templateChars = TEMPLATE_WITH_PRODUCT_DATA.toCharArray();
@@ -59,36 +63,28 @@ class PageGeneratorITest {
 
     @AfterEach
     void tearDown() {
-        try {
-            if (templateWithProductDataFile.exists()) {
-                templateWithProductDataFile.delete();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (templateWithoutProductDataFile.exists()) {
-                    templateWithoutProductDataFile.delete();
-                }
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-        }
+        templateWithProductDataFile.delete();
+        templateWithoutProductDataFile.delete();
+        templatesFolder.delete();
     }
 
     @Test
     @DisplayName("generate page from template with fields for page data")
-    void givenTemplateWithFieldsForPageDataAndPageData_whenGetPage_thenPageGenerated() {
+    void givenTemplateWithFieldsForPageDataAndPageData_whenGetPage_thenPageGenerated() throws IOException {
         //prepare
-        Product firstProduct = new Product();
-        firstProduct.setId(1);
-        firstProduct.setName("firstProduct");
-        firstProduct.setPrice(10);
+        Product firstProduct = Product.builder()
+                .id(1)
+                .name("firstProduct")
+                .price(10)
+                .build();
+        ;
 
-        Product secondProduct = new Product();
-        secondProduct.setId(2);
-        secondProduct.setName("secondProduct");
-        secondProduct.setPrice(20);
+        Product secondProduct = Product.builder()
+                .id(2)
+                .name("secondProduct")
+                .price(20)
+                .build();
+        ;
 
         List<Product> products = List.of(firstProduct, secondProduct);
         Map<String, Object> pageData = Map.of("products", products);
@@ -107,8 +103,7 @@ class PageGeneratorITest {
                         "    </tr>\n" +
                         "</table>";
 
-        PageGenerator pageGenerator = PageGenerator.instance();
-        pageGenerator.setHtmlTemplatesPath("src");
+        PageGenerator pageGenerator = PageGenerator.instance(templatesFolder.getPath());
 
         //when
         String actualPage = pageGenerator.getPage("templateWithProductData.html", pageData);
@@ -119,10 +114,10 @@ class PageGeneratorITest {
 
     @Test
     @DisplayName("generate page from template without fields for page data")
-    void givenTemplateWithoutFieldsForPageDataAndPageData_whenGetPage_thenPageGenerated() {
+    void givenTemplateWithoutFieldsForPageDataAndPageData_whenGetPage_thenPageGenerated() throws IOException {
         //prepare
         String expectedPage =
-                        "<table>\n" +
+                "<table>\n" +
                         "    <tr>\n" +
                         "        <td>1</td>\n" +
                         "        <td>2</td>\n" +
@@ -130,8 +125,7 @@ class PageGeneratorITest {
                         "    </tr>\n" +
                         "</table>";
 
-        PageGenerator pageGenerator = PageGenerator.instance();
-        pageGenerator.setHtmlTemplatesPath("src");
+        PageGenerator pageGenerator = PageGenerator.instance(templatesFolder.getPath());
 
         //when
         String actualPage = pageGenerator.getPage("templateWithoutProductData.html");
@@ -142,13 +136,12 @@ class PageGeneratorITest {
 
     @Test
     @DisplayName("when generate page from template with fields for page data and Null page data then RuntimeException thrown")
-    void givenTemplateWithFieldsForPageDataAndNullPageData_whenGetPage_thenRuntimeExceptionThrown() {
+    void givenTemplateWithFieldsForPageDataAndNullPageData_whenGetPage_thenRuntimeExceptionThrown() throws IOException {
         //prepare
-        PageGenerator pageGenerator = PageGenerator.instance();
-        pageGenerator.setHtmlTemplatesPath("src");
+        PageGenerator pageGenerator = PageGenerator.instance(templatesFolder.getPath());
 
         //then
         Assertions.assertThrows(RuntimeException.class,
-                () ->  pageGenerator.getPage("templateWithProductData.html", null));
+                () -> pageGenerator.getPage("templateWithProductData.html", null));
     }
 }

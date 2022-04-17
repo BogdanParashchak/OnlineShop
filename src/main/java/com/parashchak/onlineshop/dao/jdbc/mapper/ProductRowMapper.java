@@ -3,14 +3,19 @@ package com.parashchak.onlineshop.dao.jdbc.mapper;
 import com.parashchak.onlineshop.entity.Product;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 
 public class ProductRowMapper {
     public Product mapRow(ResultSet resultSet) throws SQLException {
-        Product product = new Product();
-        product.setId(resultSet.getInt("id"));
-        product.setName(resultSet.getString("name"));
-        product.setPrice(resultSet.getDouble("price"));
-        product.setCreationDate(resultSet.getTimestamp("creation_date").toLocalDateTime());
-        return product;
+        int id = resultSet.getInt("id");
+        String name = resultSet.getString("name");
+        double price = resultSet.getDouble("price");
+        LocalDateTime creationDate = resultSet.getTimestamp("creation_date").toLocalDateTime();
+        return Product.builder()
+                .id(id)
+                .name(name)
+                .price(price)
+                .creationDate(creationDate)
+                .build();
     }
 }

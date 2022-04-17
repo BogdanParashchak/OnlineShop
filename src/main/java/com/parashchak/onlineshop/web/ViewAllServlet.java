@@ -1,4 +1,4 @@
-package com.parashchak.onlineshop.servlet;
+package com.parashchak.onlineshop.web;
 
 import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.presentation.PageGenerator;

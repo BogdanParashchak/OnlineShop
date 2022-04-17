@@ -1,4 +1,4 @@
-package com.parashchak.onlineshop.servlet;
+package com.parashchak.onlineshop.web;
 
 import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.presentation.PageGenerator;
@@ -8,10 +8,9 @@ import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import static com.parashchak.onlineshop.servlet.mapper.ProductRequestMapper.toProduct;
+import static com.parashchak.onlineshop.web.mapper.ProductRequestMapper.toProduct;
 
 @RequiredArgsConstructor
 public class EditServlet extends HttpServlet {

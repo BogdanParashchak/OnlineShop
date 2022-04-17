@@ -1,8 +1,8 @@
 package com.parashchak.onlineshop.starter;
 
-import com.parashchak.onlineshop.dao.jdbc.ProductDao;
+import com.parashchak.onlineshop.dao.jdbc.*;
 import com.parashchak.onlineshop.service.ProductService;
-import com.parashchak.onlineshop.servlet.*;
+import com.parashchak.onlineshop.web.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.*;
 
@@ -15,9 +15,11 @@ public class Starter {
     public static void main(String[] args) throws Exception {
 
         Properties configProperties = getConfigProperties();
-        ProductDao productDao = new ProductDao(configProperties);
 
-        ProductService productService = new ProductService(productDao);
+        JdbcConnectionFactory jdbcConnectionFactory = new JdbcConnectionFactory(configProperties);
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(jdbcConnectionFactory);
+
+        ProductService productService = new ProductService(jdbcProductDao);
 
         ViewAllServlet viewAllServlet = new ViewAllServlet(productService);
         AddServlet addServlet = new AddServlet(productService);
