@@ -22,9 +22,10 @@ public class JdbcProductDao {
 
     public List<Product> getAll() {
         List<Product> allProductsList = new ArrayList<>();
-        try (Connection connection = jdbcConnectionFactory.getConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(GET_ALL_PRODUCTS_QUERY);
+        try (Connection connection = jdbcConnectionFactory.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(GET_ALL_PRODUCTS_QUERY)) {
+
             while (resultSet.next()) {
                 Product product = productRowMapper.mapRow(resultSet);
                 allProductsList.add(product);
@@ -36,8 +37,9 @@ public class JdbcProductDao {
     }
 
     public void add(Product product) {
-        try (Connection connection = jdbcConnectionFactory.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(ADD_PRODUCT_QUERY);
+        try (Connection connection = jdbcConnectionFactory.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(ADD_PRODUCT_QUERY)) {
+
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             preparedStatement.setTimestamp(3, Timestamp.valueOf(product.getCreationDate()));
@@ -48,8 +50,9 @@ public class JdbcProductDao {
     }
 
     public void delete(int id) {
-        try (Connection connection = jdbcConnectionFactory.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRODUCT_QUERY);
+        try (Connection connection = jdbcConnectionFactory.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRODUCT_QUERY)) {
+
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (Exception e) {
@@ -58,17 +61,18 @@ public class JdbcProductDao {
     }
 
     public Product getById(int id) {
-        Product product = null;
-        try (Connection connection = jdbcConnectionFactory.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_ID_QUERY);
+        Product product = new Product();
+        try (Connection connection = jdbcConnectionFactory.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_ID_QUERY)) {
+
             preparedStatement.setInt(1, id);
             preparedStatement.executeQuery();
 
-            ResultSet resultSet = preparedStatement.getResultSet();
-            if (resultSet.next()) {
-                product = productRowMapper.mapRow(resultSet);
+            try (ResultSet resultSet = preparedStatement.getResultSet()) {
+                if (resultSet.next()) {
+                    product = productRowMapper.mapRow(resultSet);
+                }
             }
-
         } catch (Exception e) {
             throw new RuntimeException("Unable to get product from DB", e);
         }
