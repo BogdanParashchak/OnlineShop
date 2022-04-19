@@ -34,7 +34,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>11.0.8</version>
+            <version>11.0.9</version>
         </dependency>
 
         <!-- DB -->
@@ -50,6 +50,13 @@
             <artifactId>lombok</artifactId>
             <version>1.18.22</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- datasource -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.0.1</version>
         </dependency>
 
         <!-- tests -->
@@ -123,6 +130,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- db versioning -->
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
