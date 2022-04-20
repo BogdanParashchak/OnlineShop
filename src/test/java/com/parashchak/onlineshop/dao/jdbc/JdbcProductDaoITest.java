@@ -48,7 +48,7 @@ class JdbcProductDaoITest {
     }
 
     @Test
-    @DisplayName("getAll returns list known size")
+    @DisplayName("getAll returns list of known size")
     void givenTable_whenGetAll_thenListOfKnownSizeReturned() {
         List<Product> products = jdbcProductDao.getAll();
         assertEquals(3, products.size());
