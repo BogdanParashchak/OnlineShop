@@ -1,4 +1,4 @@
-package com.parashchak.onlineshop.presentation;
+package com.parashchak.onlineshop.web.presentation;
 
 import freemarker.template.*;
 

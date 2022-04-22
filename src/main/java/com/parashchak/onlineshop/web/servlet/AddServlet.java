@@ -1,7 +1,7 @@
-package com.parashchak.onlineshop.web;
+package com.parashchak.onlineshop.web.servlet;
 
 import com.parashchak.onlineshop.entity.Product;
-import com.parashchak.onlineshop.presentation.PageGenerator;
+import com.parashchak.onlineshop.web.presentation.PageGenerator;
 import com.parashchak.onlineshop.service.ProductService;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

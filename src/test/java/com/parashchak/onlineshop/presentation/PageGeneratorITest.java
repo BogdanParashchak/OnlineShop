@@ -1,6 +1,7 @@
 package com.parashchak.onlineshop.presentation;
 
 import com.parashchak.onlineshop.entity.Product;
+import com.parashchak.onlineshop.web.presentation.PageGenerator;
 import org.junit.jupiter.api.*;
 
 import java.io.BufferedWriter;
