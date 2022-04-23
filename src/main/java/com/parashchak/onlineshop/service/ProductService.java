@@ -30,4 +30,10 @@ public class ProductService {
     public Product getById(int id) {
         return jdbcProductDao.getById(id);
     }
+
+    public List<Product> search(String searchText) {
+        return jdbcProductDao.search(searchText);
+    }
+
+
 }

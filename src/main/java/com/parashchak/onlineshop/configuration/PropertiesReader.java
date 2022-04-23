@@ -1,6 +1,6 @@
 package com.parashchak.onlineshop.configuration;
 
-import org.jetbrains.annotations.VisibleForTesting;
+import org.assertj.core.util.VisibleForTesting;
 
 import java.io.InputStream;
 import java.net.URI;

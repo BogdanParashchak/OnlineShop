@@ -1,8 +1,6 @@
 package com.parashchak.onlineshop.dao.jdbc;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import org.jetbrains.annotations.VisibleForTesting;
+import com.zaxxer.hikari.*;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
@@ -23,8 +21,7 @@ public class JdbcConnectionFactory implements DataSource {
         return dataSource.getConnection();
     }
 
-    @VisibleForTesting
-    HikariConfig setDataSourceConfigs(Properties properties) {
+    private HikariConfig setDataSourceConfigs(Properties properties) {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(properties.getProperty("db.url"));
         hikariConfig.setUsername(properties.getProperty("db.user"));
@@ -44,12 +41,10 @@ public class JdbcConnectionFactory implements DataSource {
 
     @Override
     public void setLogWriter(PrintWriter out) {
-
     }
 
     @Override
     public void setLoginTimeout(int seconds) {
-
     }
 
     @Override

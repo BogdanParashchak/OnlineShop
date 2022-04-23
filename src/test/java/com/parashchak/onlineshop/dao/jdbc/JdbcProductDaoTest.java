@@ -193,4 +193,29 @@ class JdbcProductDaoTest {
 
         Assertions.assertThrows(RuntimeException.class, () -> jdbcProductDao.update(product));
     }
+
+    @Test
+    @SneakyThrows
+    @DisplayName("verify search logic executed")
+    void whenSearch_thenSearchLogicExecuted() {
+        jdbcProductDao.search("description");
+
+        verify(mockJdbcConnectionFactory).getConnection();
+        verify(mockPreparedStatement).executeQuery();
+        verify(mockResultSet, times(3)).next();
+        verify(mockResultSet, times(2)).getInt("id");
+        verify(mockResultSet, times(2)).getString("name");
+        verify(mockResultSet, times(2)).getDouble("price");
+        verify(mockResultSet, times(2)).getTimestamp("creation_date");
+        verify(mockResultSet, times(2)).getString("description");
+    }
+
+    @Test
+    @SneakyThrows
+    @DisplayName("search catches SQLException and throws new RuntimeException")
+    void whenSearch_thenRuntimeExceptionThrown() {
+        when(mockJdbcConnectionFactory.getConnection()).thenThrow(new SQLException());
+
+        Assertions.assertThrows(RuntimeException.class, () -> jdbcProductDao.search("description"));
+    }
 }

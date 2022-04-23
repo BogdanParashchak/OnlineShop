@@ -33,11 +33,10 @@ class JdbcProductDaoITest {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              Statement statement = connection.createStatement()) {
             statement.execute("DROP TABLE IF EXISTS products;");
-            statement.execute("CREATE TABLE products (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL, price NUMERIC(8,2) NOT NULL, creation_date TIMESTAMP);");
-            statement.execute("INSERT INTO products (name, price, creation_date) VALUES ('Mazda', 43032.25, now());");
-            statement.execute("INSERT INTO products (name, price, creation_date) VALUES ('Ford', 74582.01, now());");
-            statement.execute("INSERT INTO products (name, price, creation_date) VALUES ('BMW', 52782.51, now());");
-            statement.execute("ALTER TABLE products ADD COLUMN description VARCHAR(100) NOT NULL DEFAULT 'Some description here';");
+            statement.execute("CREATE TABLE products (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL, price NUMERIC(8,2) NOT NULL, creation_date TIMESTAMP, description VARCHAR(100));");
+            statement.execute("INSERT INTO products (name, price, creation_date, description) VALUES ('Mazda', 43032.25, now(), 'first_product_description');");
+            statement.execute("INSERT INTO products (name, price, creation_date, description) VALUES ('Ford', 74582.01, now(), 'second_product_description');");
+            statement.execute("INSERT INTO products (name, price, creation_date, description) VALUES ('BMW', 52782.51, now(), 'third_product_description');");
         }
     }
 
@@ -54,7 +53,6 @@ class JdbcProductDaoITest {
         List<Product> products = jdbcProductDao.getAll();
         assertEquals(3, products.size());
     }
-
 
     @Test
     @DisplayName("getAll returns list of actual products")
@@ -73,9 +71,9 @@ class JdbcProductDaoITest {
         assertEquals(74582.01, products.get(1).getPrice());
         assertEquals(52782.51, products.get(2).getPrice());
 
-        assertEquals("Some description here", products.get(0).getDescription());
-        assertEquals("Some description here", products.get(1).getDescription());
-        assertEquals("Some description here", products.get(2).getDescription());
+        assertEquals("first_product_description", products.get(0).getDescription());
+        assertEquals("second_product_description", products.get(1).getDescription());
+        assertEquals("third_product_description", products.get(2).getDescription());
     }
 
     @Test
@@ -138,9 +136,9 @@ class JdbcProductDaoITest {
         assertEquals(74582.01, products.get(1).getPrice());
         assertEquals(52782.51, products.get(2).getPrice());
 
-        assertEquals("Some description here", products.get(0).getDescription());
-        assertEquals("Some description here", products.get(1).getDescription());
-        assertEquals("Some description here", products.get(2).getDescription());
+        assertEquals("first_product_description", products.get(0).getDescription());
+        assertEquals("second_product_description", products.get(1).getDescription());
+        assertEquals("third_product_description", products.get(2).getDescription());
     }
 
     @Test
@@ -198,8 +196,8 @@ class JdbcProductDaoITest {
         assertEquals(43032.25, products.get(0).getPrice());
         assertEquals(52782.51, products.get(1).getPrice());
 
-        assertEquals("Some description here", products.get(0).getDescription());
-        assertEquals("Some description here", products.get(1).getDescription());
+        assertEquals("first_product_description", products.get(0).getDescription());
+        assertEquals("third_product_description", products.get(1).getDescription());
     }
 
     @Test
@@ -223,7 +221,7 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("getById does not change previously existing products")
     void givenTable_whenGetById_thenPreviouslyExistingProductsDoesNotChange() {
-        Product actualProduct = jdbcProductDao.getById(2);
+        jdbcProductDao.getById(2);
 
         List<Product> products = jdbcProductDao.getAll();
 
@@ -236,8 +234,8 @@ class JdbcProductDaoITest {
         assertEquals(43032.25, products.get(0).getPrice());
         assertEquals(52782.51, products.get(2).getPrice());
 
-        assertEquals("Some description here", products.get(0).getDescription());
-        assertEquals("Some description here", products.get(2).getDescription());
+        assertEquals("first_product_description", products.get(0).getDescription());
+        assertEquals("third_product_description", products.get(2).getDescription());
     }
 
     @Test
@@ -292,8 +290,8 @@ class JdbcProductDaoITest {
         assertEquals(43032.25, products.get(0).getPrice());
         assertEquals(52782.51, products.get(2).getPrice());
 
-        assertEquals("Some description here", products.get(0).getDescription());
-        assertEquals("Some description here", products.get(2).getDescription());
+        assertEquals("first_product_description", products.get(0).getDescription());
+        assertEquals("third_product_description", products.get(2).getDescription());
     }
 
     @Test
@@ -319,5 +317,69 @@ class JdbcProductDaoITest {
         assertEquals("Lexus", products.get(1).getName());
         assertEquals(96054.39, products.get(1).getPrice());
         assertEquals("description", products.get(1).getDescription());
+    }
+
+    @Test
+    @DisplayName("search returns not Null object if no products found")
+    void givenTable_whenSearch_thenNotNullObjectReturned() {
+        List<Product> products = jdbcProductDao.search("some_text");
+        assertNotNull(products);
+    }
+
+    @Test
+    @DisplayName("search returns empty products list if no products found")
+    void givenTable_whenSearch_thenEmptyListReturned() {
+        List<Product> products = jdbcProductDao.search("some_text");
+        assertTrue(products.isEmpty());
+    }
+
+    @Test
+    @DisplayName("search returns list of known size if products found")
+    void givenTable_whenSearch_thenListOfKnownSizeReturned() {
+        List<Product> products = jdbcProductDao.search("description");
+        assertEquals(3, products.size());
+    }
+
+    @Test
+    @DisplayName("search returns list of found products")
+    void givenTable_whenSearch_thenListOfFoundProductsReturned() {
+        List<Product> products = jdbcProductDao.search("description");
+
+        assertEquals(1, products.get(0).getId());
+        assertEquals(2, products.get(1).getId());
+        assertEquals(3, products.get(2).getId());
+
+        assertEquals("Mazda", products.get(0).getName());
+        assertEquals("Ford", products.get(1).getName());
+        assertEquals("BMW", products.get(2).getName());
+
+        assertEquals(43032.25, products.get(0).getPrice());
+        assertEquals(74582.01, products.get(1).getPrice());
+        assertEquals(52782.51, products.get(2).getPrice());
+
+        assertEquals("first_product_description", products.get(0).getDescription());
+        assertEquals("second_product_description", products.get(1).getDescription());
+        assertEquals("third_product_description", products.get(2).getDescription());
+    }
+
+    @Test
+    @DisplayName("search does not change previously existing products")
+    void givenTable_whenSearch_thenPreviouslyExistingProductsDoesNotChange() {
+        jdbcProductDao.search("Mazda");
+
+        List<Product> productsAfterSearch = jdbcProductDao.getAll();
+
+        assertEquals("Mazda", productsAfterSearch.get(0).getName());
+        assertEquals("Ford", productsAfterSearch.get(1).getName());
+        assertEquals("BMW", productsAfterSearch.get(2).getName());
+
+        assertEquals(43032.25, productsAfterSearch.get(0).getPrice());
+        assertEquals(74582.01, productsAfterSearch.get(1).getPrice());
+        assertEquals(52782.51, productsAfterSearch.get(2).getPrice());
+
+        assertEquals("first_product_description", productsAfterSearch.get(0).getDescription());
+        assertEquals("second_product_description", productsAfterSearch.get(1).getDescription());
+        assertEquals("third_product_description", productsAfterSearch.get(2).getDescription());
+
     }
 }

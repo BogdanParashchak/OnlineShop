@@ -5,7 +5,6 @@ import com.parashchak.onlineshop.web.presentation.PageGenerator;
 import com.parashchak.onlineshop.service.ProductService;
 import jakarta.servlet.http.*;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.util.*;
@@ -50,7 +49,7 @@ public class ViewAllServlet extends HttpServlet {
         List<Product> allProducts = productService.getAll();
         pageData.put("products", allProducts);
         PageGenerator pageGenerator = PageGenerator.instance();
-        String page = pageGenerator.getPage("viewAllPage.html", pageData);
+        String page = pageGenerator.getPage("viewPage.html", pageData);
         response.getWriter().write(page);
     }
 }

@@ -2,10 +2,7 @@ package com.parashchak.onlineshop.starter;
 
 import com.parashchak.onlineshop.dao.jdbc.*;
 import com.parashchak.onlineshop.service.ProductService;
-import com.parashchak.onlineshop.web.servlet.AddServlet;
-import com.parashchak.onlineshop.web.servlet.EditServlet;
-import com.parashchak.onlineshop.web.servlet.LoginServlet;
-import com.parashchak.onlineshop.web.servlet.ViewAllServlet;
+import com.parashchak.onlineshop.web.servlet.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.*;
 
@@ -32,6 +29,7 @@ public class Starter {
         AddServlet addServlet = new AddServlet(productService);
         EditServlet editServlet = new EditServlet(productService);
         LoginServlet loginServlet = new LoginServlet(sessionList);
+        SearchServlet searchServlet = new SearchServlet(productService);
 
         ServletContextHandler contextHandler = new ServletContextHandler();
         contextHandler.addServlet(new ServletHolder(viewAllServlet), "/");
@@ -39,6 +37,7 @@ public class Starter {
         contextHandler.addServlet(new ServletHolder(addServlet), "/products/add");
         contextHandler.addServlet(new ServletHolder(editServlet), "/products/edit");
         contextHandler.addServlet(new ServletHolder(loginServlet), "/login");
+        contextHandler.addServlet(new ServletHolder(searchServlet), "/products/search");
 
         Server server = new Server(getPort(configProperties));
         server.setHandler(contextHandler);
