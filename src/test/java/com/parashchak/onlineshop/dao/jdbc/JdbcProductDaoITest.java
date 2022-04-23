@@ -37,6 +37,7 @@ class JdbcProductDaoITest {
             statement.execute("INSERT INTO products (name, price, creation_date) VALUES ('Mazda', 43032.25, now());");
             statement.execute("INSERT INTO products (name, price, creation_date) VALUES ('Ford', 74582.01, now());");
             statement.execute("INSERT INTO products (name, price, creation_date) VALUES ('BMW', 52782.51, now());");
+            statement.execute("ALTER TABLE products ADD COLUMN description VARCHAR(100) NOT NULL DEFAULT 'Some description here';");
         }
     }
 
@@ -71,6 +72,10 @@ class JdbcProductDaoITest {
         assertEquals(43032.25, products.get(0).getPrice());
         assertEquals(74582.01, products.get(1).getPrice());
         assertEquals(52782.51, products.get(2).getPrice());
+
+        assertEquals("Some description here", products.get(0).getDescription());
+        assertEquals("Some description here", products.get(1).getDescription());
+        assertEquals("Some description here", products.get(2).getDescription());
     }
 
     @Test
@@ -91,6 +96,7 @@ class JdbcProductDaoITest {
                 name("Lexus").
                 price(96054.39).
                 creationDate(LocalDateTime.now()).
+                description("description").
                 build();
         int initialListSize = jdbcProductDao.getAll().size();
 
@@ -111,6 +117,7 @@ class JdbcProductDaoITest {
                 name("Lexus").
                 price(96054.39).
                 creationDate(LocalDateTime.now()).
+                description("description").
                 build();
 
         //when
@@ -130,6 +137,10 @@ class JdbcProductDaoITest {
         assertEquals(43032.25, products.get(0).getPrice());
         assertEquals(74582.01, products.get(1).getPrice());
         assertEquals(52782.51, products.get(2).getPrice());
+
+        assertEquals("Some description here", products.get(0).getDescription());
+        assertEquals("Some description here", products.get(1).getDescription());
+        assertEquals("Some description here", products.get(2).getDescription());
     }
 
     @Test
@@ -140,6 +151,7 @@ class JdbcProductDaoITest {
                 name("Lexus").
                 price(96054.39).
                 creationDate(LocalDateTime.now()).
+                description("description").
                 build();
 
         //when
@@ -152,6 +164,7 @@ class JdbcProductDaoITest {
         assertEquals(4, addedProduct.getId());
         assertEquals("Lexus", addedProduct.getName());
         assertEquals(96054.39, addedProduct.getPrice());
+        assertEquals("description", addedProduct.getDescription());
     }
 
     @Test
@@ -184,6 +197,9 @@ class JdbcProductDaoITest {
 
         assertEquals(43032.25, products.get(0).getPrice());
         assertEquals(52782.51, products.get(1).getPrice());
+
+        assertEquals("Some description here", products.get(0).getDescription());
+        assertEquals("Some description here", products.get(1).getDescription());
     }
 
     @Test
@@ -219,6 +235,9 @@ class JdbcProductDaoITest {
 
         assertEquals(43032.25, products.get(0).getPrice());
         assertEquals(52782.51, products.get(2).getPrice());
+
+        assertEquals("Some description here", products.get(0).getDescription());
+        assertEquals("Some description here", products.get(2).getDescription());
     }
 
     @Test
@@ -233,6 +252,7 @@ class JdbcProductDaoITest {
                 name("Lexus").
                 price(96054.39).
                 creationDate(LocalDateTime.now()).
+                description("description").
                 build();
 
         //when
@@ -254,6 +274,7 @@ class JdbcProductDaoITest {
                 name("Lexus").
                 price(96054.39).
                 creationDate(LocalDateTime.now()).
+                description("description").
                 build();
 
         //when
@@ -270,6 +291,9 @@ class JdbcProductDaoITest {
 
         assertEquals(43032.25, products.get(0).getPrice());
         assertEquals(52782.51, products.get(2).getPrice());
+
+        assertEquals("Some description here", products.get(0).getDescription());
+        assertEquals("Some description here", products.get(2).getDescription());
     }
 
     @Test
@@ -282,6 +306,7 @@ class JdbcProductDaoITest {
                 name("Lexus").
                 price(96054.39).
                 creationDate(LocalDateTime.now()).
+                description("description").
                 build();
 
         //when
@@ -293,5 +318,6 @@ class JdbcProductDaoITest {
         assertEquals(2, products.get(1).getId());
         assertEquals("Lexus", products.get(1).getName());
         assertEquals(96054.39, products.get(1).getPrice());
+        assertEquals("description", products.get(1).getDescription());
     }
 }

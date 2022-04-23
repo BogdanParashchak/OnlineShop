@@ -15,11 +15,11 @@ public class JdbcProductDao {
     private final static ProductRowMapper productRowMapper = new ProductRowMapper();
     private final DataSource dataSource;
 
-    private static final String GET_ALL_PRODUCTS_QUERY = "SELECT id,name, price, creation_date FROM products ORDER BY id";
-    private static final String ADD_PRODUCT_QUERY = "INSERT INTO products (name, price, creation_date) VALUES (?, ?, ?)";
+    private static final String GET_ALL_PRODUCTS_QUERY = "SELECT id,name, price, creation_date, description FROM products ORDER BY id";
+    private static final String ADD_PRODUCT_QUERY = "INSERT INTO products (name, price, creation_date, description) VALUES (?, ?, ?, ?)";
     private static final String DELETE_PRODUCT_QUERY = "DELETE FROM products WHERE id=?";
-    private static final String GET_PRODUCT_BY_ID_QUERY = "SELECT id, name, price, creation_date FROM products WHERE id=?";
-    private static final String UPDATE_PRODUCT_QUERY = "UPDATE products SET name=?,price=? WHERE id=?";
+    private static final String GET_PRODUCT_BY_ID_QUERY = "SELECT id, name, price, creation_date, description FROM products WHERE id=?";
+    private static final String UPDATE_PRODUCT_QUERY = "UPDATE products SET name=?,price=?, description=? WHERE id=?";
 
     public List<Product> getAll() {
         List<Product> allProductsList = new ArrayList<>();
@@ -44,6 +44,7 @@ public class JdbcProductDao {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             preparedStatement.setTimestamp(3, Timestamp.valueOf(product.getCreationDate()));
+            preparedStatement.setString(4, product.getDescription());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Unable to add product to DB", e);
@@ -85,7 +86,8 @@ public class JdbcProductDao {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PRODUCT_QUERY);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
-            preparedStatement.setInt(3, product.getId());
+            preparedStatement.setString(3, product.getDescription());
+            preparedStatement.setInt(4, product.getId());
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException("Unable to update product in DB", e);

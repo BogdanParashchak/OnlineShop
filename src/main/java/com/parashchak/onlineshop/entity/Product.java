@@ -17,4 +17,6 @@ public class Product {
     private double price;
 
     private LocalDateTime creationDate;
+
+    private String description;
 }

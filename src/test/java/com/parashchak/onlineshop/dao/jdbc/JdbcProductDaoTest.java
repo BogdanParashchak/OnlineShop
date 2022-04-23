@@ -35,6 +35,7 @@ class JdbcProductDaoTest {
         when(mockResultSet.getString("name")).thenReturn("firstProduct", "secondProduct");
         when(mockResultSet.getDouble("price")).thenReturn(100.0, 200.0);
         when(mockResultSet.getTimestamp("creation_date")).thenReturn(Timestamp.valueOf(LocalDateTime.now()));
+        when(mockResultSet.getString("description")).thenReturn("description");
     }
 
     @Test
@@ -50,6 +51,7 @@ class JdbcProductDaoTest {
         verify(mockResultSet, times(2)).getString("name");
         verify(mockResultSet, times(2)).getDouble("price");
         verify(mockResultSet, times(2)).getTimestamp("creation_date");
+        verify(mockResultSet, times(2)).getString("description");
     }
 
     @Test
@@ -69,6 +71,7 @@ class JdbcProductDaoTest {
                 name("Lexus").
                 price(96054.39).
                 creationDate(LocalDateTime.now()).
+                description("description").
                 build();
 
         //when
@@ -79,6 +82,7 @@ class JdbcProductDaoTest {
         verify(mockPreparedStatement).setString(1, "Lexus");
         verify(mockPreparedStatement).setDouble(2, 96054.39);
         verify(mockPreparedStatement).setTimestamp(anyInt(), any(Timestamp.class));
+        verify(mockPreparedStatement).setString(4, "description");
         verify(mockPreparedStatement).executeUpdate();
     }
 
@@ -90,6 +94,7 @@ class JdbcProductDaoTest {
                 name("Lexus").
                 price(96054.39).
                 creationDate(LocalDateTime.now()).
+                description("description").
                 build();
         when(mockJdbcConnectionFactory.getConnection()).thenThrow(new SQLException());
 
@@ -131,6 +136,7 @@ class JdbcProductDaoTest {
         verify(mockResultSet, times(1)).getString("name");
         verify(mockResultSet, times(1)).getDouble("price");
         verify(mockResultSet, times(1)).getTimestamp("creation_date");
+        verify(mockResultSet, times(1)).getString("description");
     }
 
     @Test
@@ -159,6 +165,7 @@ class JdbcProductDaoTest {
                 name("Lexus").
                 price(96054.39).
                 creationDate(LocalDateTime.now()).
+                description("description").
                 build();
 
         jdbcProductDao.update(product);
@@ -166,7 +173,8 @@ class JdbcProductDaoTest {
         verify(mockJdbcConnectionFactory).getConnection();
         verify(mockPreparedStatement).setString(1, "Lexus");
         verify(mockPreparedStatement).setDouble(2, 96054.39);
-        verify(mockPreparedStatement).setInt(3, 2);
+        verify(mockPreparedStatement).setString(3, "description");
+        verify(mockPreparedStatement).setInt(4, 2);
         verify(mockPreparedStatement).executeUpdate();
     }
 
@@ -179,6 +187,7 @@ class JdbcProductDaoTest {
                 name("Lexus").
                 price(96054.39).
                 creationDate(LocalDateTime.now()).
+                description("description").
                 build();
         when(mockJdbcConnectionFactory.getConnection()).thenThrow(new SQLException());
 

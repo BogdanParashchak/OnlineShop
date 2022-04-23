@@ -49,15 +49,13 @@
           <h1 class="card-title pricing-card-title">${product.price}<small class="text-muted fw-light">&nbsp USD</small>
           </h1>
           <ul class="list-unstyled mt-3 mb-4">
-            <li>Product ID:</li>
-            <li>${product.id}</li>
+            <li>Product ID:  ${product.id}</li>
+            <li> <small class="text-muted">${product.description}</small></li>
           </ul>
           <div class="row justify-content-evenly">
             <div class="col">
               <form action="/products/edit" method="GET">
                 <input class="visually-hidden" value=${product.id} type="number" name="id"/>
-                <input class="visually-hidden" value=${product.name} type="text" name="name"/>
-                <input class="visually-hidden" value=${product.price} type="text" name="price"/>
                 <button type="submit" class="w-100 btn btn-lg btn-outline-primary">EDIT</button>
               </form>
             </div>

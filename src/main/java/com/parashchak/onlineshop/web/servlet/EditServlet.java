@@ -29,7 +29,7 @@ public class EditServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Product product = toProduct(request);
         productService.update(product);
         PageGenerator pageGenerator = PageGenerator.instance();
