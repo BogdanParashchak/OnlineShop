@@ -18,6 +18,9 @@
           <a class="nav-link active" aria-current="page" href="/products">ONLINE SHOP</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/products">View all products</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/products/add">Add new product</a>
         </li>
       </ul>
@@ -64,7 +67,7 @@
               </form>
             </div>
             <div class="col">
-              <form action="/products" method="POST">
+              <form action="/products/delete" method="GET">
                 <input class="visually-hidden" value=${product.id} type="number" name="id"/>
                 <button type="submit" class="w-100 btn btn-lg btn-outline-primary">DELETE</button>
               </form>

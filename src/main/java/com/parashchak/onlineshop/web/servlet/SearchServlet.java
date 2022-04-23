@@ -4,19 +4,20 @@ import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.service.ProductService;
 import com.parashchak.onlineshop.web.presentation.PageGenerator;
 import jakarta.servlet.http.*;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.util.*;
 
+@RequiredArgsConstructor
 public class SearchServlet extends HttpServlet {
+
     private final ProductService productService;
 
-    public SearchServlet(ProductService productService) {
-        this.productService = productService;
-    }
-
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @SneakyThrows
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> pageData = new HashMap<>();
         String searchText = request.getParameter("search-text");
         List<Product> productsSearchList = productService.search(searchText);

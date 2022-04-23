@@ -3,22 +3,25 @@ package com.parashchak.onlineshop.web.servlet;
 import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.web.presentation.PageGenerator;
 import com.parashchak.onlineshop.service.ProductService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-import java.io.IOException;
 import java.util.*;
 
 import static com.parashchak.onlineshop.web.mapper.ProductRequestMapper.toProduct;
+import static com.parashchak.onlineshop.web.validator.CookieValidator.validateCookie;
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class EditServlet extends HttpServlet {
 
     private final ProductService productService;
+    private List<String> sessionList;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @SneakyThrows
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+        validateCookie(request, response, sessionList);
         Map<String, Object> pageData = new HashMap<>();
         int id = Integer.parseInt(request.getParameter("id"));
         Product product = productService.getById(id);
@@ -29,7 +32,8 @@ public class EditServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @SneakyThrows
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         Product product = toProduct(request);
         productService.update(product);
         PageGenerator pageGenerator = PageGenerator.instance();
