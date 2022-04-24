@@ -2,6 +2,7 @@ package com.parashchak.onlineshop.starter;
 
 import com.parashchak.onlineshop.dao.jdbc.*;
 import com.parashchak.onlineshop.service.ProductService;
+import com.parashchak.onlineshop.service.UserService;
 import com.parashchak.onlineshop.web.servlet.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.*;
@@ -18,13 +19,15 @@ public class Starter {
 
         JdbcConnectionFactory jdbcConnectionFactory = new JdbcConnectionFactory(configProperties);
         JdbcProductDao jdbcProductDao = new JdbcProductDao(jdbcConnectionFactory);
+        JdbcUserDao jdbcUserDao = new JdbcUserDao(jdbcConnectionFactory);
 
         ProductService productService = new ProductService(jdbcProductDao);
+        UserService userService = new UserService(jdbcUserDao);
 
         List<String> sessionList = new ArrayList<>();
 
         ViewAllServlet viewAllServlet = new ViewAllServlet(productService);
-        LoginServlet loginServlet = new LoginServlet(sessionList);
+        LoginServlet loginServlet = new LoginServlet(userService, sessionList);
         SearchServlet searchServlet = new SearchServlet(productService);
 
         AddServlet addServlet = new AddServlet(productService, sessionList);

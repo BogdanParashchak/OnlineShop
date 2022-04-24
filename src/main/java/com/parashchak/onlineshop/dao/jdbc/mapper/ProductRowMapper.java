@@ -1,12 +1,15 @@
 package com.parashchak.onlineshop.dao.jdbc.mapper;
 
 import com.parashchak.onlineshop.entity.Product;
+import lombok.SneakyThrows;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 
 public class ProductRowMapper {
-    public Product mapRow(ResultSet resultSet) throws SQLException {
+
+    @SneakyThrows
+    public Product mapRow(ResultSet resultSet) {
         int id = resultSet.getInt("id");
         String name = resultSet.getString("name");
         double price = resultSet.getDouble("price");

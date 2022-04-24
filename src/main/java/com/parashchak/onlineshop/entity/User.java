@@ -8,10 +8,9 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class User {
     private int id;
-    private String name;
-    private double price;
+    private String login;
+    private String password;
     private LocalDateTime creationDate;
-    private String description;
 }

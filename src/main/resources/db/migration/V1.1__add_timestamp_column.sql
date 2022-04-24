@@ -1,1 +1,2 @@
-ALTER TABLE products ADD COLUMN creation_date TIMESTAMP NOT NULL;
+ALTER TABLE products
+    ADD COLUMN creation_date TIMESTAMP NOT NULL;
