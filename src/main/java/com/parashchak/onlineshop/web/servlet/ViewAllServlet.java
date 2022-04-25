@@ -9,12 +9,10 @@ import lombok.*;
 import java.io.IOException;
 import java.util.*;
 
-@AllArgsConstructor
 @RequiredArgsConstructor
 public class ViewAllServlet extends HttpServlet {
 
     private final ProductService productService;
-    private List<String> sessionList;
 
     @Override
     @SneakyThrows
@@ -30,7 +28,7 @@ public class ViewAllServlet extends HttpServlet {
         showAllProducts(response);
     }
 
-     private void showAllProducts(HttpServletResponse response) throws IOException {
+    private void showAllProducts(HttpServletResponse response) throws IOException {
         Map<String, Object> pageData = new HashMap<>();
         List<Product> allProducts = productService.getAll();
         pageData.put("products", allProducts);

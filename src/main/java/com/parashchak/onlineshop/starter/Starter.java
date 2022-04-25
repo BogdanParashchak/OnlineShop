@@ -2,6 +2,7 @@ package com.parashchak.onlineshop.starter;
 
 import com.parashchak.onlineshop.dao.jdbc.*;
 import com.parashchak.onlineshop.service.ProductService;
+import com.parashchak.onlineshop.service.SecurityService;
 import com.parashchak.onlineshop.service.UserService;
 import com.parashchak.onlineshop.web.servlet.*;
 import org.eclipse.jetty.server.Server;
@@ -23,19 +24,18 @@ public class Starter {
 
         ProductService productService = new ProductService(jdbcProductDao);
         UserService userService = new UserService(jdbcUserDao);
-
-        List<String> sessionList = new ArrayList<>();
+        SecurityService securityService = new SecurityService();
 
         ViewAllServlet viewAllServlet = new ViewAllServlet(productService);
-        LoginServlet loginServlet = new LoginServlet(userService, sessionList);
         SearchServlet searchServlet = new SearchServlet(productService);
 
-        AddServlet addServlet = new AddServlet(productService, sessionList);
-        EditServlet editServlet = new EditServlet(productService, sessionList);
-        DeleteServlet deleteServlet = new DeleteServlet(productService, sessionList);
+        LoginServlet loginServlet = new LoginServlet(userService, securityService);
+        AddServlet addServlet = new AddServlet(productService, securityService);
+        EditServlet editServlet = new EditServlet(productService, securityService);
+        DeleteServlet deleteServlet = new DeleteServlet(productService, securityService);
 
         ServletContextHandler contextHandler = new ServletContextHandler();
-        contextHandler.addServlet(new ServletHolder(viewAllServlet), "/");
+        contextHandler.addServlet(new ServletHolder(viewAllServlet), "");
         contextHandler.addServlet(new ServletHolder(viewAllServlet), "/products");
         contextHandler.addServlet(new ServletHolder(loginServlet), "/login");
         contextHandler.addServlet(new ServletHolder(searchServlet), "/products/search");

@@ -12,8 +12,4 @@ public class UserService {
     public User get(String login, String password) {
         return jdbcUserDao.get(login, password);
     }
-
-    public boolean validate(String login, String password){
-        return jdbcUserDao.validate(login, password);
-    }
 }

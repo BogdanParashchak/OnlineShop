@@ -22,30 +22,13 @@ public class JdbcUserDao {
              PreparedStatement preparedStatement = connection.prepareStatement(GET_USER)) {
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
-            User user = new User();
+            User user = null;
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     user = userRowMapper.mapRow(resultSet);
                 }
             }
             return user;
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to get user from DB", e);
-        }
-    }
-
-    public boolean validate(String login, String password) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER)) {
-            preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
-            boolean isValid = false;
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    isValid = true;
-                }
-            }
-            return isValid;
         } catch (Exception e) {
             throw new RuntimeException("Unable to get user from DB", e);
         }
