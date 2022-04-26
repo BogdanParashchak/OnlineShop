@@ -22,10 +22,11 @@ public class AddServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         if (!securityService.validateSession(request)) {
             response.sendRedirect("/login");
+        } else {
+            PageGenerator pageGenerator = PageGenerator.instance();
+            String page = pageGenerator.getPage("addPage.html");
+            response.getWriter().write(page);
         }
-        PageGenerator pageGenerator = PageGenerator.instance();
-        String page = pageGenerator.getPage("addPage.html");
-        response.getWriter().write(page);
     }
 
     @Override

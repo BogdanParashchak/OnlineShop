@@ -23,14 +23,15 @@ public class EditServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         if (!securityService.validateSession(request)) {
             response.sendRedirect("/login");
+        } else {
+            Map<String, Object> pageData = new HashMap<>();
+            int id = Integer.parseInt(request.getParameter("id"));
+            Product product = productService.getById(id);
+            pageData.put("product", product);
+            PageGenerator pageGenerator = PageGenerator.instance();
+            String page = pageGenerator.getPage("editPage.html", pageData);
+            response.getWriter().write(page);
         }
-        Map<String, Object> pageData = new HashMap<>();
-        int id = Integer.parseInt(request.getParameter("id"));
-        Product product = productService.getById(id);
-        pageData.put("product", product);
-        PageGenerator pageGenerator = PageGenerator.instance();
-        String page = pageGenerator.getPage("editPage.html", pageData);
-        response.getWriter().write(page);
     }
 
     @Override
