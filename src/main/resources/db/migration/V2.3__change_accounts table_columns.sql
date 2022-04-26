@@ -1,0 +1,13 @@
+ALTER TABLE accounts
+    DROP COLUMN name;
+ALTER TABLE accounts
+    DROP COLUMN password;
+ALTER TABLE accounts
+    DROP COLUMN creation_date;
+
+ALTER TABLE accounts
+    ADD COLUMN login VARCHAR(10) UNIQUE NOT NULL;
+ALTER TABLE accounts
+    ADD COLUMN password VARCHAR(256) NOT NULL;
+ALTER TABLE accounts
+    ADD COLUMN salt VARCHAR(256) NOT NULL;

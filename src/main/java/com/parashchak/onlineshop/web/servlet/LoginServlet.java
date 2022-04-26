@@ -1,8 +1,7 @@
 package com.parashchak.onlineshop.web.servlet;
 
 import com.parashchak.onlineshop.entity.User;
-import com.parashchak.onlineshop.service.SecurityService;
-import com.parashchak.onlineshop.service.UserService;
+import com.parashchak.onlineshop.service.*;
 import com.parashchak.onlineshop.web.presentation.PageGenerator;
 import jakarta.servlet.http.*;
 import lombok.*;
@@ -26,8 +25,10 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        User user = userService.get(login, password);
-        securityService.createSession(user, response);
+        User user = userService.get(login);
+        if (user != null && securityService.verifyPassword(password, user.getSalt(), user.getPassword())) {
+            securityService.createSession(response);
+        }
         response.sendRedirect("/products");
     }
 }

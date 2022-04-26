@@ -64,9 +64,8 @@ public class JdbcProductDao {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_ID_QUERY)) {
             preparedStatement.setInt(1, id);
-            preparedStatement.executeQuery();
             Product product = new Product();
-            try (ResultSet resultSet = preparedStatement.getResultSet()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     product = productRowMapper.mapRow(resultSet);
                 }

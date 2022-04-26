@@ -9,7 +9,7 @@ public class UserService {
 
     private final JdbcUserDao jdbcUserDao;
 
-    public User get(String login, String password) {
-        return jdbcUserDao.get(login, password);
+    public User get(String login) {
+        return jdbcUserDao.get(login);
     }
 }

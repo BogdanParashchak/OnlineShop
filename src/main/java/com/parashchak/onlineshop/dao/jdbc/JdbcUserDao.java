@@ -13,15 +13,14 @@ import java.sql.ResultSet;
 public class JdbcUserDao {
 
     private final static UserRowMapper userRowMapper = new UserRowMapper();
+    private static final String GET_USER = "SELECT id,login, password, salt FROM accounts WHERE login=?";
+
     private final DataSource dataSource;
 
-    private static final String GET_USER = "SELECT id,login, password, creation_date FROM accounts WHERE login=? AND password=?";
-
-    public User get(String login, String password) {
+    public User get(String login) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_USER)) {
             preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
             User user = null;
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {

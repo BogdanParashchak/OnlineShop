@@ -2,8 +2,6 @@ package com.parashchak.onlineshop.entity;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -12,5 +10,5 @@ public class User {
     private int id;
     private String login;
     private String password;
-    private LocalDateTime creationDate;
+    private String salt;
 }

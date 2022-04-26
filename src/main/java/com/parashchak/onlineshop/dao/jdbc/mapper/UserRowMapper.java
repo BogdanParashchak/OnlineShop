@@ -4,7 +4,6 @@ import com.parashchak.onlineshop.entity.User;
 import lombok.SneakyThrows;
 
 import java.sql.ResultSet;
-import java.time.LocalDateTime;
 
 public class UserRowMapper {
 
@@ -13,12 +12,12 @@ public class UserRowMapper {
         int id = resultSet.getInt("id");
         String login = resultSet.getString("login");
         String password = resultSet.getString("password");
-        LocalDateTime creationDate = resultSet.getTimestamp("creation_date").toLocalDateTime();
+        String salt = resultSet.getString("salt");
         return User.builder()
                 .id(id)
                 .login(login)
                 .password(password)
-                .creationDate(creationDate)
+                .salt(salt)
                 .build();
     }
 }
