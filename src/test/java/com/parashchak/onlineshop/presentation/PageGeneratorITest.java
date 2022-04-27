@@ -15,28 +15,29 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PageGeneratorITest {
 
-    private File templatesFolder;
-    private File templateWithProductDataFile;
-    private File templateWithoutProductDataFile;
     private final static String TEMPLATE_WITH_PRODUCT_DATA =
-            "<table>\n" +
-                    "    <#list products as product>\n" +
-                    "    <tr>\n" +
-                    "        <td>${product.id}</td>\n" +
-                    "        <td>${product.name}</td>\n" +
-                    "        <td>${product.price}</td>\n" +
-                    "    </tr>\n" +
-                    "</#list>\n" +
+            "<table>" +
+                    "    <#list products as product>" +
+                    "    <tr>" +
+                    "        <td>${product.id}</td>" +
+                    "        <td>${product.name}</td>" +
+                    "        <td>${product.price}</td>" +
+                    "    </tr>" +
+                    "</#list>" +
                     "</table>";
 
     private final static String TEMPLATE_WITHOUT_PRODUCT_DATA =
-            "<table>\n" +
-                    "    <tr>\n" +
-                    "        <td>1</td>\n" +
-                    "        <td>2</td>\n" +
-                    "        <td>3</td>\n" +
-                    "    </tr>\n" +
+            "<table>" +
+                    "    <tr>" +
+                    "        <td>1</td>" +
+                    "        <td>2</td>" +
+                    "        <td>3</td>" +
+                    "    </tr>" +
                     "</table>";
+
+    private File templatesFolder;
+    private File templateWithProductDataFile;
+    private File templateWithoutProductDataFile;
 
     @BeforeEach
     void setUp() throws IOException {
@@ -91,17 +92,17 @@ class PageGeneratorITest {
         Map<String, Object> pageData = Map.of("products", products);
 
         String expectedPage =
-                "<table>\n" +
-                        "        <tr>\n" +
-                        "        <td>1</td>\n" +
-                        "        <td>firstProduct</td>\n" +
-                        "        <td>10</td>\n" +
-                        "    </tr>\n" +
-                        "    <tr>\n" +
-                        "        <td>2</td>\n" +
-                        "        <td>secondProduct</td>\n" +
-                        "        <td>20</td>\n" +
-                        "    </tr>\n" +
+                "<table>" +
+                        "        <tr>" +
+                        "        <td>1</td>" +
+                        "        <td>firstProduct</td>" +
+                        "        <td>10</td>" +
+                        "    </tr>" +
+                        "    <tr>" +
+                        "        <td>2</td>" +
+                        "        <td>secondProduct</td>" +
+                        "        <td>20</td>" +
+                        "    </tr>" +
                         "</table>";
 
         PageGenerator pageGenerator = PageGenerator.instance(templatesFolder.getPath());
@@ -118,12 +119,12 @@ class PageGeneratorITest {
     void givenTemplateWithoutFieldsForPageDataAndPageData_whenGetPage_thenPageGenerated() throws IOException {
         //prepare
         String expectedPage =
-                "<table>\n" +
-                        "    <tr>\n" +
-                        "        <td>1</td>\n" +
-                        "        <td>2</td>\n" +
-                        "        <td>3</td>\n" +
-                        "    </tr>\n" +
+                "<table>" +
+                        "    <tr>" +
+                        "        <td>1</td>" +
+                        "        <td>2</td>" +
+                        "        <td>3</td>" +
+                        "    </tr>" +
                         "</table>";
 
         PageGenerator pageGenerator = PageGenerator.instance(templatesFolder.getPath());

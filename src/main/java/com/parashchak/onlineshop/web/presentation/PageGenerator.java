@@ -1,5 +1,6 @@
 package com.parashchak.onlineshop.web.presentation;
 
+import freemarker.cache.NullCacheStorage;
 import freemarker.template.*;
 
 import java.io.*;
@@ -8,13 +9,14 @@ import java.util.Map;
 
 public class PageGenerator {
 
-    private static PageGenerator pageGenerator;
-    private final Configuration configuration;
     private final static String HTML_TEMPLATES_PATH = "/templates";
+    private static PageGenerator pageGenerator;
+
+    private final Configuration configuration;
 
     private PageGenerator() {
         configuration = new Configuration(Configuration.VERSION_2_3_31);
-        configuration.setTemplateUpdateDelayMilliseconds(0);
+        configuration.setCacheStorage(new NullCacheStorage());
         configuration.setClassForTemplateLoading(PageGenerator.class, HTML_TEMPLATES_PATH);
     }
 
