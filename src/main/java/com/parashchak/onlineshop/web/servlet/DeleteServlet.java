@@ -5,15 +5,16 @@ import com.parashchak.onlineshop.service.SecurityService;
 import jakarta.servlet.http.*;
 import lombok.*;
 
+import java.io.IOException;
+
 @AllArgsConstructor
 public class DeleteServlet extends HttpServlet {
 
     private final ProductService productService;
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
     @Override
-    @SneakyThrows
-    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!securityService.validateSession(request)) {
             response.sendRedirect("/login");
         } else {

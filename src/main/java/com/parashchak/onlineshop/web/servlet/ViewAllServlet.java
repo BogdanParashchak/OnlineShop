@@ -9,20 +9,19 @@ import lombok.*;
 import java.io.IOException;
 import java.util.*;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ViewAllServlet extends HttpServlet {
 
+    private final PageGenerator pageGenerator = PageGenerator.instance();
     private final ProductService productService;
 
     @Override
-    @SneakyThrows
-    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         showAllProducts(response);
     }
 
     @Override
-    @SneakyThrows
-    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         productService.delete(id);
         showAllProducts(response);
@@ -32,7 +31,6 @@ public class ViewAllServlet extends HttpServlet {
         Map<String, Object> pageData = new HashMap<>();
         List<Product> allProducts = productService.getAll();
         pageData.put("products", allProducts);
-        PageGenerator pageGenerator = PageGenerator.instance();
         String page = pageGenerator.getPage("viewPage.html", pageData);
         response.getWriter().write(page);
     }

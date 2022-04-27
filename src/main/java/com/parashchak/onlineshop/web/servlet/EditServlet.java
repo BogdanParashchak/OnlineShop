@@ -7,20 +7,20 @@ import com.parashchak.onlineshop.service.ProductService;
 import jakarta.servlet.http.*;
 import lombok.*;
 
+import java.io.IOException;
 import java.util.*;
 
 import static com.parashchak.onlineshop.web.mapper.ProductRequestMapper.toProduct;
 
-@RequiredArgsConstructor
 @AllArgsConstructor
 public class EditServlet extends HttpServlet {
 
+    private final PageGenerator pageGenerator = PageGenerator.instance();
     private final ProductService productService;
-    private SecurityService securityService;
+    private final SecurityService securityService;
 
     @Override
-    @SneakyThrows
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!securityService.validateSession(request)) {
             response.sendRedirect("/login");
         } else {
@@ -28,18 +28,15 @@ public class EditServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             Product product = productService.getById(id);
             pageData.put("product", product);
-            PageGenerator pageGenerator = PageGenerator.instance();
             String page = pageGenerator.getPage("editPage.html", pageData);
             response.getWriter().write(page);
         }
     }
 
     @Override
-    @SneakyThrows
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Product product = toProduct(request);
         productService.update(product);
-        PageGenerator pageGenerator = PageGenerator.instance();
         String page = pageGenerator.getPage("editPageSuccessful.html");
         response.getWriter().write(page);
     }

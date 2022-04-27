@@ -6,23 +6,23 @@ import com.parashchak.onlineshop.web.presentation.PageGenerator;
 import jakarta.servlet.http.*;
 import lombok.*;
 
+import java.io.IOException;
+
 @AllArgsConstructor
 public class LoginServlet extends HttpServlet {
 
+    private final PageGenerator pageGenerator = PageGenerator.instance();
     private final UserService userService;
     private final SecurityService securityService;
 
     @Override
-    @SneakyThrows
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        PageGenerator pageGenerator = PageGenerator.instance();
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String page = pageGenerator.getPage("loginPage.html");
         response.getWriter().write(page);
     }
 
     @Override
-    @SneakyThrows
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         User user = userService.get(login);
