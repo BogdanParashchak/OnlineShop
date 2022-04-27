@@ -1,9 +1,7 @@
 package com.parashchak.onlineshop.starter;
 
 import com.parashchak.onlineshop.dao.jdbc.*;
-import com.parashchak.onlineshop.service.ProductService;
-import com.parashchak.onlineshop.service.SecurityService;
-import com.parashchak.onlineshop.service.UserService;
+import com.parashchak.onlineshop.service.*;
 import com.parashchak.onlineshop.web.servlet.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.*;
@@ -11,12 +9,12 @@ import org.eclipse.jetty.servlet.*;
 import java.util.*;
 
 import static com.parashchak.onlineshop.configuration.PortConfigurator.getPort;
-import static com.parashchak.onlineshop.configuration.PropertiesReader.getConfigProperties;
+import static com.parashchak.onlineshop.configuration.PropertiesReader.getAppProperties;
 
 public class Starter {
     public static void main(String[] args) throws Exception {
 
-        Properties configProperties = getConfigProperties();
+        Properties configProperties = getAppProperties();
 
         JdbcConnectionFactory jdbcConnectionFactory = new JdbcConnectionFactory(configProperties);
         JdbcProductDao jdbcProductDao = new JdbcProductDao(jdbcConnectionFactory);

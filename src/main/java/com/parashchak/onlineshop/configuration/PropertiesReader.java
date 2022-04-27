@@ -1,16 +1,19 @@
 package com.parashchak.onlineshop.configuration;
 
+import lombok.RequiredArgsConstructor;
 import org.assertj.core.util.VisibleForTesting;
 
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Properties;
 
+@RequiredArgsConstructor
 public class PropertiesReader {
 
-    public static Properties getConfigProperties() {
-        Properties configProperties;
-        Properties appProperties = readAppPropertiesFile("configs/application.properties");
+    private static final String LOCAL_PROPERTIES_FILE_PATH = "configs/application.properties";
+
+    public static Properties getAppProperties() {
+        Properties localProperties = readLocalProperties(LOCAL_PROPERTIES_FILE_PATH);
         Properties environmentProperties = new Properties();
 
         try {
@@ -18,11 +21,8 @@ public class PropertiesReader {
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
-
-        configProperties = mergeProperties(appProperties, environmentProperties);
-        return configProperties;
+        return mergeProperties(localProperties, environmentProperties);
     }
-
 
 
     @VisibleForTesting
@@ -34,12 +34,12 @@ public class PropertiesReader {
     }
 
     @VisibleForTesting
-    static Properties readAppPropertiesFile(String appPropertiesFilePath) {
-        return readAppPropertiesFile(PropertiesReader.class.getClassLoader().getResourceAsStream(appPropertiesFilePath));
+    static Properties readLocalProperties(String appPropertiesFilePath) {
+        return readLocalProperties(PropertiesReader.class.getClassLoader().getResourceAsStream(appPropertiesFilePath));
     }
 
     @VisibleForTesting
-    static Properties readAppPropertiesFile(InputStream appPropertiesInputStream) {
+    static Properties readLocalProperties(InputStream appPropertiesInputStream) {
         Properties appProperties = new Properties();
         try (InputStream in = appPropertiesInputStream) {
             appProperties.load(in);

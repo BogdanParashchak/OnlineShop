@@ -66,7 +66,7 @@ public class PropertiesReaderTest {
         InputStream mockInputStream = new ByteArrayInputStream(stringJoiner.toString().getBytes());
 
         //when
-        Properties properties = readAppPropertiesFile(mockInputStream);
+        Properties properties = readLocalProperties(mockInputStream);
 
         //then
         assertEquals("jdbc:postgresql://localhost:5432/test_db", properties.getProperty("db.url"));
