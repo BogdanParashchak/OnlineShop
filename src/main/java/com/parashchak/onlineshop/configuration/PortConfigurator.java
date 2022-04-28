@@ -4,12 +4,10 @@ import java.util.Properties;
 
 public class PortConfigurator {
     public static int getPort(Properties configProperties) {
-        String port;
-        try {
-            port = configProperties.getProperty("server.port");
-        } catch (Exception e) {
-            throw new RuntimeException("Cannot read port number property", e);
+
+        if (!configProperties.containsKey("server.port")) {
+            throw new RuntimeException("Cannot read port number property");
         }
-        return Integer.parseInt(port);
+        return Integer.parseInt(configProperties.getProperty("server.port"));
     }
 }
