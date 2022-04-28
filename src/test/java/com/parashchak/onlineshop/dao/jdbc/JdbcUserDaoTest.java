@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -57,7 +58,8 @@ class JdbcUserDaoTest {
     @SneakyThrows
     @DisplayName("get returns User instance")
     void whenGet_thenReturnsUserInstance() {
-        User user = jdbcUserDao.get("user");
+        Optional<User> optionalUser = jdbcUserDao.get("user");
+        User user = optionalUser.orElseThrow();
 
         assertEquals(1, user.getId());
         assertEquals("aLogin", user.getLogin());

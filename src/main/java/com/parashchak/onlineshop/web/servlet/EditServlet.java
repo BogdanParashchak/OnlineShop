@@ -26,7 +26,7 @@ public class EditServlet extends HttpServlet {
         } else {
             Map<String, Object> pageData = new HashMap<>();
             int id = Integer.parseInt(request.getParameter("id"));
-            Product product = productService.getById(id);
+            Product product = productService.getById(id).orElseThrow();
             pageData.put("product", product);
             String page = pageGenerator.getPage("editPage.html", pageData);
             response.getWriter().write(page);

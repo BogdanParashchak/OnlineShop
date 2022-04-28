@@ -8,12 +8,12 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class JdbcProductDao {
 
-    private final static ProductRowMapper productRowMapper = new ProductRowMapper();
-    private final DataSource dataSource;
+    private final static ProductRowMapper PRODUCT_ROW_MAPPER = new ProductRowMapper();
 
     private static final String GET_ALL_PRODUCTS_QUERY = "SELECT id,name, price, creation_date, description FROM products ORDER BY id";
     private static final String ADD_PRODUCT_QUERY = "INSERT INTO products (name, price, creation_date, description) VALUES (?, ?, ?, ?)";
@@ -22,17 +22,19 @@ public class JdbcProductDao {
     private static final String UPDATE_PRODUCT_QUERY = "UPDATE products SET name=?,price=?, description=? WHERE id=?";
     private static final String SEARCH_PRODUCTS_QUERY = "SELECT id,name, price, creation_date, description FROM products WHERE name LIKE CONCAT( '%',?,'%') OR description LIKE CONCAT( '%',?,'%')";
 
+    private final DataSource dataSource;
+
     public List<Product> getAll() {
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(GET_ALL_PRODUCTS_QUERY)) {
             List<Product> allProductsList = new ArrayList<>();
             while (resultSet.next()) {
-                Product product = productRowMapper.mapRow(resultSet);
+                Product product = PRODUCT_ROW_MAPPER.mapRow(resultSet);
                 allProductsList.add(product);
             }
             return allProductsList;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Unable to get all products list from DB", e);
         }
     }
@@ -45,7 +47,7 @@ public class JdbcProductDao {
             preparedStatement.setTimestamp(3, Timestamp.valueOf(product.getCreationDate()));
             preparedStatement.setString(4, product.getDescription());
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Unable to add product to DB", e);
         }
     }
@@ -60,17 +62,16 @@ public class JdbcProductDao {
         }
     }
 
-    public Product getById(int id) {
+    public Optional<Product> getById(int id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_ID_QUERY)) {
             preparedStatement.setInt(1, id);
-            Product product = new Product();
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    product = productRowMapper.mapRow(resultSet);
+                    return Optional.of(PRODUCT_ROW_MAPPER.mapRow(resultSet));
                 }
             }
-            return product;
+            return Optional.empty();
         } catch (Exception e) {
             throw new RuntimeException("Unable to get product from DB", e);
         }
@@ -97,12 +98,12 @@ public class JdbcProductDao {
             List<Product> productsSearchList = new ArrayList<>();
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    Product product = productRowMapper.mapRow(resultSet);
+                    Product product = PRODUCT_ROW_MAPPER.mapRow(resultSet);
                     productsSearchList.add(product);
                 }
             }
             return productsSearchList;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Unable to search products in DB", e);
         }
     }

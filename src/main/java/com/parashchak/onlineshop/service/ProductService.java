@@ -5,6 +5,7 @@ import com.parashchak.onlineshop.entity.Product;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class ProductService {
@@ -27,7 +28,7 @@ public class ProductService {
         jdbcProductDao.update(product);
     }
 
-    public Product getById(int id) {
+    public Optional<Product> getById(int id) {
         return jdbcProductDao.getById(id);
     }
 

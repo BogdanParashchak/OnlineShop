@@ -7,6 +7,7 @@ import jakarta.servlet.http.*;
 import lombok.*;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class LoginServlet extends HttpServlet {
@@ -25,8 +26,8 @@ public class LoginServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        User user = userService.get(login);
-        if (user != null && securityService.verifyPassword(password, user.getSalt(), user.getPassword())) {
+        Optional<User> user = userService.get(login);
+        if (user.isPresent() && securityService.verifyPassword(password, user.get().getSalt(), user.get().getPassword())) {
             securityService.createSession(response);
         }
         response.sendRedirect("/products");

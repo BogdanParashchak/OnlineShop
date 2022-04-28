@@ -201,17 +201,37 @@ class JdbcProductDaoITest {
     }
 
     @Test
-    @DisplayName("getById returns not Null object")
-    void givenTable_whenGetById_thenNotNullObjectReturned() {
-        assertNotNull(jdbcProductDao.getById(1));
-        assertNotNull(jdbcProductDao.getById(2));
-        assertNotNull(jdbcProductDao.getById(3));
+    @DisplayName("getById returns not Null optional product for existing product")
+    void givenTableContainingProducts_whenGetExistingProductById_thenNotNullOptionalProductReturned() {
+        Optional<Product> optionalProduct = jdbcProductDao.getById(1);
+        assertNotNull(optionalProduct);
+    }
+
+    @Test
+    @DisplayName("getById returns not empty optional product for existing product")
+    void givenTableContainingProducts_whenGetExistingProductById_thenNotEmptyOptionalProductReturned() {
+        Optional<Product> optionalProduct = jdbcProductDao.getById(1);
+        assertFalse(optionalProduct.isEmpty());
+    }
+
+    @Test
+    @DisplayName("getById returns not Null optional product for non-existing product")
+    void givenTableContainingProducts_whenGetNonExistingProductById_thenNotNullOptionalObjectReturned() {
+        assertNotNull(jdbcProductDao.getById(100));
+    }
+
+    @Test
+    @DisplayName("getById returns empty optional product for non-existing product")
+    void givenTableContainingProducts_whenGetNotExistingProductById_thenEmptyOptionalProductReturned() {
+        Optional<Product> optionalProduct = jdbcProductDao.getById(100);
+        assertTrue(optionalProduct.isEmpty());
     }
 
     @Test
     @DisplayName("getById returns actual product")
     void givenTable_whenGetById_thenActualProductReturned() {
-        Product actualProduct = jdbcProductDao.getById(2);
+        Optional<Product> actualOptionalProduct = jdbcProductDao.getById(2);
+        Product actualProduct = actualOptionalProduct.orElseThrow();
 
         assertEquals(2, actualProduct.getId());
         assertEquals("Ford", actualProduct.getName());
