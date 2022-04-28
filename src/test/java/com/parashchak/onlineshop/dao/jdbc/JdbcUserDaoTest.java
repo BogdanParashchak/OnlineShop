@@ -1,9 +1,11 @@
 package com.parashchak.onlineshop.dao.jdbc;
 
+import com.parashchak.onlineshop.dao.UserDao;
 import com.parashchak.onlineshop.entity.User;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,17 +18,17 @@ import static org.mockito.Mockito.*;
 
 class JdbcUserDaoTest {
 
-    private final JdbcConnectionFactory mockJdbcConnectionFactory = mock(JdbcConnectionFactory.class);
+    private final DataSource mockDatasource = mock(JdbcConnectionFactory.class);
     private final Connection mockConnection = mock(Connection.class);
     private final PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
     private final ResultSet mockResultSet = mock(ResultSet.class);
 
-    private final JdbcUserDao jdbcUserDao = new JdbcUserDao(mockJdbcConnectionFactory);
+    private final UserDao userDao = new JdbcUserDao(mockDatasource);
 
     @BeforeEach
     @SneakyThrows
     void setUp() {
-        when(mockJdbcConnectionFactory.getConnection()).thenReturn(mockConnection);
+        when(mockDatasource.getConnection()).thenReturn(mockConnection);
         when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
         when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
         when(mockResultSet.next()).thenReturn(true);
@@ -40,9 +42,9 @@ class JdbcUserDaoTest {
     @SneakyThrows
     @DisplayName("verify get logic executed")
     void whenGet_thenGetLogicExecuted() {
-        jdbcUserDao.get("user");
+        userDao.get("user");
 
-        verify(mockJdbcConnectionFactory).getConnection();
+        verify(mockDatasource).getConnection();
         verify(mockPreparedStatement).executeQuery();
         verify(mockResultSet, times(1)).next();
         verify(mockResultSet, times(1)).getInt("id");
@@ -58,7 +60,7 @@ class JdbcUserDaoTest {
     @SneakyThrows
     @DisplayName("get returns User instance")
     void whenGet_thenReturnsUserInstance() {
-        Optional<User> optionalUser = jdbcUserDao.get("user");
+        Optional<User> optionalUser = userDao.get("user");
         User user = optionalUser.orElseThrow();
 
         assertEquals(1, user.getId());
@@ -71,7 +73,7 @@ class JdbcUserDaoTest {
     @SneakyThrows
     @DisplayName("get catches Exception and throws new RuntimeException")
     void whenGetAll_thenRuntimeExceptionThrown() {
-        when(mockJdbcConnectionFactory.getConnection()).thenThrow(new SQLException());
-        Assertions.assertThrows(RuntimeException.class, () -> jdbcUserDao.get("user"));
+        when(mockDatasource.getConnection()).thenThrow(new SQLException());
+        Assertions.assertThrows(RuntimeException.class, () -> userDao.get("user"));
     }
 }

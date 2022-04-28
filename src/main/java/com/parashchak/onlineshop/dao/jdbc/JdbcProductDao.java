@@ -1,5 +1,6 @@
 package com.parashchak.onlineshop.dao.jdbc;
 
+import com.parashchak.onlineshop.dao.ProductDao;
 import com.parashchak.onlineshop.dao.jdbc.mapper.ProductRowMapper;
 import com.parashchak.onlineshop.entity.Product;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class JdbcProductDao {
+public class JdbcProductDao implements ProductDao {
 
-    private final static ProductRowMapper PRODUCT_ROW_MAPPER = new ProductRowMapper();
+    private static final ProductRowMapper PRODUCT_ROW_MAPPER = new ProductRowMapper();
 
     private static final String GET_ALL_PRODUCTS_QUERY = "SELECT id,name, price, creation_date, description FROM products ORDER BY id";
     private static final String ADD_PRODUCT_QUERY = "INSERT INTO products (name, price, creation_date, description) VALUES (?, ?, ?, ?)";

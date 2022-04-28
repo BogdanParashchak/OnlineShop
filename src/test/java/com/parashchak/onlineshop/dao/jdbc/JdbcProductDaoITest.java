@@ -1,9 +1,11 @@
 package com.parashchak.onlineshop.dao.jdbc;
 
+import com.parashchak.onlineshop.dao.ProductDao;
 import com.parashchak.onlineshop.entity.Product;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -17,8 +19,8 @@ class JdbcProductDaoITest {
     private static final String PASSWORD = "app";
 
     private final Properties properties = new Properties();
-    JdbcConnectionFactory jdbcConnectionFactory;
-    JdbcProductDao jdbcProductDao;
+    DataSource dataSource;
+    ProductDao productDao;
 
     @BeforeEach
     @SneakyThrows
@@ -27,8 +29,8 @@ class JdbcProductDaoITest {
         properties.setProperty("db.user", USER);
         properties.setProperty("db.password", PASSWORD);
 
-        jdbcConnectionFactory = new JdbcConnectionFactory(properties);
-        jdbcProductDao = new JdbcProductDao(jdbcConnectionFactory);
+        dataSource = new JdbcConnectionFactory(properties);
+        productDao = new JdbcProductDao(dataSource);
 
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              Statement statement = connection.createStatement()) {
@@ -43,21 +45,21 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("getAll returns not Null object")
     void givenTable_whenGetAll_thenNotNullObjectReturned() {
-        List<Product> products = jdbcProductDao.getAll();
+        List<Product> products = productDao.getAll();
         assertNotNull(products);
     }
 
     @Test
     @DisplayName("getAll returns list of known size")
     void givenTable_whenGetAll_thenListOfKnownSizeReturned() {
-        List<Product> products = jdbcProductDao.getAll();
+        List<Product> products = productDao.getAll();
         assertEquals(3, products.size());
     }
 
     @Test
     @DisplayName("getAll returns list of actual products")
     void givenTable_whenGetAll_thenListOfActualProductsReturned() {
-        List<Product> products = jdbcProductDao.getAll();
+        List<Product> products = productDao.getAll();
 
         assertEquals(1, products.get(0).getId());
         assertEquals(2, products.get(1).getId());
@@ -79,8 +81,8 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("getAll does not change products' list size")
     void givenTable_whenGetAll_thenSizeOfProductsListDoesNotChange() {
-        List<Product> productsListAfterFirstCall = jdbcProductDao.getAll();
-        List<Product> productsListAfterSecondCall = jdbcProductDao.getAll();
+        List<Product> productsListAfterFirstCall = productDao.getAll();
+        List<Product> productsListAfterSecondCall = productDao.getAll();
 
         assertEquals(3, productsListAfterFirstCall.size());
         assertEquals(3, productsListAfterSecondCall.size());
@@ -96,13 +98,13 @@ class JdbcProductDaoITest {
                 creationDate(LocalDateTime.now()).
                 description("description").
                 build();
-        int initialListSize = jdbcProductDao.getAll().size();
+        int initialListSize = productDao.getAll().size();
 
         //when
-        jdbcProductDao.add(product);
+        productDao.add(product);
 
         //then
-        int afterAddListSize = jdbcProductDao.getAll().size();
+        int afterAddListSize = productDao.getAll().size();
         assertEquals(4, afterAddListSize);
         assertEquals(initialListSize + 1, afterAddListSize);
     }
@@ -119,10 +121,10 @@ class JdbcProductDaoITest {
                 build();
 
         //when
-        jdbcProductDao.add(product);
+        productDao.add(product);
 
         //then
-        List<Product> products = jdbcProductDao.getAll();
+        List<Product> products = productDao.getAll();
 
         assertEquals(1, products.get(0).getId());
         assertEquals(2, products.get(1).getId());
@@ -153,10 +155,10 @@ class JdbcProductDaoITest {
                 build();
 
         //when
-        jdbcProductDao.add(product);
+        productDao.add(product);
 
         //then
-        List<Product> products = jdbcProductDao.getAll();
+        List<Product> products = productDao.getAll();
         Product addedProduct = products.get(3);
 
         assertEquals(4, addedProduct.getId());
@@ -169,13 +171,13 @@ class JdbcProductDaoITest {
     @DisplayName("delete decreases products' list size by one")
     void givenTable_whenDelete_thenSizeOfProductsListDecreasesByOne() {
         //prepare
-        int initialListSize = jdbcProductDao.getAll().size();
+        int initialListSize = productDao.getAll().size();
 
         //when
-        jdbcProductDao.delete(1);
+        productDao.delete(1);
 
         //then
-        int afterDeleteListSize = jdbcProductDao.getAll().size();
+        int afterDeleteListSize = productDao.getAll().size();
         assertEquals(2, afterDeleteListSize);
         assertEquals(initialListSize - 1, afterDeleteListSize);
     }
@@ -183,9 +185,9 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("delete does not change previously existing products")
     void givenTable_whenDelete_thenPreviouslyExistingProductsDoesNotChange() {
-        jdbcProductDao.delete(2);
+        productDao.delete(2);
 
-        List<Product> products = jdbcProductDao.getAll();
+        List<Product> products = productDao.getAll();
 
         assertEquals(1, products.get(0).getId());
         assertEquals(3, products.get(1).getId());
@@ -203,34 +205,34 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("getById returns not Null optional product for existing product")
     void givenTableContainingProducts_whenGetExistingProductById_thenNotNullOptionalProductReturned() {
-        Optional<Product> optionalProduct = jdbcProductDao.getById(1);
+        Optional<Product> optionalProduct = productDao.getById(1);
         assertNotNull(optionalProduct);
     }
 
     @Test
     @DisplayName("getById returns not empty optional product for existing product")
     void givenTableContainingProducts_whenGetExistingProductById_thenNotEmptyOptionalProductReturned() {
-        Optional<Product> optionalProduct = jdbcProductDao.getById(1);
+        Optional<Product> optionalProduct = productDao.getById(1);
         assertFalse(optionalProduct.isEmpty());
     }
 
     @Test
     @DisplayName("getById returns not Null optional product for non-existing product")
     void givenTableContainingProducts_whenGetNonExistingProductById_thenNotNullOptionalObjectReturned() {
-        assertNotNull(jdbcProductDao.getById(100));
+        assertNotNull(productDao.getById(100));
     }
 
     @Test
     @DisplayName("getById returns empty optional product for non-existing product")
     void givenTableContainingProducts_whenGetNotExistingProductById_thenEmptyOptionalProductReturned() {
-        Optional<Product> optionalProduct = jdbcProductDao.getById(100);
+        Optional<Product> optionalProduct = productDao.getById(100);
         assertTrue(optionalProduct.isEmpty());
     }
 
     @Test
     @DisplayName("getById returns actual product")
     void givenTable_whenGetById_thenActualProductReturned() {
-        Optional<Product> actualOptionalProduct = jdbcProductDao.getById(2);
+        Optional<Product> actualOptionalProduct = productDao.getById(2);
         Product actualProduct = actualOptionalProduct.orElseThrow();
 
         assertEquals(2, actualProduct.getId());
@@ -241,9 +243,9 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("getById does not change previously existing products")
     void givenTable_whenGetById_thenPreviouslyExistingProductsDoesNotChange() {
-        jdbcProductDao.getById(2);
+        productDao.getById(2);
 
-        List<Product> products = jdbcProductDao.getAll();
+        List<Product> products = productDao.getAll();
 
         assertEquals(1, products.get(0).getId());
         assertEquals(3, products.get(2).getId());
@@ -263,7 +265,7 @@ class JdbcProductDaoITest {
     void givenTable_whenUpdate_thenSizeOfProductsListDoesNotChange() {
 
         //prepare
-        int initialListSize = jdbcProductDao.getAll().size();
+        int initialListSize = productDao.getAll().size();
 
         Product product = Product.builder().
                 id(2).
@@ -274,10 +276,10 @@ class JdbcProductDaoITest {
                 build();
 
         //when
-        jdbcProductDao.update(product);
+        productDao.update(product);
 
         //then
-        int listSizeAfterUpdate = jdbcProductDao.getAll().size();
+        int listSizeAfterUpdate = productDao.getAll().size();
         assertEquals(initialListSize, listSizeAfterUpdate);
         assertEquals(3, listSizeAfterUpdate);
     }
@@ -296,10 +298,10 @@ class JdbcProductDaoITest {
                 build();
 
         //when
-        jdbcProductDao.update(product);
+        productDao.update(product);
 
         //then
-        List<Product> products = jdbcProductDao.getAll();
+        List<Product> products = productDao.getAll();
 
         assertEquals(1, products.get(0).getId());
         assertEquals(3, products.get(2).getId());
@@ -328,10 +330,10 @@ class JdbcProductDaoITest {
                 build();
 
         //when
-        jdbcProductDao.update(product);
+        productDao.update(product);
 
         //then
-        List<Product> products = jdbcProductDao.getAll();
+        List<Product> products = productDao.getAll();
 
         assertEquals(2, products.get(1).getId());
         assertEquals("Lexus", products.get(1).getName());
@@ -342,28 +344,28 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("search returns not Null object if no products found")
     void givenTable_whenSearch_thenNotNullObjectReturned() {
-        List<Product> products = jdbcProductDao.search("some_text");
+        List<Product> products = productDao.search("some_text");
         assertNotNull(products);
     }
 
     @Test
     @DisplayName("search returns empty products list if no products found")
     void givenTable_whenSearch_thenEmptyListReturned() {
-        List<Product> products = jdbcProductDao.search("some_text");
+        List<Product> products = productDao.search("some_text");
         assertTrue(products.isEmpty());
     }
 
     @Test
     @DisplayName("search returns list of known size if products found")
     void givenTable_whenSearch_thenListOfKnownSizeReturned() {
-        List<Product> products = jdbcProductDao.search("description");
+        List<Product> products = productDao.search("description");
         assertEquals(3, products.size());
     }
 
     @Test
     @DisplayName("search returns list of found products")
     void givenTable_whenSearch_thenListOfFoundProductsReturned() {
-        List<Product> products = jdbcProductDao.search("description");
+        List<Product> products = productDao.search("description");
 
         assertEquals(1, products.get(0).getId());
         assertEquals(2, products.get(1).getId());
@@ -385,9 +387,9 @@ class JdbcProductDaoITest {
     @Test
     @DisplayName("search does not change previously existing products")
     void givenTable_whenSearch_thenPreviouslyExistingProductsDoesNotChange() {
-        jdbcProductDao.search("Mazda");
+        productDao.search("Mazda");
 
-        List<Product> productsAfterSearch = jdbcProductDao.getAll();
+        List<Product> productsAfterSearch = productDao.getAll();
 
         assertEquals("Mazda", productsAfterSearch.get(0).getName());
         assertEquals("Ford", productsAfterSearch.get(1).getName());

@@ -1,33 +1,33 @@
 package com.parashchak.onlineshop.dao.jdbc;
 
+import com.parashchak.onlineshop.dao.ProductDao;
 import com.parashchak.onlineshop.entity.Product;
-import com.parashchak.onlineshop.entity.User;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 class JdbcProductDaoTest {
 
-    private final JdbcConnectionFactory mockJdbcConnectionFactory = mock(JdbcConnectionFactory.class);
+    private final DataSource mockDataSource = mock(JdbcConnectionFactory.class);
     private final Connection mockConnection = mock(Connection.class);
     private final Statement mockStatement = mock(Statement.class);
     private final PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
     private final ResultSet mockResultSet = mock(ResultSet.class);
 
-    private final JdbcProductDao jdbcProductDao = new JdbcProductDao(mockJdbcConnectionFactory);
+    private final ProductDao productDao = new JdbcProductDao(mockDataSource);
 
     @BeforeEach
     @SneakyThrows
     void setUp() {
-        when(mockJdbcConnectionFactory.getConnection()).thenReturn(mockConnection);
+        when(mockDataSource.getConnection()).thenReturn(mockConnection);
         when(mockConnection.createStatement()).thenReturn(mockStatement);
         when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
         when(mockStatement.executeQuery(anyString())).thenReturn(mockResultSet);
@@ -45,9 +45,9 @@ class JdbcProductDaoTest {
     @SneakyThrows
     @DisplayName("verify getAll logic executed")
     void whenGetAll_thenGetAllLogicExecuted() {
-        jdbcProductDao.getAll();
+        productDao.getAll();
 
-        verify(mockJdbcConnectionFactory).getConnection();
+        verify(mockDataSource).getConnection();
         verify(mockStatement).executeQuery(anyString());
         verify(mockResultSet, times(3)).next();
         verify(mockResultSet, times(2)).getInt("id");
@@ -61,8 +61,8 @@ class JdbcProductDaoTest {
     @SneakyThrows
     @DisplayName("getAll catches Exception and throws new RuntimeException")
     void whenGetAll_thenRuntimeExceptionThrown() {
-        when(mockJdbcConnectionFactory.getConnection()).thenThrow(new SQLException());
-        Assertions.assertThrows(RuntimeException.class, jdbcProductDao::getAll);
+        when(mockDataSource.getConnection()).thenThrow(new SQLException());
+        Assertions.assertThrows(RuntimeException.class, productDao::getAll);
     }
 
     @Test
@@ -78,10 +78,10 @@ class JdbcProductDaoTest {
                 build();
 
         //when
-        jdbcProductDao.add(product);
+        productDao.add(product);
 
         //then
-        verify(mockJdbcConnectionFactory).getConnection();
+        verify(mockDataSource).getConnection();
         verify(mockPreparedStatement).setString(1, "Lexus");
         verify(mockPreparedStatement).setDouble(2, 96054.39);
         verify(mockPreparedStatement).setTimestamp(anyInt(), any(Timestamp.class));
@@ -99,19 +99,19 @@ class JdbcProductDaoTest {
                 creationDate(LocalDateTime.now()).
                 description("description").
                 build();
-        when(mockJdbcConnectionFactory.getConnection()).thenThrow(new SQLException());
+        when(mockDataSource.getConnection()).thenThrow(new SQLException());
 
-        Assertions.assertThrows(RuntimeException.class, () -> jdbcProductDao.add(product));
+        Assertions.assertThrows(RuntimeException.class, () -> productDao.add(product));
     }
 
     @Test
     @SneakyThrows
     @DisplayName("verify delete logic executed")
     void whenDelete_thenDeleteLogicExecuted() {
-        jdbcProductDao.delete(1);
+        productDao.delete(1);
 
         //then
-        verify(mockJdbcConnectionFactory).getConnection();
+        verify(mockDataSource).getConnection();
         verify(mockPreparedStatement).setInt(1, 1);
         verify(mockPreparedStatement).executeUpdate();
     }
@@ -120,18 +120,18 @@ class JdbcProductDaoTest {
     @SneakyThrows
     @DisplayName("delete catches Exception and throws new RuntimeException")
     void whenDelete_thenRuntimeExceptionThrown() {
-        when(mockJdbcConnectionFactory.getConnection()).thenThrow(new SQLException());
+        when(mockDataSource.getConnection()).thenThrow(new SQLException());
 
-        Assertions.assertThrows(RuntimeException.class, () -> jdbcProductDao.delete(1));
+        Assertions.assertThrows(RuntimeException.class, () -> productDao.delete(1));
     }
 
     @Test
     @SneakyThrows
     @DisplayName("verify getById logic executed")
     void whenGetByIdl_thenGetByIdLogicExecuted() {
-        jdbcProductDao.getById(1);
+        productDao.getById(1);
 
-        verify(mockJdbcConnectionFactory).getConnection();
+        verify(mockDataSource).getConnection();
         verify(mockPreparedStatement).setInt(1, 1);
         verify(mockPreparedStatement).executeQuery();
         verify(mockResultSet, times(1)).next();
@@ -146,14 +146,14 @@ class JdbcProductDaoTest {
     @SneakyThrows
     @DisplayName("getById returns not Null optional product if product exists in table")
     void productExistingInTable_whenGetById_thenNotNullOptionalProductReturned() {
-        Optional<Product> optionalProduct = jdbcProductDao.getById(1);
+        Optional<Product> optionalProduct = productDao.getById(1);
         assertNotNull(optionalProduct);
     }
 
     @Test
     @DisplayName("get returns not empty optional object if user exists in table")
     void productExistingInTable_whenGetById_thenNotEmptyOptionalProductReturned() {
-        Optional<Product> optionalProduct = jdbcProductDao.getById(1);
+        Optional<Product> optionalProduct = productDao.getById(1);
         assertFalse(optionalProduct.isEmpty());
     }
 
@@ -161,9 +161,9 @@ class JdbcProductDaoTest {
     @SneakyThrows
     @DisplayName("getById catches Exception and throws new RuntimeException")
     void whenGetById_thenRuntimeExceptionThrown() {
-        when(mockJdbcConnectionFactory.getConnection()).thenThrow(new SQLException());
+        when(mockDataSource.getConnection()).thenThrow(new SQLException());
 
-        Assertions.assertThrows(RuntimeException.class, () -> jdbcProductDao.getById(1));
+        Assertions.assertThrows(RuntimeException.class, () -> productDao.getById(1));
     }
 
     @Test
@@ -179,9 +179,9 @@ class JdbcProductDaoTest {
                 description("description").
                 build();
 
-        jdbcProductDao.update(product);
+        productDao.update(product);
 
-        verify(mockJdbcConnectionFactory).getConnection();
+        verify(mockDataSource).getConnection();
         verify(mockPreparedStatement).setString(1, "Lexus");
         verify(mockPreparedStatement).setDouble(2, 96054.39);
         verify(mockPreparedStatement).setString(3, "description");
@@ -200,18 +200,18 @@ class JdbcProductDaoTest {
                 creationDate(LocalDateTime.now()).
                 description("description").
                 build();
-        when(mockJdbcConnectionFactory.getConnection()).thenThrow(new SQLException());
+        when(mockDataSource.getConnection()).thenThrow(new SQLException());
 
-        Assertions.assertThrows(RuntimeException.class, () -> jdbcProductDao.update(product));
+        Assertions.assertThrows(RuntimeException.class, () -> productDao.update(product));
     }
 
     @Test
     @SneakyThrows
     @DisplayName("verify search logic executed")
     void whenSearch_thenSearchLogicExecuted() {
-        jdbcProductDao.search("description");
+        productDao.search("description");
 
-        verify(mockJdbcConnectionFactory).getConnection();
+        verify(mockDataSource).getConnection();
         verify(mockPreparedStatement).executeQuery();
         verify(mockResultSet, times(3)).next();
         verify(mockResultSet, times(2)).getInt("id");
@@ -225,8 +225,8 @@ class JdbcProductDaoTest {
     @SneakyThrows
     @DisplayName("search catches SQLException and throws new RuntimeException")
     void whenSearch_thenRuntimeExceptionThrown() {
-        when(mockJdbcConnectionFactory.getConnection()).thenThrow(new SQLException());
+        when(mockDataSource.getConnection()).thenThrow(new SQLException());
 
-        Assertions.assertThrows(RuntimeException.class, () -> jdbcProductDao.search("description"));
+        Assertions.assertThrows(RuntimeException.class, () -> productDao.search("description"));
     }
 }

@@ -1,5 +1,6 @@
 package com.parashchak.onlineshop.dao.jdbc;
 
+import com.parashchak.onlineshop.dao.UserDao;
 import com.parashchak.onlineshop.dao.jdbc.mapper.UserRowMapper;
 import com.parashchak.onlineshop.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +12,9 @@ import java.sql.ResultSet;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class JdbcUserDao {
+public class JdbcUserDao implements UserDao {
 
-    private final static UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
+    private static final UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
     private static final String GET_USER = "SELECT id,login, password, salt FROM accounts WHERE login=?";
 
     private final DataSource dataSource;

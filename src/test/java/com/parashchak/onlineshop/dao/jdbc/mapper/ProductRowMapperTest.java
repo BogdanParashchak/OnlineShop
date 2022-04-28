@@ -1,5 +1,6 @@
 package com.parashchak.onlineshop.dao.jdbc.mapper;
 
+import com.parashchak.onlineshop.dao.jdbc.mapper.ProductRowMapper;
 import com.parashchak.onlineshop.entity.Product;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;

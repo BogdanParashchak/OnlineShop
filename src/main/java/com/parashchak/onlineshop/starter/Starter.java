@@ -1,6 +1,8 @@
 package com.parashchak.onlineshop.starter;
 
-import com.parashchak.onlineshop.dao.jdbc.*;
+import com.parashchak.onlineshop.dao.jdbc.JdbcConnectionFactory;
+import com.parashchak.onlineshop.dao.jdbc.JdbcProductDao;
+import com.parashchak.onlineshop.dao.jdbc.JdbcUserDao;
 import com.parashchak.onlineshop.service.*;
 import com.parashchak.onlineshop.web.servlet.*;
 import org.eclipse.jetty.server.Server;
