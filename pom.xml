@@ -123,7 +123,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        com.parashchak.onlineshop.starter.Starter
+                                        com.parashchak.onlineshop.Starter
                                     </mainClass>
                                 </manifest>
                             </archive>

@@ -6,7 +6,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.util.Base64;
 
-public class PasswordHandler {
+class PasswordHandler {
 
     @VisibleForTesting
     byte[] getKey(String password, String salt) {
@@ -30,7 +30,7 @@ public class PasswordHandler {
         return Base64.getEncoder().encodeToString(key);
     }
 
-    public boolean verifyPassword(String providedPassword, String salt, String encryptedPassword) {
+    boolean verifyPassword(String providedPassword, String salt, String encryptedPassword) {
         String newSecurePassword = generateEncryptedPassword(providedPassword, salt);
         return newSecurePassword.equalsIgnoreCase(encryptedPassword);
     }

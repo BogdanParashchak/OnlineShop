@@ -1,6 +1,7 @@
 package com.parashchak.onlineshop.web.servlet;
 
 import com.parashchak.onlineshop.entity.User;
+import com.parashchak.onlineshop.security.SecurityService;
 import com.parashchak.onlineshop.service.*;
 import com.parashchak.onlineshop.web.presentation.PageGenerator;
 import jakarta.servlet.http.*;
