@@ -1,6 +1,7 @@
 package com.parashchak.onlineshop.dao.jdbc;
 
 import com.zaxxer.hikari.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;

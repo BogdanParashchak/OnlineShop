@@ -4,6 +4,7 @@ import com.parashchak.onlineshop.dao.ProductDao;
 import com.parashchak.onlineshop.dao.jdbc.mapper.ProductRowMapper;
 import com.parashchak.onlineshop.entity.Product;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JdbcProductDao implements ProductDao {
 
@@ -34,6 +36,7 @@ public class JdbcProductDao implements ProductDao {
                 Product product = PRODUCT_ROW_MAPPER.mapRow(resultSet);
                 allProductsList.add(product);
             }
+            log.info("Executed: {}", GET_ALL_PRODUCTS_QUERY);
             return allProductsList;
         } catch (Exception e) {
             throw new RuntimeException("Unable to get all products list from DB", e);
@@ -48,6 +51,7 @@ public class JdbcProductDao implements ProductDao {
             preparedStatement.setTimestamp(3, Timestamp.valueOf(product.getCreationDate()));
             preparedStatement.setString(4, product.getDescription());
             preparedStatement.executeUpdate();
+            log.info("Executed: {}", preparedStatement);
         } catch (Exception e) {
             throw new RuntimeException("Unable to add product to DB", e);
         }
@@ -58,6 +62,7 @@ public class JdbcProductDao implements ProductDao {
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRODUCT_QUERY)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
+            log.info("Executed: {}", preparedStatement);
         } catch (Exception e) {
             throw new RuntimeException("Unable to delete product from DB", e);
         }
@@ -68,11 +73,12 @@ public class JdbcProductDao implements ProductDao {
              PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_ID_QUERY)) {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                log.info("Executed: {}", preparedStatement);
                 if (resultSet.next()) {
                     return Optional.of(PRODUCT_ROW_MAPPER.mapRow(resultSet));
                 }
+                return Optional.empty();
             }
-            return Optional.empty();
         } catch (Exception e) {
             throw new RuntimeException("Unable to get product from DB", e);
         }
@@ -86,6 +92,7 @@ public class JdbcProductDao implements ProductDao {
             preparedStatement.setString(3, product.getDescription());
             preparedStatement.setInt(4, product.getId());
             preparedStatement.executeUpdate();
+            log.info("Executed: {}", preparedStatement);
         } catch (Exception e) {
             throw new RuntimeException("Unable to update product in DB", e);
         }
@@ -103,6 +110,7 @@ public class JdbcProductDao implements ProductDao {
                     productsSearchList.add(product);
                 }
             }
+            log.info("Executed: {}", preparedStatement);
             return productsSearchList;
         } catch (Exception e) {
             throw new RuntimeException("Unable to search products in DB", e);

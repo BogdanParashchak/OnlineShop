@@ -36,6 +36,4 @@ public class ProductService {
     public List<Product> search(String searchText) {
         return productDao.search(searchText);
     }
-
-
 }

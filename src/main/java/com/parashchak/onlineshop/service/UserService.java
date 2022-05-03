@@ -4,6 +4,7 @@ import com.parashchak.onlineshop.dao.UserDao;
 import com.parashchak.onlineshop.dao.jdbc.JdbcUserDao;
 import com.parashchak.onlineshop.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
 
