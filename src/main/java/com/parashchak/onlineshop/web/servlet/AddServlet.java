@@ -19,17 +19,11 @@ public class AddServlet extends HttpServlet {
 
     private final PageGenerator pageGenerator = PageGenerator.instance();
     private final ProductService productService;
-    private final SecurityService securityService;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Optional<String> userToken = RequestUtil.getUserToken(request);
-        if (!securityService.validateUserToken(userToken)) {
-            response.sendRedirect("/login");
-        } else {
             String page = pageGenerator.getPage("addPage.html");
             response.getWriter().write(page);
-        }
     }
 
     @Override

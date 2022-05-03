@@ -18,21 +18,15 @@ public class EditServlet extends HttpServlet {
 
     private final PageGenerator pageGenerator = PageGenerator.instance();
     private final ProductService productService;
-    private final SecurityService securityService;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Optional<String> userToken = RequestUtil.getUserToken(request);
-        if (!securityService.validateUserToken(userToken)) {
-            response.sendRedirect("/login");
-        } else {
             Map<String, Object> pageData = new HashMap<>();
             int id = Integer.parseInt(request.getParameter("id"));
             Product product = productService.getById(id).orElseThrow();
             pageData.put("product", product);
             String page = pageGenerator.getPage("editPage.html", pageData);
             response.getWriter().write(page);
-        }
     }
 
     @Override
