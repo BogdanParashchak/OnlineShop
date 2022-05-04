@@ -12,7 +12,7 @@ public class SecurityService {
     @Getter
     private final PasswordHandler passwordHandler = new PasswordHandler();
     @Getter
-    private final List<String> sessionList = new ArrayList<>();
+    private final List<String> sessionList = Collections.synchronizedList(new ArrayList<>());
     private final UserService userService;
 
     public boolean validateUserToken(Optional<String> userToken) {
