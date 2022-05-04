@@ -1,10 +1,7 @@
 package com.parashchak.onlineshop;
 
-import com.parashchak.onlineshop.dao.ProductDao;
-import com.parashchak.onlineshop.dao.UserDao;
-import com.parashchak.onlineshop.dao.jdbc.JdbcConnectionFactory;
-import com.parashchak.onlineshop.dao.jdbc.JdbcProductDao;
-import com.parashchak.onlineshop.dao.jdbc.JdbcUserDao;
+import com.parashchak.onlineshop.dao.*;
+import com.parashchak.onlineshop.dao.jdbc.*;
 import com.parashchak.onlineshop.security.SecurityService;
 import com.parashchak.onlineshop.service.*;
 import com.parashchak.onlineshop.web.security.SecurityFilter;

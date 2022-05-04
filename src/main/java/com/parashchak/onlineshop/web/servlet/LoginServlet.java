@@ -1,14 +1,13 @@
 package com.parashchak.onlineshop.web.servlet;
 
-import com.parashchak.onlineshop.entity.User;
 import com.parashchak.onlineshop.security.SecurityService;
-import com.parashchak.onlineshop.service.*;
 import com.parashchak.onlineshop.web.presentation.PageGenerator;
 import jakarta.servlet.http.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
 
 import java.io.IOException;
-import java.util.Optional;
+
+import static com.parashchak.onlineshop.web.util.ResponseUtil.setCookie;
 
 @AllArgsConstructor
 public class LoginServlet extends HttpServlet {
@@ -28,7 +27,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         if (securityService.validateCredentials(login, password)) {
-            securityService.createSession(response);
+            setCookie(response, securityService.createToken());
         }
         response.sendRedirect("/products");
     }

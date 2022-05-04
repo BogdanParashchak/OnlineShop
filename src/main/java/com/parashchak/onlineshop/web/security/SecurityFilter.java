@@ -3,8 +3,7 @@ package com.parashchak.onlineshop.web.security;
 import com.parashchak.onlineshop.security.SecurityService;
 import com.parashchak.onlineshop.web.util.RequestUtil;
 import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

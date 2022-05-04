@@ -1,7 +1,6 @@
 package com.parashchak.onlineshop.web.util;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.*;
 
 import java.util.Optional;
 

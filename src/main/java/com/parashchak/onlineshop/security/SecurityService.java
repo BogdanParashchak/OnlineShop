@@ -2,13 +2,9 @@ package com.parashchak.onlineshop.security;
 
 import com.parashchak.onlineshop.entity.User;
 import com.parashchak.onlineshop.service.UserService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.*;
 
 import java.util.*;
-
-import static com.parashchak.onlineshop.web.util.ResponseUtil.setCookie;
 
 @RequiredArgsConstructor
 public class SecurityService {
@@ -32,9 +28,9 @@ public class SecurityService {
         return false;
     }
 
-    public void createSession(HttpServletResponse response) {
+    public String createToken() {
         String uuid = UUID.randomUUID().toString();
         sessionList.add(uuid);
-        setCookie(response, uuid);
+        return uuid;
     }
 }
