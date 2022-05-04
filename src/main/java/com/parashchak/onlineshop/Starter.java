@@ -41,7 +41,7 @@ public class Starter {
         //servlets
         ViewAllServlet viewAllServlet = new ViewAllServlet(productService);
         SearchServlet searchServlet = new SearchServlet(productService);
-        LoginServlet loginServlet = new LoginServlet(userService, securityService);
+        LoginServlet loginServlet = new LoginServlet(securityService);
         AddServlet addServlet = new AddServlet(productService);
         EditServlet editServlet = new EditServlet(productService);
         DeleteServlet deleteServlet = new DeleteServlet(productService);

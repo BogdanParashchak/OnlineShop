@@ -14,7 +14,6 @@ import java.util.Optional;
 public class LoginServlet extends HttpServlet {
 
     private final PageGenerator pageGenerator = PageGenerator.instance();
-    private final UserService userService;
     private final SecurityService securityService;
 
     @Override

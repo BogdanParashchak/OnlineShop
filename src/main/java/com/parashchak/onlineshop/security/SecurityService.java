@@ -23,24 +23,18 @@ public class SecurityService {
         return userToken.isPresent() && sessionList.contains(userToken.get());
     }
 
-    public String setUserToken() {
-        String uuid = UUID.randomUUID().toString();
-        sessionList.add(uuid);
-        return uuid;
-    }
-
     public boolean validateCredentials(String login, String password) {
         Optional<User> optionalUser = userService.get(login);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            passwordHandler.verifyPassword(password, user.getSalt(), user.getPassword());
-            return true;
+            return passwordHandler.verifyPassword(password, user.getSalt(), user.getPassword());
         }
         return false;
     }
 
     public void createSession(HttpServletResponse response) {
-        String userToken = setUserToken();
-        setCookie(response, userToken);
+        String uuid = UUID.randomUUID().toString();
+        sessionList.add(uuid);
+        setCookie(response, uuid);
     }
 }
