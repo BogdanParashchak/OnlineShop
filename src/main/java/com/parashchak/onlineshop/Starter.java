@@ -54,12 +54,7 @@ public class Starter {
         contextHandler.addServlet(new ServletHolder(editServlet), "/products/edit");
         contextHandler.addServlet(new ServletHolder(deleteServlet), "/products/delete");
 
-        contextHandler.addFilter(new FilterHolder(securityFilter), "", EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter(new FilterHolder(securityFilter), "/products", EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter(new FilterHolder(securityFilter), "/products/search", EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter(new FilterHolder(securityFilter), "/products/add", EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter(new FilterHolder(securityFilter), "/products/edit", EnumSet.of(DispatcherType.REQUEST));
-        contextHandler.addFilter(new FilterHolder(securityFilter), "/products/delete", EnumSet.of(DispatcherType.REQUEST));
+        contextHandler.addFilter(new FilterHolder(securityFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
 
         Server server = new Server(getPort(configProperties));
         server.setHandler(contextHandler);

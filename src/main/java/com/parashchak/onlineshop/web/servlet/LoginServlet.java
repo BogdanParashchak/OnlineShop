@@ -29,6 +29,6 @@ public class LoginServlet extends HttpServlet {
         if (securityService.validateCredentials(login, password)) {
             setCookie(response, securityService.createToken());
         }
-        response.sendRedirect("/products");
+        response.sendRedirect("/");
     }
 }
