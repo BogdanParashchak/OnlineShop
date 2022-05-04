@@ -27,8 +27,8 @@ public class LoginServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        Optional<User> user = userService.get(login);
-        if (user.isPresent() && securityService.verifyPassword(password, user.get().getSalt(), user.get().getPassword())) {
+
+        if (securityService.validateCredentials(login, password)) {
             securityService.createSession(response);
         }
         response.sendRedirect("/products");

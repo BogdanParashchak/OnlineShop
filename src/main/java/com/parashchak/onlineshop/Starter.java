@@ -33,7 +33,7 @@ public class Starter {
         //services
         ProductService productService = new ProductService(productDao);
         UserService userService = new UserService(userDao);
-        SecurityService securityService = new SecurityService();
+        SecurityService securityService = new SecurityService(userService);
 
         //filters
         SecurityFilter securityFilter = new SecurityFilter(securityService);
