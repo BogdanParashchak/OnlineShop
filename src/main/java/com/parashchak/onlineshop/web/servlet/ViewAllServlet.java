@@ -1,10 +1,10 @@
 package com.parashchak.onlineshop.web.servlet;
 
 import com.parashchak.onlineshop.entity.Product;
-import com.parashchak.onlineshop.web.presentation.PageGenerator;
 import com.parashchak.onlineshop.service.ProductService;
+import com.parashchak.templater.Templater;
 import jakarta.servlet.http.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
 
 import java.io.IOException;
 import java.util.*;
@@ -12,7 +12,7 @@ import java.util.*;
 @AllArgsConstructor
 public class ViewAllServlet extends HttpServlet {
 
-    private final PageGenerator pageGenerator = PageGenerator.instance();
+    private final Templater templater = new Templater("templates");
     private final ProductService productService;
 
     @Override
@@ -31,7 +31,7 @@ public class ViewAllServlet extends HttpServlet {
         Map<String, Object> pageData = new HashMap<>();
         List<Product> allProducts = productService.getAll();
         pageData.put("products", allProducts);
-        String page = pageGenerator.getPage("viewPage.html", pageData);
+        String page = templater.getPage("viewPage.html", pageData);
         response.getWriter().write(page);
     }
 }

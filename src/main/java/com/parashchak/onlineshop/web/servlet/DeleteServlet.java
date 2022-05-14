@@ -1,13 +1,10 @@
 package com.parashchak.onlineshop.web.servlet;
 
 import com.parashchak.onlineshop.service.ProductService;
-import com.parashchak.onlineshop.security.SecurityService;
-import com.parashchak.onlineshop.web.util.RequestUtil;
 import jakarta.servlet.http.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @AllArgsConstructor
 public class DeleteServlet extends HttpServlet {
