@@ -20,7 +20,6 @@ public class SecurityFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        Optional<String> userToken = RequestUtil.getUserToken(httpServletRequest);
 
         if (((HttpServletRequest) request).getServletPath().equals("/login")) {
             chain.doFilter(httpServletRequest, httpServletResponse);
@@ -28,6 +27,7 @@ public class SecurityFilter implements Filter {
         }
 
         log.info("Check for authorization");
+        Optional<String> userToken = RequestUtil.getUserToken(httpServletRequest);
         if (!securityService.validateUserToken(userToken)) {
             httpServletResponse.sendRedirect("/login");
             log.info("Unauthorized");
@@ -36,10 +36,5 @@ public class SecurityFilter implements Filter {
 
         log.info("Authorized");
         chain.doFilter(httpServletRequest, httpServletResponse);
-    }
-
-
-    @Override
-    public void destroy() {
     }
 }

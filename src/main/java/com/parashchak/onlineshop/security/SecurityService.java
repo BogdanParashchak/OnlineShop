@@ -4,6 +4,7 @@ import com.parashchak.onlineshop.entity.User;
 import com.parashchak.onlineshop.service.UserService;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -11,12 +12,26 @@ public class SecurityService {
 
     @Getter
     private final PasswordHandler passwordHandler = new PasswordHandler();
+
     @Getter
-    private final List<String> sessionList = Collections.synchronizedList(new ArrayList<>());
+    private final List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
+
     private final UserService userService;
 
     public boolean validateUserToken(Optional<String> userToken) {
-        return userToken.isPresent() && sessionList.contains(userToken.get());
+        if (userToken.isPresent()) {
+            for (int i = sessionList.size() - 1; i >= 0; --i) {
+                Session session = sessionList.get(i);
+                if (session.getToken().equals(userToken.get())) {
+                    if (session.getExpireDateTime().isAfter(LocalDateTime.now())) {
+                        return true;
+                    } else {
+                        sessionList.remove(i);
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public boolean validateCredentials(String login, String password) {
@@ -28,9 +43,10 @@ public class SecurityService {
         return false;
     }
 
-    public String createToken() {
-        String uuid = UUID.randomUUID().toString();
-        sessionList.add(uuid);
-        return uuid;
+    public String login() {
+        String token = UUID.randomUUID().toString();
+        Session session = new Session(token, LocalDateTime.now().plusSeconds(3600));
+        sessionList.add(session);
+        return token;
     }
 }

@@ -15,7 +15,6 @@ public class LoginServlet extends HttpServlet {
 
     private final Templater templater = new Templater("templates");
     private final SecurityService securityService = ServiceLocator.getService(SecurityService.class);
-    ;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -29,7 +28,8 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         if (securityService.validateCredentials(login, password)) {
-            setCookie(response, securityService.createToken());
+            String token = securityService.login();
+            setCookie(response, token);
         }
         response.sendRedirect("/");
     }
