@@ -1,10 +1,10 @@
 package com.parashchak.onlineshop.web.servlet;
 
 import com.parashchak.onlineshop.security.SecurityService;
+import com.parashchak.onlineshop.service.ServiceLocator;
 import com.parashchak.templater.Templater;
 import jakarta.servlet.http.*;
 import lombok.AllArgsConstructor;
-
 
 import java.io.IOException;
 
@@ -14,7 +14,8 @@ import static com.parashchak.onlineshop.web.util.ResponseUtil.setCookie;
 public class LoginServlet extends HttpServlet {
 
     private final Templater templater = new Templater("templates");
-    private final SecurityService securityService;
+    private final SecurityService securityService = ServiceLocator.getService(SecurityService.class);
+    ;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

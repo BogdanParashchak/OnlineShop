@@ -14,6 +14,7 @@ public class ServiceLocator {
 
     static {
         Properties configProperties = getAppProperties();
+
         DataSource dataSource = new JdbcConnectionFactory(configProperties);
         ProductDao productDao = new JdbcProductDao(dataSource);
         UserDao userDao = new JdbcUserDao(dataSource);
