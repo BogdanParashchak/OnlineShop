@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+
+    <servlet>
+        <servlet-name>AddServlet</servlet-name>
+        <servlet-class>com.parashchak.onlineshop.web.servlet.AddServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>DeleteServlet</servlet-name>
+        <servlet-class>com.parashchak.onlineshop.web.servlet.DeleteServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>EditServlet</servlet-name>
+        <servlet-class>com.parashchak.onlineshop.web.servlet.EditServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>com.parashchak.onlineshop.web.servlet.SearchServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>ViewAllServlet</servlet-name>
+        <servlet-class>com.parashchak.onlineshop.web.servlet.ViewAllServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AddServlet</servlet-name>
+        <url-pattern>/products/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DeleteServlet</servlet-name>
+        <url-pattern>/products/delete</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>EditServlet</servlet-name>
+        <url-pattern>/products/edit</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/products/search</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ViewAllServlet</servlet-name>
+        <url-pattern>/products</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ViewAllServlet</servlet-name>
+        <url-pattern></url-pattern>
+    </servlet-mapping>
+
+</web-app>

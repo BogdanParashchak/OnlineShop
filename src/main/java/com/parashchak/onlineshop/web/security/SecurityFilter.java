@@ -3,7 +3,8 @@ package com.parashchak.onlineshop.web.security;
 import com.parashchak.onlineshop.security.SecurityService;
 import com.parashchak.onlineshop.web.util.RequestUtil;
 import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,10 +15,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SecurityFilter implements Filter {
     private final SecurityService securityService;
-
-    @Override
-    public void init(FilterConfig filterConfig) {
-    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -40,6 +37,7 @@ public class SecurityFilter implements Filter {
         log.info("Authorized");
         chain.doFilter(httpServletRequest, httpServletResponse);
     }
+
 
     @Override
     public void destroy() {

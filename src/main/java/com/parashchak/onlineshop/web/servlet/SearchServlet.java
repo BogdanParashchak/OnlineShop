@@ -1,19 +1,17 @@
 package com.parashchak.onlineshop.web.servlet;
 
 import com.parashchak.onlineshop.entity.Product;
-import com.parashchak.onlineshop.service.ProductService;
+import com.parashchak.onlineshop.service.*;
 import com.parashchak.templater.Templater;
 import jakarta.servlet.http.*;
-import lombok.AllArgsConstructor;
 
 import java.io.IOException;
 import java.util.*;
 
-@AllArgsConstructor
 public class SearchServlet extends HttpServlet {
 
     private final Templater templater = new Templater("templates");
-    private final ProductService productService;
+    private final ProductService productService = ServiceLocator.getService(ProductService.class);
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

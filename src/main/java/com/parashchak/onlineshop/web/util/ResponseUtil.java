@@ -1,6 +1,7 @@
 package com.parashchak.onlineshop.web.util;
 
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class ResponseUtil {
     public static void setCookie(HttpServletResponse response, String value) {
