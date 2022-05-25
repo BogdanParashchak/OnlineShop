@@ -21,7 +21,7 @@ public class ServiceLocator {
 
         ProductService productService = new ProductService(productDao);
         UserService userService = new UserService(userDao);
-        SecurityService securityService = new SecurityService(userService);
+        SecurityService securityService = new SecurityService(userService, configProperties);
 
         addService(ProductService.class, productService);
         addService(SecurityService.class, securityService);

@@ -58,11 +58,13 @@ public class PropertiesReaderTest {
         String user = "db.user=test_user";
         String password = "db.password=test_password";
         String port = "server.port=3000";
+        String timeToLive = "session.timeToLive=3600";
         StringJoiner stringJoiner = new StringJoiner("\n")
                 .add(url)
                 .add(user)
                 .add(password)
-                .add(port);
+                .add(port)
+                .add(timeToLive);
         InputStream mockInputStream = new ByteArrayInputStream(stringJoiner.toString().getBytes());
 
         //when
@@ -73,6 +75,7 @@ public class PropertiesReaderTest {
         assertEquals("test_user", properties.getProperty("db.user"));
         assertEquals("test_password", properties.getProperty("db.password"));
         assertEquals("3000", properties.getProperty("server.port"));
+        assertEquals("3600", properties.getProperty("session.timeToLive"));
     }
 
 
@@ -82,6 +85,7 @@ public class PropertiesReaderTest {
         //prepare
         environmentVariables.set("DATABASE_URL", "postgresql://test_user:test_password@localhost:5432/test_db");
         environmentVariables.set("PORT", "3000");
+        environmentVariables.set("TIME_TO_LIVE", "3600");
 
         //when
         Properties properties = readEnvironmentProperties();
@@ -91,6 +95,7 @@ public class PropertiesReaderTest {
         assertEquals("test_user", properties.getProperty("db.user"));
         assertEquals("test_password", properties.getProperty("db.password"));
         assertEquals("3000", properties.getProperty("server.port"));
+        assertEquals("3600", properties.getProperty("session.timeToLive"));
     }
 
     @Test
@@ -98,6 +103,8 @@ public class PropertiesReaderTest {
     void givenIncorrectDatabaseUrlEnvironmentVariable_WhenReadEnvironmentProperties_ThenExceptionThrown() {
         environmentVariables.set("DATABASE_URL", "incorrect_variable_value");
         environmentVariables.set("PORT", "3000");
+        environmentVariables.set("TIME_TO_LIVE", "3600");
+
         assertThrows(RuntimeException.class, PropertiesReader::readEnvironmentProperties);
     }
 
@@ -106,6 +113,8 @@ public class PropertiesReaderTest {
     void givenDatabaseUrlEnvironmentVariableIsNull_WhenReadEnvironmentProperties_ThenExceptionThrown() {
         environmentVariables.set("DATABASE_URL", null);
         environmentVariables.set("PORT", "3000");
+        environmentVariables.set("TIME_TO_LIVE", "3600");
+
         assertThrows(RuntimeException.class, PropertiesReader::readEnvironmentProperties);
     }
 
@@ -114,6 +123,18 @@ public class PropertiesReaderTest {
     void givenPortEnvironmentVariableIsNull_WhenReadEnvironmentProperties_ThenExceptionThrown() {
         environmentVariables.set("DATABASE_URL", "postgresql://test_user:test_password@localhost:5432/test_db");
         environmentVariables.set("PORT", null);
+        environmentVariables.set("TIME_TO_LIVE", "3600");
+
+        assertThrows(RuntimeException.class, PropertiesReader::readEnvironmentProperties);
+    }
+
+    @Test
+    @DisplayName("RuntimeException thrown when reading Null TIME_TO_LIVE environment variable")
+    void givenTimeToLiveVariableIsNull_WhenReadEnvironmentProperties_ThenExceptionThrown() {
+        environmentVariables.set("DATABASE_URL", "postgresql://test_user:test_password@localhost:5432/test_db");
+        environmentVariables.set("PORT", 3000);
+        environmentVariables.set("TIME_TO_LIVE", null);
+
         assertThrows(RuntimeException.class, PropertiesReader::readEnvironmentProperties);
     }
 }

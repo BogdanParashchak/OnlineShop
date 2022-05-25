@@ -4,13 +4,13 @@ import com.parashchak.onlineshop.security.SecurityService;
 import com.parashchak.onlineshop.service.ServiceLocator;
 import com.parashchak.templater.Templater;
 import jakarta.servlet.http.*;
-import lombok.AllArgsConstructor;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import static com.parashchak.onlineshop.web.util.ResponseUtil.setCookie;
 
-@AllArgsConstructor
+
 public class LoginServlet extends HttpServlet {
 
     private final Templater templater = new Templater("templates");
@@ -29,7 +29,8 @@ public class LoginServlet extends HttpServlet {
 
         if (securityService.validateCredentials(login, password)) {
             String token = securityService.login();
-            setCookie(response, token);
+            Properties configProperties = securityService.getConfigProperties();
+            setCookie(response, token, configProperties);
         }
         response.sendRedirect("/");
     }

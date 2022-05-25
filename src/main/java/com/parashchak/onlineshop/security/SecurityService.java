@@ -18,6 +18,9 @@ public class SecurityService {
 
     private final UserService userService;
 
+    @Getter
+    private final Properties configProperties;
+
     public boolean validateUserToken(Optional<String> userToken) {
         if (userToken.isPresent()) {
             for (int i = sessionList.size() - 1; i >= 0; --i) {
@@ -45,7 +48,9 @@ public class SecurityService {
 
     public String login() {
         String token = UUID.randomUUID().toString();
-        Session session = new Session(token, LocalDateTime.now().plusSeconds(3600));
+        long timeToLive = Long.parseLong(configProperties.getProperty("session.timeToLive"));
+        LocalDateTime expireDateTime = LocalDateTime.now().plusSeconds(timeToLive);
+        Session session = new Session(token, expireDateTime);
         sessionList.add(session);
         return token;
     }

@@ -1,12 +1,15 @@
 package com.parashchak.onlineshop.web.util;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
+
+import java.util.Properties;
 
 public class ResponseUtil {
-    public static void setCookie(HttpServletResponse response, String value) {
+
+    public static void setCookie(HttpServletResponse response, String value, Properties configProperties) {
         Cookie cookie = new Cookie("user-token", value);
-        cookie.setMaxAge(3600);
+        long timeToLive = Long.parseLong(configProperties.getProperty("session.timeToLive"));
+        cookie.setMaxAge((int) timeToLive);
         response.addCookie(cookie);
     }
 }
