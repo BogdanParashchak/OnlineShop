@@ -1,8 +1,10 @@
 package com.parashchak.onlineshop.web.mapper;
 
 import com.parashchak.onlineshop.entity.Product;
-import jakarta.servlet.http.HttpServletRequest;
+//import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static com.parashchak.onlineshop.web.mapper.ProductRequestMapper.toProduct;
 import static org.junit.jupiter.api.Assertions.*;
