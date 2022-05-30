@@ -14,6 +14,7 @@ import java.util.*;
 import static com.parashchak.onlineshop.web.mapper.ProductRequestMapper.toProduct;
 
 @Controller
+@RequestMapping
 public class UserController {
 
     @Autowired
@@ -22,19 +23,19 @@ public class UserController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(path = "/products", method = RequestMethod.GET)
+    @GetMapping(path = {"/products", "/"})
     @ResponseBody
     public String getAll() {
         return showAll();
     }
 
-    @RequestMapping(path = "/products/add", method = RequestMethod.GET)
+    @GetMapping(path = "/products/add")
     @ResponseBody
     public String loadAddPage() {
         return templater.getPage("addPage.html");
     }
 
-    @RequestMapping(path = "/products/add", method = RequestMethod.POST)
+    @PostMapping(path = "/products/add")
     @ResponseBody
     public String add(HttpServletRequest request) throws IOException {
         Product product = toProduct(request);
@@ -42,7 +43,7 @@ public class UserController {
         return templater.getPage("addPageSuccessful.html");
     }
 
-    @RequestMapping(path = "/products/search", method = RequestMethod.GET)
+    @GetMapping(path = "/products/search")
     @ResponseBody
     public String search(@RequestParam("search-text") String searchText) {
         List<Product> productsSearchList = productService.search(searchText);
@@ -51,7 +52,7 @@ public class UserController {
         return templater.getPage("viewPage.html", pageData);
     }
 
-    @RequestMapping(path = "/products/edit", method = RequestMethod.GET)
+    @GetMapping(path = "/products/edit")
     @ResponseBody
     public String getById(@RequestParam("id") int userId) {
         Product product = productService.getById(userId).orElseThrow();
@@ -60,7 +61,7 @@ public class UserController {
         return templater.getPage("editPage.html", pageData);
     }
 
-    @RequestMapping(path = "/products/edit", method = RequestMethod.POST)
+    @PostMapping(path = "/products/edit")
     @ResponseBody
     public String edit(HttpServletRequest request) {
         Product product = toProduct(request);
@@ -68,7 +69,7 @@ public class UserController {
         return templater.getPage("editPageSuccessful.html");
     }
 
-    @RequestMapping(path = "/products/delete", method = RequestMethod.GET)
+    @PostMapping(path = "/products/delete")
     public void delete(@RequestParam("id") int userId, HttpServletResponse response) throws IOException {
         productService.delete(userId);
         response.sendRedirect("/products");
