@@ -10,7 +10,7 @@ import java.util.Properties;
 @RequiredArgsConstructor
 public class PropertiesReader {
 
-    private static final String LOCAL_PROPERTIES_FILE_PATH = "configs/application.properties";
+    private static final String LOCAL_PROPERTIES_FILE_PATH = "config/application.properties";
 
     public static Properties getAppProperties() {
         Properties localProperties = readLocalProperties();

@@ -3,6 +3,7 @@ package com.parashchak.onlineshop.controller;
 import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.service.*;
 import com.parashchak.templater.Templater;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,10 @@ import static com.parashchak.onlineshop.web.mapper.ProductRequestMapper.toProduc
 @Controller
 public class UserController {
 
-    private final Templater templater = new Templater("templates");
-    private final ProductService productService = ServiceLocator.getService(ProductService.class);
+    private final Templater templater = new Templater("template");
+
+    @Autowired
+    private ProductService productService;
 
     @RequestMapping(path = "/products", method = RequestMethod.GET)
     public void getAll(HttpServletResponse response) throws IOException {

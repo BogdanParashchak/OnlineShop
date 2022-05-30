@@ -2,6 +2,8 @@ package com.parashchak.onlineshop.dao.jdbc;
 
 import com.parashchak.onlineshop.dao.ProductDao;
 import com.parashchak.onlineshop.entity.Product;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 
@@ -18,18 +20,18 @@ class JdbcProductDaoITest {
     private static final String USER = "app";
     private static final String PASSWORD = "app";
 
-    private final Properties properties = new Properties();
-    DataSource dataSource;
-    ProductDao productDao;
+    private ProductDao productDao;
 
     @BeforeEach
     @SneakyThrows
     void setUp() {
-        properties.setProperty("db.url", URL);
-        properties.setProperty("db.user", USER);
-        properties.setProperty("db.password", PASSWORD);
 
-        dataSource = new JdbcConnectionFactory(properties);
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl(URL);
+        hikariConfig.setUsername(USER);
+        hikariConfig.setPassword(PASSWORD);
+
+        DataSource dataSource = new HikariDataSource(hikariConfig);
         productDao = new JdbcProductDao(dataSource);
 
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -402,6 +404,5 @@ class JdbcProductDaoITest {
         assertEquals("first_product_description", productsAfterSearch.get(0).getDescription());
         assertEquals("second_product_description", productsAfterSearch.get(1).getDescription());
         assertEquals("third_product_description", productsAfterSearch.get(2).getDescription());
-
     }
 }

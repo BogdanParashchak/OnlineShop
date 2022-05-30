@@ -1,7 +1,6 @@
 package com.parashchak.onlineshop.service;
 
 import com.parashchak.onlineshop.dao.ProductDao;
-import com.parashchak.onlineshop.dao.jdbc.JdbcProductDao;
 import com.parashchak.onlineshop.entity.Product;
 import lombok.RequiredArgsConstructor;
 

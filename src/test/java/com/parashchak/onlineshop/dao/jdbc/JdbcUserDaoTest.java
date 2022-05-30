@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 
 class JdbcUserDaoTest {
 
-    private final DataSource mockDatasource = mock(JdbcConnectionFactory.class);
+    private final DataSource mockDatasource = mock(DataSource.class);
     private final Connection mockConnection = mock(Connection.class);
     private final PreparedStatement mockPreparedStatement = mock(PreparedStatement.class);
     private final ResultSet mockResultSet = mock(ResultSet.class);

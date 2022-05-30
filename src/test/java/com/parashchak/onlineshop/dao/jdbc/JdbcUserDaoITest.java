@@ -2,6 +2,8 @@ package com.parashchak.onlineshop.dao.jdbc;
 
 import com.parashchak.onlineshop.dao.UserDao;
 import com.parashchak.onlineshop.entity.User;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 
@@ -19,18 +21,18 @@ class JdbcUserDaoITest {
     private static final String USER = "app";
     private static final String PASSWORD = "app";
 
-    private final Properties properties = new Properties();
-    DataSource dataSource;
-    UserDao userDao;
+    private UserDao userDao;
 
     @BeforeEach
     @SneakyThrows
     void setUp() {
-        properties.setProperty("db.url", URL);
-        properties.setProperty("db.user", USER);
-        properties.setProperty("db.password", PASSWORD);
 
-        dataSource = new JdbcConnectionFactory(properties);
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl(URL);
+        hikariConfig.setUsername(USER);
+        hikariConfig.setPassword(PASSWORD);
+
+        DataSource dataSource = new HikariDataSource(hikariConfig);
         userDao = new JdbcUserDao(dataSource);
 
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);

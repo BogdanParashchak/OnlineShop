@@ -1,7 +1,6 @@
 package com.parashchak.onlineshop.web.mapper;
 
 import com.parashchak.onlineshop.entity.Product;
-//import jakarta.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
