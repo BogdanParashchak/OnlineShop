@@ -38,4 +38,9 @@
         <constructor-arg ref="jdbcProductDao"/>
     </bean>
 
+    <bean id="templater"
+          class="com.parashchak.templater.Templater">
+        <constructor-arg value="template"/>
+    </bean>
+
 </beans>

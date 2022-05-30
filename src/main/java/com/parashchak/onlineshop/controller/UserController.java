@@ -16,7 +16,8 @@ import static com.parashchak.onlineshop.web.mapper.ProductRequestMapper.toProduc
 @Controller
 public class UserController {
 
-    private final Templater templater = new Templater("template");
+    @Autowired
+    private Templater templater;
 
     @Autowired
     private ProductService productService;
