@@ -69,7 +69,7 @@ public class UserController {
         return templater.getPage("editPageSuccessful.html");
     }
 
-    @PostMapping(path = "/products/delete")
+    @GetMapping(path = "/products/delete")
     public void delete(@RequestParam("id") int userId, HttpServletResponse response) throws IOException {
         productService.delete(userId);
         response.sendRedirect("/products");
