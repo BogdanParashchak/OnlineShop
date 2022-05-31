@@ -16,21 +16,15 @@
     <mvc:annotation-driven/>
     <context:property-placeholder location="classpath:config/application.properties"/>
 
-    <bean id="hikariConfig"
-          class="com.zaxxer.hikari.HikariConfig">
-        <property name="jdbcUrl" value="${db.url}"/>
-        <property name="username" value="${db.user}"/>
-        <property name="password" value="${db.password}"/>
-    </bean>
-
-    <bean id="hikariDataSource"
-          class="com.zaxxer.hikari.HikariDataSource">
-        <constructor-arg ref="hikariConfig"/>
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="url" value = "${db.url}" />
+        <property name="username" value = "${db.user}" />
+        <property name="password" value = "${db.password}" />
     </bean>
 
     <bean id="jdbcProductDao"
           class="com.parashchak.onlineshop.dao.jdbc.JdbcProductDao">
-        <constructor-arg ref="hikariDataSource"/>
+        <constructor-arg ref="dataSource"/>
     </bean>
 
     <bean id="productService"
