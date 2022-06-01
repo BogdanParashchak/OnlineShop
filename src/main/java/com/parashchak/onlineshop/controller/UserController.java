@@ -14,7 +14,6 @@ import java.util.*;
 import static com.parashchak.onlineshop.web.mapper.ProductRequestMapper.toProduct;
 
 @Controller
-@RequestMapping
 public class UserController {
 
     @Autowired
@@ -69,7 +68,7 @@ public class UserController {
         return templater.getPage("editPageSuccessful.html");
     }
 
-    @GetMapping(path = "/products/delete")
+    @PostMapping(path = "/products/delete")
     public void delete(@RequestParam("id") int userId, HttpServletResponse response) throws IOException {
         productService.delete(userId);
         response.sendRedirect("/products");
