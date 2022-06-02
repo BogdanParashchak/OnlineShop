@@ -14,7 +14,7 @@ import java.util.*;
 import static com.parashchak.onlineshop.web.mapper.ProductRequestMapper.toProduct;
 
 @Controller
-public class UserController {
+public class ProductsController {
 
     @Autowired
     private Templater templater;
@@ -35,11 +35,10 @@ public class UserController {
     }
 
     @PostMapping(path = "/products/add")
-    @ResponseBody
     public String add(HttpServletRequest request) throws IOException {
         Product product = toProduct(request);
         productService.add(product);
-        return templater.getPage("addPageSuccessful.html");
+        return "redirect:/products";
     }
 
     @GetMapping(path = "/products/search")
@@ -61,17 +60,16 @@ public class UserController {
     }
 
     @PostMapping(path = "/products/edit")
-    @ResponseBody
     public String edit(HttpServletRequest request) {
         Product product = toProduct(request);
         productService.update(product);
-        return templater.getPage("editPageSuccessful.html");
+        return "redirect:/products";
     }
 
     @PostMapping(path = "/products/delete")
-    public void delete(@RequestParam("id") int userId, HttpServletResponse response) throws IOException {
+    public String delete(@RequestParam("id") int userId) {
         productService.delete(userId);
-        response.sendRedirect("/products");
+        return "redirect:/products";
     }
 
     private String showAll() {
