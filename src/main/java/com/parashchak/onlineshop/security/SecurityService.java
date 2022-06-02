@@ -3,7 +3,6 @@ package com.parashchak.onlineshop.security;
 import com.parashchak.onlineshop.entity.User;
 import com.parashchak.onlineshop.service.UserService;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -17,11 +16,10 @@ public class SecurityService {
     @Getter
     private final List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
 
-    @Autowired
     private final UserService userService;
 
     @Getter
-    private final Properties configProperties;
+    private final long timeToLive;
 
     public boolean validateUserToken(Optional<String> userToken) {
         if (userToken.isPresent()) {
@@ -50,7 +48,6 @@ public class SecurityService {
 
     public String login() {
         String token = UUID.randomUUID().toString();
-        long timeToLive = Long.parseLong(configProperties.getProperty("session.timeToLive"));
         LocalDateTime expireDateTime = LocalDateTime.now().plusSeconds(timeToLive);
         Session session = new Session(token, expireDateTime);
         sessionList.add(session);
