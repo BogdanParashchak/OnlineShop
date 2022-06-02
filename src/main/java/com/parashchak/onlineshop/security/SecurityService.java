@@ -3,6 +3,7 @@ package com.parashchak.onlineshop.security;
 import com.parashchak.onlineshop.entity.User;
 import com.parashchak.onlineshop.service.UserService;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -16,6 +17,7 @@ public class SecurityService {
     @Getter
     private final List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
 
+    @Autowired
     private final UserService userService;
 
     @Getter
