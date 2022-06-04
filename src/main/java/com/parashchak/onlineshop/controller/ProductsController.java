@@ -7,11 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.*;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
-
-import static com.parashchak.onlineshop.web.mapper.ProductRequestMapper.toProduct;
 
 @Controller
 public class ProductsController {
@@ -35,8 +33,15 @@ public class ProductsController {
     }
 
     @PostMapping(path = "/products/add")
-    public String add(HttpServletRequest request) throws IOException {
-        Product product = toProduct(request);
+    public String add(@RequestParam String name,
+                      @RequestParam double price,
+                      @RequestParam String description) throws IOException {
+        Product product = Product.builder()
+                .name(name)
+                .price(price)
+                .creationDate(LocalDateTime.now())
+                .description(description)
+                .build();
         productService.add(product);
         return "redirect:/products";
     }
@@ -60,8 +65,17 @@ public class ProductsController {
     }
 
     @PostMapping(path = "/products/edit")
-    public String edit(HttpServletRequest request) {
-        Product product = toProduct(request);
+    public String edit(@RequestParam String name,
+                       @RequestParam double price,
+                       @RequestParam String description,
+                       @RequestParam int id) {
+        Product product = Product.builder()
+                .id(id)
+                .name(name)
+                .price(price)
+                .creationDate(LocalDateTime.now())
+                .description(description)
+                .build();
         productService.update(product);
         return "redirect:/products";
     }
