@@ -1,4 +1,4 @@
-package com.parashchak.onlineshop.controller;
+package com.parashchak.onlineshop.web.controller;
 
 import com.parashchak.onlineshop.security.SecurityService;
 import com.parashchak.onlineshop.web.presentation.PageGenerator;
@@ -15,13 +15,12 @@ import static com.parashchak.onlineshop.web.util.ResponseUtil.setCookie;
 public class LoginController {
 
     private final PageGenerator pageGenerator;
+    private final SecurityService securityService;
 
     @Autowired
-    private SecurityService securityService;
-
-    @Autowired
-    public LoginController(PageGenerator pageGenerator) {
+    public LoginController(PageGenerator pageGenerator, SecurityService securityService) {
         this.pageGenerator = pageGenerator;
+        this.securityService = securityService;
     }
 
     @GetMapping(path = "/login")

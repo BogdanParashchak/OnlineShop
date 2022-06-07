@@ -1,4 +1,4 @@
-package com.parashchak.onlineshop.controller;
+package com.parashchak.onlineshop.web.controller;
 
 import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.service.*;
@@ -12,22 +12,24 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
-public class ProductsController {
+public class ProductController {
 
     private final PageGenerator pageGenerator;
+    private final ProductService productService;
 
     @Autowired
-    private ProductService productService;
-
-    @Autowired
-    public ProductsController(PageGenerator pageGenerator) {
+    public ProductController(PageGenerator pageGenerator, ProductService productService) {
         this.pageGenerator = pageGenerator;
+        this.productService = productService;
     }
 
     @GetMapping(path = {"/products", "/"})
     @ResponseBody
     public String getAll() {
-        return showAll();
+        List<Product> allProducts = productService.getAll();
+        Map<String, Object> pageData = new HashMap<>();
+        pageData.put("products", allProducts);
+        return pageGenerator.getPage("viewPage.html", pageData);
     }
 
     @GetMapping(path = "/products/add")
@@ -88,12 +90,5 @@ public class ProductsController {
     public String delete(@RequestParam("id") int userId) {
         productService.delete(userId);
         return "redirect:/products";
-    }
-
-    private String showAll() {
-        List<Product> allProducts = productService.getAll();
-        Map<String, Object> pageData = new HashMap<>();
-        pageData.put("products", allProducts);
-        return pageGenerator.getPage("viewPage.html", pageData);
     }
 }
