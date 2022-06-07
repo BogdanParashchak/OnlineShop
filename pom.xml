@@ -19,9 +19,9 @@
 
         <!-- presentation -->
         <dependency>
-            <groupId>com.parashchak</groupId>
-            <artifactId>templater</artifactId>
-            <version>1.0</version>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.31</version>
         </dependency>
 
         <!-- spring-webmvc -->

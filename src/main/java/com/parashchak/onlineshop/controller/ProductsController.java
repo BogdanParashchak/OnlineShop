@@ -2,7 +2,7 @@ package com.parashchak.onlineshop.controller;
 
 import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.service.*;
-import com.parashchak.templater.Templater;
+import com.parashchak.onlineshop.web.presentation.PageGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +14,15 @@ import java.util.*;
 @Controller
 public class ProductsController {
 
-    @Autowired
-    private Templater templater;
+    private final PageGenerator pageGenerator;
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    public ProductsController(PageGenerator pageGenerator) {
+        this.pageGenerator = pageGenerator;
+    }
 
     @GetMapping(path = {"/products", "/"})
     @ResponseBody
@@ -29,7 +33,7 @@ public class ProductsController {
     @GetMapping(path = "/products/add")
     @ResponseBody
     public String loadAddPage() {
-        return templater.getPage("addPage.html");
+        return pageGenerator.getPage("addPage.html");
     }
 
     @PostMapping(path = "/products/add")
@@ -52,7 +56,7 @@ public class ProductsController {
         List<Product> productsSearchList = productService.search(searchText);
         Map<String, Object> pageData = new HashMap<>();
         pageData.put("products", productsSearchList);
-        return templater.getPage("viewPage.html", pageData);
+        return pageGenerator.getPage("viewPage.html", pageData);
     }
 
     @GetMapping(path = "/products/edit")
@@ -61,7 +65,7 @@ public class ProductsController {
         Product product = productService.getById(userId).orElseThrow();
         Map<String, Object> pageData = new HashMap<>();
         pageData.put("product", product);
-        return templater.getPage("editPage.html", pageData);
+        return pageGenerator.getPage("editPage.html", pageData);
     }
 
     @PostMapping(path = "/products/edit")
@@ -90,6 +94,6 @@ public class ProductsController {
         List<Product> allProducts = productService.getAll();
         Map<String, Object> pageData = new HashMap<>();
         pageData.put("products", allProducts);
-        return templater.getPage("viewPage.html", pageData);
+        return pageGenerator.getPage("viewPage.html", pageData);
     }
 }

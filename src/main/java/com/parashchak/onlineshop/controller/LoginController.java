@@ -1,7 +1,7 @@
 package com.parashchak.onlineshop.controller;
 
 import com.parashchak.onlineshop.security.SecurityService;
-import com.parashchak.templater.Templater;
+import com.parashchak.onlineshop.web.presentation.PageGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,16 +14,20 @@ import static com.parashchak.onlineshop.web.util.ResponseUtil.setCookie;
 @Controller
 public class LoginController {
 
-    @Autowired
-    private Templater templater;
+    private final PageGenerator pageGenerator;
 
     @Autowired
     private SecurityService securityService;
 
+    @Autowired
+    public LoginController(PageGenerator pageGenerator) {
+        this.pageGenerator = pageGenerator;
+    }
+
     @GetMapping(path = "/login")
     @ResponseBody
     public String getLoginPage() {
-        return templater.getPage("loginPage.html");
+        return pageGenerator.getPage("loginPage.html");
     }
 
     @PostMapping(path = "/login")

@@ -13,11 +13,12 @@
 
 
     <context:component-scan base-package="com.parashchak.onlineshop"/>
+    <context:property-placeholder location="classpath:config/application.properties"/>
     <mvc:annotation-driven/>
 
-    <bean id="templater"
-          class="com.parashchak.templater.Templater">
-        <constructor-arg value="template"/>
+    <bean id="pageGenerator"
+          class="com.parashchak.onlineshop.web.presentation.PageGenerator">
+        <constructor-arg value="${pageGenerator.templatesPath}"/>
     </bean>
 
 </beans>
