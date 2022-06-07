@@ -17,7 +17,7 @@ import java.util.Optional;
 public class JdbcUserDao implements UserDao {
 
     private static final UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
-    private static final String GET_USER = "SELECT id,login, password, salt FROM accounts WHERE login=?";
+    private static final String GET_USER = "SELECT id, login, password, salt FROM accounts WHERE login=?";
 
     private final DataSource dataSource;
 

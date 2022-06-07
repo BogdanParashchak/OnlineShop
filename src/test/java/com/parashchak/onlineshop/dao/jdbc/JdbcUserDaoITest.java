@@ -2,40 +2,33 @@ package com.parashchak.onlineshop.dao.jdbc;
 
 import com.parashchak.onlineshop.dao.UserDao;
 import com.parashchak.onlineshop.entity.User;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import lombok.SneakyThrows;
+import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.*;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.util.*;
+import java.sql.*;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class JdbcUserDaoITest {
 
-    private static final String URL = "jdbc:h2:mem:test";
+    private static final String URL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
     private static final String USER = "app";
     private static final String PASSWORD = "app";
 
     private UserDao userDao;
 
     @BeforeEach
-    @SneakyThrows
-    void setUp() {
+    void setUp() throws SQLException {
 
-        HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(URL);
-        hikariConfig.setUsername(USER);
-        hikariConfig.setPassword(PASSWORD);
+        JdbcDataSource dataSource = new JdbcDataSource();
+        dataSource.setUrl(URL);
+        dataSource.setUser(USER);
+        dataSource.setPassword(PASSWORD);
 
-        DataSource dataSource = new HikariDataSource(hikariConfig);
         userDao = new JdbcUserDao(dataSource);
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             statement.execute("DROP TABLE IF EXISTS accounts;");
             statement.execute("CREATE TABLE accounts (id SERIAL PRIMARY KEY, login VARCHAR(10) UNIQUE NOT NULL, password VARCHAR(256) NOT NULL, salt VARCHAR(256) NOT NULL);");

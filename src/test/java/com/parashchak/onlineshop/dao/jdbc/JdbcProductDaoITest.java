@@ -2,12 +2,9 @@ package com.parashchak.onlineshop.dao.jdbc;
 
 import com.parashchak.onlineshop.dao.ProductDao;
 import com.parashchak.onlineshop.entity.Product;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import lombok.SneakyThrows;
+import org.h2.jdbcx.JdbcDataSource;
 import org.junit.jupiter.api.*;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -16,25 +13,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JdbcProductDaoITest {
 
-    private static final String URL = "jdbc:h2:mem:test";
+    private static final String URL = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
     private static final String USER = "app";
     private static final String PASSWORD = "app";
 
     private ProductDao productDao;
 
     @BeforeEach
-    @SneakyThrows
-    void setUp() {
+    void setUp() throws SQLException {
 
-        HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(URL);
-        hikariConfig.setUsername(USER);
-        hikariConfig.setPassword(PASSWORD);
+        JdbcDataSource dataSource = new JdbcDataSource();
+        dataSource.setUrl(URL);
+        dataSource.setUser(USER);
+        dataSource.setPassword(PASSWORD);
 
-        DataSource dataSource = new HikariDataSource(hikariConfig);
         productDao = new JdbcProductDao(dataSource);
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             statement.execute("DROP TABLE IF EXISTS products;");
             statement.execute("CREATE TABLE products (id SERIAL PRIMARY KEY, name VARCHAR(50) NOT NULL, price NUMERIC(8,2) NOT NULL, creation_date TIMESTAMP, description VARCHAR(100));");
