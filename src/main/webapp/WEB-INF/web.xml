@@ -14,7 +14,7 @@
 
     <filter>
         <filter-name>securityFilter</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <filter-class>com.parashchak.onlineshop.web.security.SecurityFilter</filter-class>
     </filter>
 
     <filter-mapping>

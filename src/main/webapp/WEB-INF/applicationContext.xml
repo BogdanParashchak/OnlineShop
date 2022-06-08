@@ -23,9 +23,4 @@
         <constructor-arg ref="hikariConfig"/>
     </bean>
 
-    <bean id="securityFilter"
-          class="com.parashchak.onlineshop.web.security.SecurityFilter">
-        <constructor-arg ref="securityService"/>
-    </bean>
-
 </beans>

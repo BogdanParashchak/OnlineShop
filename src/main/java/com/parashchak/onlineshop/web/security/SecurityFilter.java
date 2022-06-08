@@ -2,8 +2,9 @@ package com.parashchak.onlineshop.web.security;
 
 import com.parashchak.onlineshop.security.SecurityService;
 import com.parashchak.onlineshop.web.util.RequestUtil;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -11,10 +12,16 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
-@RequiredArgsConstructor
 public class SecurityFilter implements Filter {
 
-    private final SecurityService securityService;
+    private SecurityService securityService;
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        Filter.super.init(filterConfig);
+        ApplicationContext appContext = WebApplicationContextUtils.getRequiredWebApplicationContext(filterConfig.getServletContext());
+        securityService = appContext.getBean("securityService", SecurityService.class);
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
