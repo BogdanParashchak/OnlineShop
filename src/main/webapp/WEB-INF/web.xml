@@ -19,17 +19,7 @@
 
     <filter-mapping>
         <filter-name>securityFilter</filter-name>
-        <url-pattern>/products/add</url-pattern>
-    </filter-mapping>
-
-    <filter-mapping>
-        <filter-name>securityFilter</filter-name>
-        <url-pattern>/products/delete</url-pattern>
-    </filter-mapping>
-
-    <filter-mapping>
-        <filter-name>securityFilter</filter-name>
-        <url-pattern>/products/edit</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
 
     <listener>

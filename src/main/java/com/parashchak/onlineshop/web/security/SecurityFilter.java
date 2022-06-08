@@ -9,11 +9,12 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 public class SecurityFilter implements Filter {
 
+    private final static List<String> ALLOWED_URIS = List.of("/login", "/products", "/", "/products/search");
     private SecurityService securityService;
 
     @Override
@@ -24,11 +25,16 @@ public class SecurityFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request,
+                         ServletResponse response,
+                         FilterChain chain) throws IOException, ServletException {
+
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        if (((HttpServletRequest) request).getServletPath().equals("/login")) {
+        String uri = httpServletRequest.getRequestURI();
+        if (ALLOWED_URIS.contains(uri)) {
+            log.info("No authorization needed");
             chain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
