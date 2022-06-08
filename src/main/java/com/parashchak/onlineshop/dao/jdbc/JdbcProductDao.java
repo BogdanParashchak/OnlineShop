@@ -3,15 +3,16 @@ package com.parashchak.onlineshop.dao.jdbc;
 import com.parashchak.onlineshop.dao.ProductDao;
 import com.parashchak.onlineshop.dao.jdbc.mapper.ProductRowMapper;
 import com.parashchak.onlineshop.entity.Product;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
 
+@Repository
 @Slf4j
-@RequiredArgsConstructor
 public class JdbcProductDao implements ProductDao {
 
     private static final ProductRowMapper PRODUCT_ROW_MAPPER = new ProductRowMapper();
@@ -24,6 +25,11 @@ public class JdbcProductDao implements ProductDao {
     private static final String SEARCH_PRODUCTS_QUERY = "SELECT id,name, price, creation_date, description FROM products WHERE name LIKE CONCAT( '%',?,'%') OR description LIKE CONCAT( '%',?,'%')";
 
     private final DataSource dataSource;
+
+    @Autowired
+    public JdbcProductDao(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public List<Product> getAll() {
         try (Connection connection = dataSource.getConnection();

@@ -2,15 +2,21 @@ package com.parashchak.onlineshop.service;
 
 import com.parashchak.onlineshop.dao.ProductDao;
 import com.parashchak.onlineshop.entity.Product;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+@Service
 public class ProductService {
 
     private final ProductDao productDao;
+
+    @Autowired
+    public ProductService(ProductDao productDao) {
+        this.productDao = productDao;
+    }
 
     public List<Product> getAll() {
         return productDao.getAll();

@@ -2,24 +2,32 @@ package com.parashchak.onlineshop.security;
 
 import com.parashchak.onlineshop.entity.User;
 import com.parashchak.onlineshop.service.UserService;
-import lombok.*;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
-@RequiredArgsConstructor
+
+@Service
 public class SecurityService {
 
-    @Getter
     private final PasswordHandler passwordHandler = new PasswordHandler();
-
-    @Getter
     private final List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
-
     private final UserService userService;
 
     @Getter
     private final long timeToLive;
+
+    @Autowired
+    public SecurityService(UserService userService, @Value("${session.timeToLive}") String timeToLive) {
+        this.userService = userService;
+        this.timeToLive = Long.parseLong(timeToLive);
+    }
+
 
     public boolean validateUserToken(Optional<String> userToken) {
         if (userToken.isPresent()) {

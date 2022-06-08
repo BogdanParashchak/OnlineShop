@@ -3,8 +3,9 @@ package com.parashchak.onlineshop.dao.jdbc;
 import com.parashchak.onlineshop.dao.UserDao;
 import com.parashchak.onlineshop.dao.jdbc.mapper.UserRowMapper;
 import com.parashchak.onlineshop.entity.User;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -12,14 +13,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Optional;
 
+@Repository
 @Slf4j
-@RequiredArgsConstructor
 public class JdbcUserDao implements UserDao {
 
     private static final UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
     private static final String GET_USER = "SELECT id, login, password, salt FROM accounts WHERE login=?";
 
     private final DataSource dataSource;
+
+    @Autowired
+    public JdbcUserDao(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public Optional<User> get(String login) {
         try (Connection connection = dataSource.getConnection();

@@ -3,16 +3,21 @@ package com.parashchak.onlineshop.web.presentation;
 import freemarker.cache.NullCacheStorage;
 import freemarker.template.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.Map;
 
+@Component
 @Slf4j
 public class PageGenerator {
 
     private final Configuration configuration;
 
-    private PageGenerator(String templatesPath) {
+    @Autowired
+    private PageGenerator(@Value("${pageGenerator.templatesPath}") String templatesPath) {
         configuration = new Configuration(Configuration.VERSION_2_3_31);
         configuration.setCacheStorage(new NullCacheStorage());
         configuration.setClassForTemplateLoading(PageGenerator.class, templatesPath);

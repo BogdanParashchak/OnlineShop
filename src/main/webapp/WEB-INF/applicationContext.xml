@@ -9,6 +9,7 @@
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <context:property-placeholder location="classpath:config/application.properties"/>
+    <context:component-scan base-package="com.parashchak.onlineshop"/>
 
     <bean id="hikariConfig"
           class="com.zaxxer.hikari.HikariConfig">
@@ -20,32 +21,6 @@
     <bean id="hikariDataSource"
           class="com.zaxxer.hikari.HikariDataSource">
         <constructor-arg ref="hikariConfig"/>
-    </bean>
-
-    <bean id="jdbcProductDao"
-          class="com.parashchak.onlineshop.dao.jdbc.JdbcProductDao">
-        <constructor-arg ref="hikariDataSource"/>
-    </bean>
-
-    <bean id="productService"
-          class="com.parashchak.onlineshop.service.ProductService">
-        <constructor-arg ref="jdbcProductDao"/>
-    </bean>
-
-    <bean id="jdbcUserDao"
-          class="com.parashchak.onlineshop.dao.jdbc.JdbcUserDao">
-        <constructor-arg ref="hikariDataSource"/>
-    </bean>
-
-    <bean id="userService"
-          class="com.parashchak.onlineshop.service.UserService">
-        <constructor-arg ref="jdbcUserDao"/>
-    </bean>
-
-    <bean id="securityService"
-          class="com.parashchak.onlineshop.security.SecurityService">
-        <constructor-arg ref="userService"/>
-        <constructor-arg value="${session.timeToLive}"/>
     </bean>
 
     <bean id="securityFilter"
