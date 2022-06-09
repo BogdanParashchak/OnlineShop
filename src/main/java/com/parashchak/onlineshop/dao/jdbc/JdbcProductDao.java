@@ -43,7 +43,7 @@ public class JdbcProductDao implements ProductDao {
             log.info("Executed: {}", GET_ALL_PRODUCTS_QUERY);
             return allProductsList;
         } catch (Exception e) {
-            throw new RuntimeException("Unable to get all products list from DB", e);
+            throw new RuntimeException("Unable to findByLogin all products list from DB", e);
         }
     }
 
@@ -84,7 +84,7 @@ public class JdbcProductDao implements ProductDao {
                 return Optional.empty();
             }
         } catch (Exception e) {
-            throw new RuntimeException("Unable to get product from DB", e);
+            throw new RuntimeException("Unable to findByLogin product from DB", e);
         }
     }
 

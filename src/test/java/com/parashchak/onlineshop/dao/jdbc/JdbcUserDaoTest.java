@@ -40,9 +40,9 @@ class JdbcUserDaoTest {
 
     @Test
     @SneakyThrows
-    @DisplayName("verify get logic executed")
+    @DisplayName("verify findByLogin logic executed")
     void whenGet_thenGetLogicExecuted() {
-        userDao.get("user");
+        userDao.findByLogin("user");
 
         verify(mockDatasource).getConnection();
         verify(mockPreparedStatement).executeQuery();
@@ -58,9 +58,9 @@ class JdbcUserDaoTest {
 
     @Test
     @SneakyThrows
-    @DisplayName("get returns User instance")
+    @DisplayName("findByLogin returns User instance")
     void whenGet_thenReturnsUserInstance() {
-        Optional<User> optionalUser = userDao.get("user");
+        Optional<User> optionalUser = userDao.findByLogin("user");
         User user = optionalUser.orElseThrow();
 
         assertEquals(1, user.getId());
@@ -71,9 +71,9 @@ class JdbcUserDaoTest {
 
     @Test
     @SneakyThrows
-    @DisplayName("get catches Exception and throws new RuntimeException")
+    @DisplayName("findByLogin catches Exception and throws new RuntimeException")
     void whenGetAll_thenRuntimeExceptionThrown() {
         when(mockDatasource.getConnection()).thenThrow(new SQLException());
-        Assertions.assertThrows(RuntimeException.class, () -> userDao.get("user"));
+        Assertions.assertThrows(RuntimeException.class, () -> userDao.findByLogin("user"));
     }
 }

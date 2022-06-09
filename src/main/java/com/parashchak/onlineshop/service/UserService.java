@@ -18,6 +18,6 @@ public class UserService {
     }
 
     public Optional<User> get(String login) {
-        return userDao.get(login);
+        return userDao.findByLogin(login);
     }
 }

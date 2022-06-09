@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-import static com.parashchak.onlineshop.web.util.ResponseUtil.setCookie;
+import java.util.AbstractMap;
+import java.util.Optional;
 
 @Controller
 public class LoginController {
@@ -23,20 +24,23 @@ public class LoginController {
         this.securityService = securityService;
     }
 
-    @GetMapping(path = "/login")
+    @GetMapping("/login")
     @ResponseBody
     public String getLoginPage() {
         return pageGenerator.getPage("loginPage.html");
     }
 
-    @PostMapping(path = "/login")
-    public String login(@RequestParam String login,
-                       @RequestParam String password,
-                       HttpServletResponse response) throws IOException {
+    @PostMapping("/login")
+    public String login(@RequestParam String userName,
+                        @RequestParam String password,
+                        HttpServletResponse response) throws IOException {
 
-        if (securityService.validateCredentials(login, password)) {
-            String token = securityService.login();
-            setCookie(response, token, securityService.getTimeToLive());
+        Optional<AbstractMap.SimpleEntry<String, Long>> cookieData = securityService.login(userName, password);
+        if (cookieData.isPresent()) {
+            AbstractMap.SimpleEntry<String, Long> entry = cookieData.get();
+            Cookie cookie = new Cookie("user-token", entry.getKey());
+            cookie.setMaxAge((int) entry.getValue().longValue());
+            response.addCookie(cookie);
         }
         return "redirect:/";
     }

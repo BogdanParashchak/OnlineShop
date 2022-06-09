@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 class Session {
-    private final String token;
+    private final String userName;
+    private final String userToken;
     private final LocalDateTime expireDateTime;
 }

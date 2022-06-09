@@ -151,7 +151,7 @@ class JdbcProductDaoTest {
     }
 
     @Test
-    @DisplayName("get returns not empty optional object if user exists in table")
+    @DisplayName("findByLogin returns not empty optional object if user exists in table")
     void productExistingInTable_whenGetById_thenNotEmptyOptionalProductReturned() {
         Optional<Product> optionalProduct = productDao.getById(1);
         assertFalse(optionalProduct.isEmpty());

@@ -26,7 +26,7 @@ class UserRowMapperTest {
 
     @Test
     @SneakyThrows
-    @DisplayName("get not NULL User instance from ResultSet row")
+    @DisplayName("findByLogin not NULL User instance from ResultSet row")
     void givenResultSet_whenUserMapperCalled_thenNotNullUserReturned() {
         //prepare
         UserRowMapper userRowMapper = new UserRowMapper();
@@ -38,7 +38,7 @@ class UserRowMapperTest {
 
     @Test
     @SneakyThrows
-    @DisplayName("get User instance with set fields from ResultSet row")
+    @DisplayName("findByLogin User instance with set fields from ResultSet row")
     void givenResultSet_whenUserMapperCalled_thenUserWithSetFieldsReturned() {
         //prepare
         UserRowMapper userRowMapper = new UserRowMapper();

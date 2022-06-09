@@ -38,38 +38,38 @@ class JdbcUserDaoITest {
     }
 
     @Test
-    @DisplayName("get returns not Null optional object if user exists in table")
+    @DisplayName("findByLogin returns not Null optional object if user exists in table")
     void givenTable_whenGetExistingUser_thenNotNullOptionalObjectReturned() {
-        Optional<User> optionalUser = userDao.get("user");
+        Optional<User> optionalUser = userDao.findByLogin("user");
         assertNotNull(optionalUser);
     }
 
     @Test
-    @DisplayName("get returns not empty optional object if user exists in table")
+    @DisplayName("findByLogin returns not empty optional object if user exists in table")
     void givenTable_whenGetExistingUser_thenNotEmptyOptionalObjectReturned() {
-        Optional<User> optionalUser = userDao.get("user");
+        Optional<User> optionalUser = userDao.findByLogin("user");
         assertFalse(optionalUser.isEmpty());
     }
 
     @Test
-    @DisplayName("get returns not Null optional object if user does not exist in table")
+    @DisplayName("findByLogin returns not Null optional object if user does not exist in table")
     void givenTable_whenGetNotExistingUser_thenNotNullOptionalObjectReturned() {
-        Optional<User> optionalUser = userDao.get("non-existing-user");
+        Optional<User> optionalUser = userDao.findByLogin("non-existing-user");
         assertNotNull(optionalUser);
     }
 
     @Test
-    @DisplayName("get returns empty optional object if user does not exist in table")
+    @DisplayName("findByLogin returns empty optional object if user does not exist in table")
     void givenTable_whenGetNotExistingUser_thenEmptyOptionalObjectReturned() {
-        Optional<User> optionalUser = userDao.get("non-existing-user");
+        Optional<User> optionalUser = userDao.findByLogin("non-existing-user");
         assertTrue(optionalUser.isEmpty());
     }
 
     @Test
-    @DisplayName("get returns actual user")
+    @DisplayName("findByLogin returns actual user")
     void givenTable_whenGet_thenActualUserReturned() {
-        User user = userDao.get("user").orElseThrow();
-        User admin = userDao.get("admin").orElseThrow();
+        User user = userDao.findByLogin("user").orElseThrow();
+        User admin = userDao.findByLogin("admin").orElseThrow();
 
         assertEquals("user", user.getLogin());
         assertEquals("user-password", user.getPassword());
@@ -81,10 +81,10 @@ class JdbcUserDaoITest {
     }
 
     @Test
-    @DisplayName("get does not change user in table")
+    @DisplayName("findByLogin does not change user in table")
     void givenTable_whenGet_thenUserIsNotChanged() {
-        User firstUser = userDao.get("user").orElseThrow();
-        User secondUser = userDao.get("user").orElseThrow();
+        User firstUser = userDao.findByLogin("user").orElseThrow();
+        User secondUser = userDao.findByLogin("user").orElseThrow();
         assertEquals(firstUser, secondUser);
     }
 }

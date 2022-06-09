@@ -20,7 +20,8 @@ public class SecurityFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
-        ApplicationContext appContext = WebApplicationContextUtils.getRequiredWebApplicationContext(filterConfig.getServletContext());
+        ApplicationContext appContext = WebApplicationContextUtils
+                .getRequiredWebApplicationContext(filterConfig.getServletContext());
         securityService = appContext.getBean("securityService", SecurityService.class);
     }
 
@@ -41,7 +42,7 @@ public class SecurityFilter implements Filter {
 
         log.info("Check for authorization");
         Optional<String> userToken = RequestUtil.getUserToken(httpServletRequest);
-        if (!securityService.validateUserToken(userToken)) {
+        if (userToken.isEmpty() || !securityService.validateUserToken(userToken.get())) {
             httpServletResponse.sendRedirect("/login");
             log.info("Unauthorized");
             return;

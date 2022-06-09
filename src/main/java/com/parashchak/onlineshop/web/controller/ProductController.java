@@ -23,7 +23,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping(path = {"/products", "/"})
+    @GetMapping({"/products", "/"})
     @ResponseBody
     public String getAll() {
         List<Product> allProducts = productService.getAll();
@@ -32,13 +32,13 @@ public class ProductController {
         return pageGenerator.getPage("viewPage.html", pageData);
     }
 
-    @GetMapping(path = "/products/add")
+    @GetMapping("/products/add")
     @ResponseBody
     public String loadAddPage() {
         return pageGenerator.getPage("addPage.html");
     }
 
-    @PostMapping(path = "/products/add")
+    @PostMapping("/products/add")
     public String add(@RequestParam String name,
                       @RequestParam double price,
                       @RequestParam String description) throws IOException {
@@ -52,7 +52,7 @@ public class ProductController {
         return "redirect:/products";
     }
 
-    @GetMapping(path = "/products/search")
+    @GetMapping("/products/search")
     @ResponseBody
     public String search(@RequestParam("search-text") String searchText) {
         List<Product> productsSearchList = productService.search(searchText);
@@ -61,7 +61,7 @@ public class ProductController {
         return pageGenerator.getPage("viewPage.html", pageData);
     }
 
-    @GetMapping(path = "/products/edit")
+    @GetMapping("/products/edit")
     @ResponseBody
     public String getById(@RequestParam("id") int userId) {
         Product product = productService.getById(userId).orElseThrow();
@@ -70,7 +70,7 @@ public class ProductController {
         return pageGenerator.getPage("editPage.html", pageData);
     }
 
-    @PostMapping(path = "/products/edit")
+    @PostMapping("/products/edit")
     public String edit(@RequestParam String name,
                        @RequestParam double price,
                        @RequestParam String description,
@@ -86,7 +86,7 @@ public class ProductController {
         return "redirect:/products";
     }
 
-    @PostMapping(path = "/products/delete")
+    @PostMapping("/products/delete")
     public String delete(@RequestParam("id") int userId) {
         productService.delete(userId);
         return "redirect:/products";

@@ -5,5 +5,5 @@ import com.parashchak.onlineshop.entity.User;
 import java.util.Optional;
 
 public interface UserDao {
-    Optional<User> get(String login);
+    Optional<User> findByLogin(String login);
 }

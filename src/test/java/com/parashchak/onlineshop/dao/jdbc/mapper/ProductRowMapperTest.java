@@ -28,7 +28,7 @@ class ProductRowMapperTest {
 
     @Test
     @SneakyThrows
-    @DisplayName("get not NULL Product instance from ResultSet row")
+    @DisplayName("findByLogin not NULL Product instance from ResultSet row")
     void givenResultSet_whenProductMapperCalled_ThenProductNotNullReturned() {
         //prepare
         ProductRowMapper productRowMapper = new ProductRowMapper();
@@ -40,7 +40,7 @@ class ProductRowMapperTest {
 
     @Test
     @SneakyThrows
-    @DisplayName("get Product instance with set fields from ResultSet row")
+    @DisplayName("findByLogin Product instance with set fields from ResultSet row")
     void givenResultSet_whenProductMapperCalled_ThenProductWithSetFieldsReturned() {
         //prepare
         ProductRowMapper productRowMapper = new ProductRowMapper();
