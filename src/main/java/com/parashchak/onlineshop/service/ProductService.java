@@ -5,6 +5,7 @@ import com.parashchak.onlineshop.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ public class ProductService {
     }
 
     public void add(Product product) {
+        product.setCreationDate(LocalDateTime.now());
         productDao.add(product);
     }
 
@@ -31,6 +33,7 @@ public class ProductService {
     }
 
     public void update(Product product) {
+        product.setCreationDate(LocalDateTime.now());
         productDao.update(product);
     }
 

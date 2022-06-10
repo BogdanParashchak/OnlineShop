@@ -45,7 +45,6 @@ public class ProductController {
         Product product = Product.builder()
                 .name(name)
                 .price(price)
-                .creationDate(LocalDateTime.now())
                 .description(description)
                 .build();
         productService.add(product);
@@ -79,7 +78,6 @@ public class ProductController {
                 .id(id)
                 .name(name)
                 .price(price)
-                .creationDate(LocalDateTime.now())
                 .description(description)
                 .build();
         productService.update(product);
