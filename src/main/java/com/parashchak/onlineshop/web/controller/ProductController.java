@@ -2,9 +2,9 @@ package com.parashchak.onlineshop.web.controller;
 
 import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.service.*;
-import com.parashchak.onlineshop.web.presentation.PageGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -13,28 +13,23 @@ import java.util.*;
 @Controller
 public class ProductController {
 
-    private final PageGenerator pageGenerator;
     private final ProductService productService;
 
     @Autowired
-    public ProductController(PageGenerator pageGenerator, ProductService productService) {
-        this.pageGenerator = pageGenerator;
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping({"/products", "/"})
-    @ResponseBody
-    public String getAll() {
+    public String getAll(Model model) {
         List<Product> allProducts = productService.getAll();
-        Map<String, Object> pageData = new HashMap<>();
-        pageData.put("products", allProducts);
-        return pageGenerator.getPage("viewPage.html", pageData);
+        model.addAttribute("products", allProducts);
+        return "viewPage";
     }
 
     @GetMapping("/products/add")
-    @ResponseBody
     public String loadAddPage() {
-        return pageGenerator.getPage("addPage.html");
+        return "addPage";
     }
 
     @PostMapping("/products/add")
@@ -51,21 +46,17 @@ public class ProductController {
     }
 
     @GetMapping("/products/search")
-    @ResponseBody
-    public String search(@RequestParam("search-text") String searchText) {
+    public String search(@RequestParam String searchText, Model model) {
         List<Product> productsSearchList = productService.search(searchText);
-        Map<String, Object> pageData = new HashMap<>();
-        pageData.put("products", productsSearchList);
-        return pageGenerator.getPage("viewPage.html", pageData);
+        model.addAttribute("products", productsSearchList);
+        return "viewPage";
     }
 
     @GetMapping("/products/edit")
-    @ResponseBody
-    public String loadEditPage(@RequestParam("id") int userId) {
-        Product product = productService.findById(userId).orElseThrow();
-        Map<String, Object> pageData = new HashMap<>();
-        pageData.put("product", product);
-        return pageGenerator.getPage("editPage.html", pageData);
+    public String loadEditPage(@RequestParam int id, Model model) {
+        Product product = productService.findById(id).orElseThrow();
+        model.addAttribute("product", product);
+        return "editPage";
     }
 
     @PostMapping("/products/edit")
@@ -84,8 +75,8 @@ public class ProductController {
     }
 
     @PostMapping("/products/delete")
-    public String delete(@RequestParam("id") int userId) {
-        productService.delete(userId);
+    public String delete(@RequestParam int id) {
+        productService.delete(id);
         return "redirect:/products";
     }
 }

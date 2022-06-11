@@ -15,4 +15,14 @@
     <context:property-placeholder location="classpath:config/application.properties"/>
     <mvc:annotation-driven/>
 
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="cache" value="true"/>
+        <property name="prefix" value=""/>
+        <property name="suffix" value=".html"/>
+    </bean>
+
+    <bean id="freemarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="classpath:/templates/"/>
+    </bean>
+
 </beans>

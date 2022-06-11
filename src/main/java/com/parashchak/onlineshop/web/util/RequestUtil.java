@@ -1,7 +1,6 @@
 package com.parashchak.onlineshop.web.util;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.*;
 import java.util.Optional;
 
 public class RequestUtil {
