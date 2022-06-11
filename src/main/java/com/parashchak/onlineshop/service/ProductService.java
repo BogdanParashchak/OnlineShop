@@ -33,7 +33,6 @@ public class ProductService {
     }
 
     public void update(Product product) {
-        product.setCreationDate(LocalDateTime.now());
         productDao.update(product);
     }
 

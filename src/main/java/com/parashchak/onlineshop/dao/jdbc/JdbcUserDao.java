@@ -2,44 +2,36 @@ package com.parashchak.onlineshop.dao.jdbc;
 
 import com.parashchak.onlineshop.dao.UserDao;
 import com.parashchak.onlineshop.dao.jdbc.mapper.UserRowMapper;
+import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Optional;
 
 @Repository
 @Slf4j
 public class JdbcUserDao implements UserDao {
 
-    private static final UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
-    private static final String GET_USER = "SELECT id, login, password, salt FROM accounts WHERE login=?";
+    private static final String FIND_USER = "SELECT id, login, password, salt FROM accounts WHERE login=?";
 
-    private final DataSource dataSource;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public JdbcUserDao(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public JdbcUserDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Optional<User> findByUserName(String login) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER)) {
-            preparedStatement.setString(1, login);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                log.info("Executed: {}", preparedStatement);
-                if (resultSet.next()) {
-                    return Optional.of(USER_ROW_MAPPER.mapRow(resultSet));
-                }
-                return Optional.empty();
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to findByUserName user from DB", e);
+    public Optional<User> findByUserName(String userName) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(FIND_USER,
+                    new BeanPropertyRowMapper<>(User.class), userName));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
         }
     }
 }

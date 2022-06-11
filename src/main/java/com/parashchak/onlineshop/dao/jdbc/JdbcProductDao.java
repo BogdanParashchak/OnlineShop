@@ -4,6 +4,7 @@ import com.parashchak.onlineshop.dao.ProductDao;
 import com.parashchak.onlineshop.entity.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 
@@ -41,8 +42,12 @@ public class JdbcProductDao implements ProductDao {
     }
 
     public Optional<Product> findById(int id) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(GET_PRODUCT_BY_ID_QUERY,
-                new BeanPropertyRowMapper<>(Product.class), id));
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(GET_PRODUCT_BY_ID_QUERY,
+                    new BeanPropertyRowMapper<>(Product.class), id));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     public void update(Product product) {
