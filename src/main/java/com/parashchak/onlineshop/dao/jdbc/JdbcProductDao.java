@@ -40,7 +40,7 @@ public class JdbcProductDao implements ProductDao {
         jdbcTemplate.update(DELETE_PRODUCT_QUERY, id);
     }
 
-    public Optional<Product> getById(int id) {
+    public Optional<Product> findById(int id) {
         return Optional.ofNullable(jdbcTemplate.queryForObject(GET_PRODUCT_BY_ID_QUERY,
                 new BeanPropertyRowMapper<>(Product.class), id));
     }

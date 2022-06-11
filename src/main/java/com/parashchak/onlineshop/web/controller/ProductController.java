@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -62,8 +61,8 @@ public class ProductController {
 
     @GetMapping("/products/edit")
     @ResponseBody
-    public String getById(@RequestParam("id") int userId) {
-        Product product = productService.getById(userId).orElseThrow();
+    public String loadEditPage(@RequestParam("id") int userId) {
+        Product product = productService.findById(userId).orElseThrow();
         Map<String, Object> pageData = new HashMap<>();
         pageData.put("product", product);
         return pageGenerator.getPage("editPage.html", pageData);

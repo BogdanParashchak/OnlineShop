@@ -37,8 +37,8 @@ public class ProductService {
         productDao.update(product);
     }
 
-    public Optional<Product> getById(int id) {
-        return productDao.getById(id);
+    public Optional<Product> findById(int id) {
+        return productDao.findById(id);
     }
 
     public List<Product> search(String searchText) {

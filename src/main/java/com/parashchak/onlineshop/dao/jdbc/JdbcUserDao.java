@@ -27,7 +27,7 @@ public class JdbcUserDao implements UserDao {
         this.dataSource = dataSource;
     }
 
-    public Optional<User> findByLogin(String login) {
+    public Optional<User> findByUserName(String login) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_USER)) {
             preparedStatement.setString(1, login);
@@ -39,7 +39,7 @@ public class JdbcUserDao implements UserDao {
                 return Optional.empty();
             }
         } catch (Exception e) {
-            throw new RuntimeException("Unable to findByLogin user from DB", e);
+            throw new RuntimeException("Unable to findByUserName user from DB", e);
         }
     }
 }

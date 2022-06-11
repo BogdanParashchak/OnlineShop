@@ -59,8 +59,8 @@ public class SecurityService {
         return Optional.empty();
     }
 
-    private boolean validateCredentials(String login, String password) {
-        Optional<User> optionalUser = userService.get(login);
+    private boolean validateCredentials(String userName, String password) {
+        Optional<User> optionalUser = userService.findByUserName(userName);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             return passwordHandler.verifyPassword(password, user.getSalt(), user.getPassword());

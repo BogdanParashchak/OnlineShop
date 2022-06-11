@@ -17,7 +17,7 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public Optional<User> get(String login) {
-        return userDao.findByLogin(login);
+    public Optional<User> findByUserName(String userName) {
+        return userDao.findByUserName(userName);
     }
 }
