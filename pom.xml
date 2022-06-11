@@ -39,6 +39,7 @@
             <version>5.0.1</version>
         </dependency>
 
+        <!-- JDBC spring -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
@@ -102,14 +103,6 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>4.5.1</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- tests -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>2.1.212</version>
             <scope>test</scope>
         </dependency>
 
