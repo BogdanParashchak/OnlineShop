@@ -23,4 +23,9 @@
         <constructor-arg ref="hikariConfig"/>
     </bean>
 
+    <bean id="jdbcTemplate"
+          class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="hikariDataSource"/>
+    </bean>
+
 </beans>
