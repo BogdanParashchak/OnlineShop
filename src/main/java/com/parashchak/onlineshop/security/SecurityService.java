@@ -52,7 +52,7 @@ public class SecurityService {
         if (validateCredentials(userName, password)) {
             String userToken = UUID.randomUUID().toString();
             LocalDateTime expireDateTime = LocalDateTime.now().plusSeconds(timeToLive);
-            Session session = new Session(userName, userToken, expireDateTime);
+            Session session = new Session(userToken, expireDateTime);
             sessionList.add(session);
             AbstractMap.SimpleEntry<String, Long> cookieData = new AbstractMap.SimpleEntry<>(userToken, timeToLive);
             return Optional.of(cookieData);
