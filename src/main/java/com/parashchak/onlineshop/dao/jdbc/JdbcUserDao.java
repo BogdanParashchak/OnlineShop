@@ -1,14 +1,11 @@
 package com.parashchak.onlineshop.dao.jdbc;
 
 import com.parashchak.onlineshop.dao.UserDao;
-import com.parashchak.onlineshop.dao.jdbc.mapper.UserRowMapper;
-import com.parashchak.onlineshop.entity.Product;
 import com.parashchak.onlineshop.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

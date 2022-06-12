@@ -1,13 +1,12 @@
 package com.parashchak.onlineshop.web.controller;
 
+import com.parashchak.onlineshop.entity.User;
 import com.parashchak.onlineshop.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.servlet.http.*;
 import java.util.*;
 
 @Controller
@@ -26,11 +25,11 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String userName,
-                        @RequestParam String password,
-                        HttpServletResponse response) throws IOException {
+    public String login(@ModelAttribute User user,
+                        HttpServletResponse response) {
 
-        Optional<AbstractMap.SimpleEntry<String, Long>> cookieData = securityService.login(userName, password);
+        Optional<AbstractMap.SimpleEntry<String, Long>> cookieData =
+                securityService.login(user.getUserName(), user.getPassword());
         if (cookieData.isPresent()) {
             AbstractMap.SimpleEntry<String, Long> entry = cookieData.get();
             Cookie cookie = new Cookie("user-token", entry.getKey());

@@ -14,6 +14,7 @@ public class SecurityService {
 
     private final PasswordHandler passwordHandler = new PasswordHandler();
     private final List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
+
     private final UserService userService;
     private final long timeToLive;
 

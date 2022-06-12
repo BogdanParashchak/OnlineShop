@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -33,14 +32,7 @@ public class ProductController {
     }
 
     @PostMapping("/products/add")
-    public String add(@RequestParam String name,
-                      @RequestParam double price,
-                      @RequestParam String description) throws IOException {
-        Product product = Product.builder()
-                .name(name)
-                .price(price)
-                .description(description)
-                .build();
+    public String add(@ModelAttribute Product product) {
         productService.add(product);
         return "redirect:/products";
     }
@@ -60,16 +52,7 @@ public class ProductController {
     }
 
     @PostMapping("/products/edit")
-    public String edit(@RequestParam String name,
-                       @RequestParam double price,
-                       @RequestParam String description,
-                       @RequestParam int id) {
-        Product product = Product.builder()
-                .id(id)
-                .name(name)
-                .price(price)
-                .description(description)
-                .build();
+    public String edit(@ModelAttribute Product product) {
         productService.update(product);
         return "redirect:/products";
     }
